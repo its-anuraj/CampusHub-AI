@@ -93,6 +93,30 @@ async function main() {
 
   const studentProfile = await prisma.student.findUnique({ where: { userId: studentUser.id } });
 
+  // Dedicated User AJ Singh
+  await prisma.user.upsert({
+    where: { email: 'ajsinghindolia@gmail.com' },
+    update: { password: '12345678' },
+    create: {
+      name: 'AJ Singh',
+      email: 'ajsinghindolia@gmail.com',
+      password: '12345678',
+      role: 'STUDENT',
+      status: 'ACTIVE',
+      studentProfile: {
+        create: {
+          rollNumber: 'CS2026888',
+          department: 'CSE',
+          year: 3,
+          semester: 5,
+          section: 'A',
+          cgpa: 9.1,
+          backlogs: 0,
+        },
+      },
+    },
+  });
+
   // Additional Students
   const student2 = await prisma.user.upsert({
     where: { email: 'priya@student.campushub.ai' },
