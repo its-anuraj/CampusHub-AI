@@ -1,0 +1,287 @@
+﻿'use client';
+
+import { useState, useEffect } from 'react';
+import {
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
+} from 'recharts';
+import {
+  BookOpen, ClipboardList, Bell, CheckCircle2, Calendar, Star, Sparkles, ArrowUpRight, Clock, Loader2
+} from 'lucide-react';
+import Link from 'next/link';
+import { formatTime } from '@/lib/utils';
+
+interface DashboardData {
+  attendancePercentage: number;
+  cgpa: number;
+  backlogs: number;
+  pendingAssignments: number;
+  upcomingExams: number;
+  unreadNotices: number;
+  todaysClasses: any[];
+  recentNotices: any[];
+  attendanceChart: { month: string; percentage: number }[];
+}
+
+export default function StudentDashboardPage() {
+  const [user, setUser] = useState<any>(null);
+  const [data, setData] = useState<DashboardData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const u = localStorage.getItem('campushub_user');
+    if (u) setUser(JSON.parse(u));
+  }, []);
+
+  useEffect(() => {
+    async function fetchDashboard() {
+      try {
+        const [noticesRes, assignmentsRes, attendanceRes] = await Promise.all([
+          fetch('/api/notices?limit=3'),
+          fetch('/api/assignments'),
+          fetch('/api/attendance'),
+        ]);
+
+        const noticesData = noticesRes.ok ? await noticesRes.json() : { notices: [] };
+        const assignmentsData = assignmentsRes.ok ? await assignmentsRes.json() : { assignments: [] };
+        const attendanceData = attendanceRes.ok ? await attendanceRes.json() : { percentage: 0, chart: [] };
+
+        const pending = (assignmentsData.assignments || []).filter((a: any) => a.status === 'PENDING').length;
+
+        setData({
+          attendancePercentage: attendanceData.percentage ?? 0,
+          cgpa: attendanceData.cgpa ?? 0,
+          backlogs: attendanceData.backlogs ?? 0,
+          pendingAssignments: pending,
+          upcomingExams: 0,
+          unreadNotices: (noticesData.notices || []).length,
+          todaysClasses: [],
+          recentNotices: noticesData.notices || [],
+          attendanceChart: attendanceData.chart || [],
+        });
+      } catch {
+        setData({
+          attendancePercentage: 0, cgpa: 0, backlogs: 0, pendingAssignments: 0,
+          upcomingExams: 0, unreadNotices: 0, todaysClasses: [], recentNotices: [], attendanceChart: [],
+        });
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchDashboard();
+  }, []);
+
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200/60 pb-5">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            {greeting}, {user?.name?.split(' ')[0] || 'Student'}
+          </h1>
+          <p className="text-xs text-slate-500 mt-1">Computer Science Engineering • Semester 5 • Section A</p>
+        </div>
+        <div className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 flex items-center gap-2 text-xs font-medium text-slate-600 shadow-xs">
+          <Calendar className="w-3.5 h-3.5 text-blue-600" />
+          <span>{new Date().toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</span>
+        </div>
+      </div>
+
+      <div className="bg-white border border-blue-100 rounded-xl p-4 shadow-card flex items-start gap-3.5">
+        <div className="w-8 h-8 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
+          <Sparkles className="w-4 h-4" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2">
+            <h2 className="text-xs font-semibold text-slate-900 uppercase tracking-wider">AI Campus Insights</h2>
+            <span className="bg-blue-50 text-blue-700 text-[10px] font-medium px-2 py-0.5 rounded-full border border-blue-200">Active</span>
+          </div>
+          <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+            {data && data.attendancePercentage > 0
+              ? <>Attendance is at <span className="font-semibold text-slate-900">{data.attendancePercentage.toFixed(1)}%</span>.{data.pendingAssignments > 0 && <> You have <span className="font-semibold text-blue-700">{data.pendingAssignments} pending assignment{data.pendingAssignments !== 1 ? 's' : ''}</span> to submit.</>}</>
+              : 'No data yet. Add attendance and assignments to see AI insights here.'}
+          </p>
+        </div>
+        <Link href="/dashboard/student/ai-chat" className="text-xs font-semibold text-blue-600 hover:text-blue-700 whitespace-nowrap flex items-center gap-1">
+          Open AI <ArrowUpRight className="w-3.5 h-3.5" />
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {[
+          {
+            label: 'Attendance Rate',
+            value: data ? `${data.attendancePercentage.toFixed(1)}%` : '—',
+            sub: data && data.attendancePercentage >= 75 ? 'Above 75% threshold' : data && data.attendancePercentage > 0 ? 'Below 75% — needs attention' : 'No data yet',
+            subColor: data && data.attendancePercentage >= 75 ? 'text-emerald-600' : data && data.attendancePercentage > 0 ? 'text-red-600' : 'text-slate-400',
+            href: '/dashboard/student/attendance', icon: CheckCircle2,
+          },
+          {
+            label: 'Cumulative GPA',
+            value: data && data.cgpa > 0 ? data.cgpa.toFixed(2) : '—',
+            sub: data && data.cgpa > 0 ? 'Live from academic records' : 'No records yet',
+            subColor: 'text-blue-600', href: '/dashboard/student/results', icon: Star,
+          },
+          {
+            label: 'Pending Assignments',
+            value: data ? data.pendingAssignments.toString() : '0',
+            sub: data && data.pendingAssignments > 0 ? 'Check assignments page' : 'All caught up!',
+            subColor: data && data.pendingAssignments > 0 ? 'text-amber-600' : 'text-emerald-600',
+            href: '/dashboard/student/assignments', icon: ClipboardList,
+          },
+          {
+            label: 'Upcoming Exams',
+            value: '0',
+            sub: 'Check timetable for schedule',
+            subColor: 'text-slate-500', href: '/dashboard/student/timetable', icon: BookOpen,
+          },
+        ].map((stat) => {
+          const Icon = stat.icon;
+          return (
+            <Link href={stat.href} key={stat.label}>
+              <div className="bg-white border border-slate-200 rounded-2xl p-5 card-hover shadow-card">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-medium text-slate-500">{stat.label}</span>
+                  <div className="p-1.5 rounded-lg bg-slate-50 border border-slate-100 text-slate-600">
+                    <Icon className="w-4 h-4" />
+                  </div>
+                </div>
+                <div className="text-2xl font-bold text-slate-900 tracking-tight">{stat.value}</div>
+                <p className={`text-[11px] font-medium mt-1.5 ${stat.subColor}`}>{stat.sub}</p>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="lg:col-span-8 bg-white border border-slate-200 rounded-2xl p-6 shadow-card space-y-4">
+          <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+            <div>
+              <h3 className="text-sm font-semibold text-slate-900">Today&apos;s Lecture Schedule</h3>
+              <p className="text-xs text-slate-500 mt-0.5">Synchronized from timetable</p>
+            </div>
+            <Link href="/dashboard/student/timetable" className="text-xs font-semibold text-blue-600 hover:text-blue-700">Full Timetable →</Link>
+          </div>
+          <div className="flex flex-col items-center justify-center py-10 text-center">
+            <Clock className="w-8 h-8 text-slate-300 mb-2" />
+            <p className="text-sm font-medium text-slate-500">No classes scheduled for today</p>
+            <p className="text-xs text-slate-400 mt-0.5">Timetable will appear here once set up</p>
+          </div>
+        </div>
+
+        <div className="lg:col-span-4 space-y-6">
+          <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-card">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-semibold text-slate-900">Attendance History</h3>
+              <span className="text-[11px] font-medium text-slate-500">Last 6 Months</span>
+            </div>
+            {data && data.attendanceChart.length > 0 ? (
+              <div className="h-40">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={data.attendanceChart} margin={{ top: 5, right: 5, bottom: 5, left: -25 }}>
+                    <defs>
+                      <linearGradient id="attendGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#2563EB" stopOpacity={0.15} />
+                        <stop offset="95%" stopColor="#2563EB" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" vertical={false} />
+                    <XAxis dataKey="month" tick={{ fontSize: 10, fill: '#94A3B8' }} axisLine={false} tickLine={false} />
+                    <YAxis tick={{ fontSize: 10, fill: '#94A3B8' }} axisLine={false} tickLine={false} domain={[60, 100]} />
+                    <Tooltip contentStyle={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '8px', fontSize: '11px' }} />
+                    <Area type="monotone" dataKey="percentage" stroke="#2563EB" strokeWidth={2} fill="url(#attendGrad)" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            ) : (
+              <div className="h-40 flex items-center justify-center">
+                <div className="text-center">
+                  <CheckCircle2 className="w-8 h-8 text-slate-200 mx-auto mb-2" />
+                  <p className="text-xs text-slate-400">No attendance data yet</p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-card">
+            <h3 className="text-sm font-semibold text-slate-900 mb-3">Quick Navigation</h3>
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                { label: 'Submit Work', href: '/dashboard/student/assignments' },
+                { label: 'View Notices', href: '/dashboard/student/notices' },
+                { label: 'Placements', href: '/dashboard/student/placement' },
+                { label: 'Pay Fees', href: '/dashboard/student/fees' },
+              ].map(item => (
+                <Link key={item.label} href={item.href} className="p-2.5 rounded-lg border border-slate-200/80 bg-slate-50/50 hover:bg-blue-50/50 hover:border-blue-200 hover:text-blue-700 transition-all text-xs font-medium text-slate-700 text-center">
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-card">
+          <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+            <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+              <Bell className="w-4 h-4 text-blue-600" /> Recent Campus Notices
+            </h3>
+            <Link href="/dashboard/student/notices" className="text-xs font-semibold text-blue-600 hover:text-blue-700">View All →</Link>
+          </div>
+          <div className="space-y-3">
+            {data && data.recentNotices.length > 0 ? data.recentNotices.map((notice: any) => (
+              <div key={notice.id} className="p-3 rounded-xl border border-slate-100 bg-slate-50/40 hover:bg-slate-50 transition-colors">
+                <div className="flex items-start justify-between gap-2">
+                  <h4 className="text-xs font-semibold text-slate-900">{notice.title}</h4>
+                  {notice.isPinned && <span className="text-[10px] text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">Pinned</span>}
+                </div>
+                <p className="text-[11px] text-slate-500 mt-1 line-clamp-1">{notice.content}</p>
+                <div className="flex items-center gap-2 mt-2">
+                  <span className="text-[10px] font-medium px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">{notice.category}</span>
+                  <span className="text-[10px] text-slate-400">{new Date(notice.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</span>
+                </div>
+              </div>
+            )) : (
+              <div className="flex flex-col items-center justify-center py-8 text-center">
+                <Bell className="w-7 h-7 text-slate-200 mb-2" />
+                <p className="text-xs text-slate-400">No notices posted yet</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-card">
+          <div className="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+            <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
+              <ClipboardList className="w-4 h-4 text-amber-600" /> Pending Assignments
+            </h3>
+            <Link href="/dashboard/student/assignments" className="text-xs font-semibold text-blue-600 hover:text-blue-700">View All →</Link>
+          </div>
+          {data && data.pendingAssignments > 0 ? (
+            <div className="flex flex-col items-center justify-center py-8 text-center">
+              <ClipboardList className="w-7 h-7 text-amber-400 mb-2" />
+              <p className="text-sm font-semibold text-slate-700">{data.pendingAssignments} pending assignment{data.pendingAssignments !== 1 ? 's' : ''}</p>
+              <Link href="/dashboard/student/assignments" className="text-xs text-blue-600 font-medium mt-1 hover:underline">View all assignments →</Link>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-8 text-center">
+              <CheckCircle2 className="w-7 h-7 text-emerald-300 mb-2" />
+              <p className="text-xs text-slate-400">No pending assignments</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

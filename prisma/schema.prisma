@@ -1,0 +1,221 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   // ADMIN, FACULTY, STUDENT, PARENT
+  avatar    String?
+  phone     String?
+  status    String   @default("ACTIVE") // ACTIVE, INACTIVE
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  studentProfile Student?
+  facultyProfile Faculty?
+  parentProfile  Parent?
+  notices        Notice[]
+  logs           AuditLog[]
+}
+
+model Student {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rollNumber   String   @unique
+  department   String
+  year         Int      @default(3)
+  semester     Int      @default(5)
+  section      String   @default("A")
+  cgpa         Float    @default(8.2)
+  backlogs     Int      @default(0)
+  parentId     String?
+  parent       Parent?  @relation(fields: [parentId], references: [id])
+
+  submissions  Submission[]
+  attendance   Attendance[]
+  applications PlacementApplication[]
+  fees         FeeRecord[]
+  complaints   Complaint[]
+  courses      CourseEnrollment[]
+}
+
+model Faculty {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  employeeId  String   @unique
+  department  String
+  designation String   @default("Assistant Professor")
+  subjects    String   // JSON string array
+}
+
+model Parent {
+  id          String    @id @default(uuid())
+  userId      String    @unique
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  relation    String    @default("Parent")
+  students    Student[]
+}
+
+model Notice {
+  id          String   @id @default(uuid())
+  title       String
+  content     String
+  category    String   // GENERAL, EXAM, EVENT, PLACEMENT, URGENT
+  priority    String   // LOW, MEDIUM, HIGH, URGENT
+  department  String   @default("ALL")
+  isPinned    Boolean  @default(false)
+  createdBy   String
+  authorId    String?
+  author      User?    @relation(fields: [authorId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model Assignment {
+  id          String       @id @default(uuid())
+  title       String
+  subject     String
+  description String
+  dueDate     DateTime
+  totalMarks  Int          @default(20)
+  facultyName String
+  submissions Submission[]
+  createdAt   DateTime     @default(now())
+}
+
+model Submission {
+  id            String     @id @default(uuid())
+  assignmentId  String
+  assignment    Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  studentId     String
+  student       Student    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  status        String     @default("SUBMITTED") // PENDING, SUBMITTED, GRADED, LATE
+  marksObtained Int?
+  feedback      String?
+  submittedAt   DateTime   @default(now())
+}
+
+model Attendance {
+  id        String   @id @default(uuid())
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  subject   String
+  date      DateTime @default(now())
+  status    String   // PRESENT, ABSENT, LATE
+  markedBy  String
+}
+
+model PlacementCompany {
+  id           String                 @id @default(uuid())
+  name         String
+  role         String
+  package      String
+  minCgpa      Float                  @default(6.0)
+  departments  String                 // JSON string array
+  deadline     DateTime
+  status       String                 @default("OPEN") // OPEN, UPCOMING, CLOSED
+  applicants   Int                    @default(0)
+  applications PlacementApplication[]
+}
+
+model PlacementApplication {
+  id        String           @id @default(uuid())
+  companyId String
+  company   PlacementCompany @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  studentId String
+  student   Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  status    String           @default("APPLIED")
+  appliedAt DateTime         @default(now())
+}
+
+model FeeRecord {
+  id        String    @id @default(uuid())
+  studentId String
+  student   Student   @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  type      String
+  amount    Float
+  dueDate   DateTime
+  paidDate  DateTime?
+  status    String    @default("PENDING") // PAID, PENDING, OVERDUE
+  receipt   String?
+}
+
+model LibraryBook {
+  id              String   @id @default(uuid())
+  title           String
+  author          String
+  isbn            String   @unique
+  subject         String
+  totalCopies     Int      @default(5)
+  availableCopies Int      @default(3)
+  available       Boolean  @default(true)
+}
+
+model DiscussionPost {
+  id          String   @id @default(uuid())
+  title       String
+  content     String
+  author      String
+  isAnonymous Boolean  @default(false)
+  tags        String   // CSV string
+  likes       Int      @default(0)
+  replies     Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model Complaint {
+  id          String    @id @default(uuid())
+  studentId   String?
+  student     Student?  @relation(fields: [studentId], references: [id])
+  title       String
+  description String
+  category    String    // HOSTEL, ELECTRICITY, INTERNET, WATER, CLEANING, OTHER
+  status      String    @default("PENDING") // PENDING, IN_PROGRESS, RESOLVED, CLOSED
+  submittedBy String
+  createdAt   DateTime  @default(now())
+  resolvedAt  DateTime?
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String
+  type      String   @default("INFO") // INFO, WARNING, ERROR, SUCCESS
+  timestamp DateTime @default(now())
+}
+
+model Course {
+  id          String             @id @default(uuid())
+  code        String             @unique // e.g. CS501
+  title       String
+  department  String             // e.g. CSE, IT, ECE
+  credits     Int                @default(4)
+  semester    Int                @default(5)
+  description String
+  syllabus    String             // JSON string array of topics
+  facultyName String?            @default("Dr. Sharma")
+  enrollments CourseEnrollment[]
+  createdAt   DateTime           @default(now())
+}
+
+model CourseEnrollment {
+  id        String   @id @default(uuid())
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  status    String   @default("ENROLLED") // ENROLLED, COMPLETED, DROPPED
+  grade     String?  @default("A")
+  createdAt DateTime @default(now())
+}
+
