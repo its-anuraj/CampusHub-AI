@@ -53,6 +53,7 @@ const studentNav: NavGroup[] = [
   {
     label: 'Student Services',
     items: [
+      { label: 'Digital ID Card', href: '/dashboard/student/id-card', icon: Award },
       { label: 'Fee Payments', href: '/dashboard/student/fees', icon: CreditCard },
       { label: 'Grievances', href: '/dashboard/student/complaints', icon: AlertTriangle },
     ],
