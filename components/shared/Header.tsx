@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { Menu, Bell, Search, PanelLeftClose, PanelLeft, ChevronDown, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+import CommandPalette from '@/components/shared/CommandPalette';
+
 interface HeaderProps {
   user: any;
   sidebarOpen: boolean;
@@ -13,6 +15,7 @@ interface HeaderProps {
 
 export default function Header({ user, sidebarOpen, onToggleSidebar, onMobileMenuOpen }: HeaderProps) {
   const [notifOpen, setNotifOpen] = useState(false);
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
 
   const notifications = [
     { id: 1, text: 'Mid-Semester exam schedule published', time: '2h ago', unread: true },
@@ -21,36 +24,46 @@ export default function Header({ user, sidebarOpen, onToggleSidebar, onMobileMen
   ];
 
   return (
-    <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-4 lg:px-8 py-3">
-      <div className="flex items-center gap-3">
-        {/* Mobile menu toggle */}
-        <button
-          onClick={onMobileMenuOpen}
-          className="lg:hidden p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors"
-        >
-          <Menu className="w-5 h-5" />
-        </button>
+    <>
+      <CommandPalette
+        isOpen={commandPaletteOpen}
+        onClose={() => setCommandPaletteOpen(false)}
+        userRole={user?.role}
+      />
+      <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-4 lg:px-8 py-3">
+        <div className="flex items-center gap-3">
+          {/* Mobile menu toggle */}
+          <button
+            onClick={onMobileMenuOpen}
+            className="lg:hidden p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
 
-        {/* Desktop sidebar toggle */}
-        <button
-          onClick={onToggleSidebar}
-          className="hidden lg:flex p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
-        >
-          {sidebarOpen ? <PanelLeftClose className="w-4 h-4" /> : <PanelLeft className="w-4 h-4" />}
-        </button>
+          {/* Desktop sidebar toggle */}
+          <button
+            onClick={onToggleSidebar}
+            className="hidden lg:flex p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
+          >
+            {sidebarOpen ? <PanelLeftClose className="w-4 h-4" /> : <PanelLeft className="w-4 h-4" />}
+          </button>
 
-        {/* Global Search Bar */}
-        <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 w-64 lg:w-80 focus-within:border-blue-600 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-600/10 transition-all">
-          <Search className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-          <input
-            type="text"
-            placeholder="Search courses, notices, records..."
-            className="bg-transparent text-xs text-slate-900 placeholder:text-slate-400 outline-none flex-1"
-          />
-          <kbd className="hidden sm:inline-block text-[10px] text-slate-400 bg-white px-1.5 py-0.5 rounded border border-slate-200 font-mono">⌘K</kbd>
-        </div>
+          {/* Global Search Bar (opens Command Palette) */}
+          <button
+            type="button"
+            onClick={() => setCommandPaletteOpen(true)}
+            className="flex items-center gap-2 bg-slate-50 hover:bg-slate-100/80 border border-slate-200 rounded-lg px-3 py-1.5 w-64 lg:w-80 text-left transition-all cursor-pointer group"
+          >
+            <Search className="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-600 transition-colors flex-shrink-0" />
+            <span className="text-xs text-slate-400 group-hover:text-slate-600 flex-1 truncate">
+              Search courses, modules, actions...
+            </span>
+            <kbd className="hidden sm:inline-block text-[10px] text-slate-400 bg-white px-1.5 py-0.5 rounded border border-slate-200 font-mono shadow-2xs">
+              ⌘K
+            </kbd>
+          </button>
 
-        <div className="flex-1" />
+          <div className="flex-1" />
 
         {/* Right Action Bar */}
         <div className="flex items-center gap-3">
@@ -101,5 +114,6 @@ export default function Header({ user, sidebarOpen, onToggleSidebar, onMobileMen
         </div>
       </div>
     </header>
+    </>
   );
 }
