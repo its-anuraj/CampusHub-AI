@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -6,12 +6,15 @@ import { UserCheck, Award, DollarSign, Calendar, Bus, MessageSquare, Bell, Loade
 import Link from 'next/link';
 import { formatCurrency } from '@/lib/utils';
 
+import PtmSchedulerModal from '@/components/shared/PtmSchedulerModal';
+
 export default function ParentDashboardPage() {
   const [user, setUser] = useState<any>(null);
   const [studentData, setStudentData] = useState<any>(null);
   const [attendanceChart, setAttendanceChart] = useState<any[]>([]);
   const [recentMarks, setRecentMarks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showPtmModal, setShowPtmModal] = useState(false);
 
   useEffect(() => {
     const u = localStorage.getItem('campushub_user');
@@ -54,11 +57,22 @@ export default function ParentDashboardPage() {
 
   return (
     <div className="space-y-6">
+      <PtmSchedulerModal
+        isOpen={showPtmModal}
+        onClose={() => setShowPtmModal(false)}
+      />
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200/60 pb-5">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">Parent Monitoring Dashboard</h1>
           <p className="text-xs text-slate-500 mt-1">Monitoring academic progress and campus activities</p>
         </div>
+
+        <button
+          onClick={() => setShowPtmModal(true)}
+          className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-2 cursor-pointer shadow-xs transition-colors"
+        >
+          <Calendar className="w-4 h-4" /> Book Faculty Consultation (PTM)
+        </button>
       </div>
 
       <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-card flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
