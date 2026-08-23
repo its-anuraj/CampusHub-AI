@@ -7,7 +7,7 @@ import {
   LayoutDashboard, BookOpen, ClipboardList, Calendar, Bell, GraduationCap,
   Users, BarChart3, Settings, LogOut, Building2, CreditCard,
   Library, MessageSquare, Briefcase, FileText, UserCheck, AlertTriangle,
-  Bus, BookMarked, Award, UserCog, PieChart, Megaphone, Database
+  Bus, BookMarked, Award, UserCog, PieChart, Megaphone, Database, Timer
 } from 'lucide-react';
 
 interface NavItem {
@@ -36,6 +36,7 @@ const studentNav: NavGroup[] = [
     items: [
       { label: 'Courses & Syllabus', href: '/dashboard/student/courses', icon: BookOpen },
       { label: 'Assignments', href: '/dashboard/student/assignments', icon: ClipboardList, badge: 3 },
+      { label: 'Study Planner', href: '/dashboard/student/study-planner', icon: Timer },
       { label: 'Notice Board', href: '/dashboard/student/notices', icon: Bell, badge: 5 },
       { label: 'Library Catalog', href: '/dashboard/student/library', icon: BookMarked },
       { label: 'Academic Results', href: '/dashboard/student/results', icon: Award },
