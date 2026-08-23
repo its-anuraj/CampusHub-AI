@@ -15,6 +15,8 @@ export const metadata: Metadata = {
   authors: [{ name: 'CampusHub AI Team' }],
 };
 
+import { ToastProvider } from '@/lib/toastContext';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -23,7 +25,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} font-sans antialiased bg-[#FAFAFA] text-slate-900`}>
-        {children}
+        <ToastProvider>
+          {children}
+        </ToastProvider>
       </body>
     </html>
   );
