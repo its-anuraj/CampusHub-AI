@@ -16,6 +16,7 @@ export const metadata: Metadata = {
 };
 
 import { ToastProvider } from '@/lib/toastContext';
+import { ThemeProvider } from '@/lib/themeContext';
 
 export default function RootLayout({
   children,
@@ -25,9 +26,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} font-sans antialiased bg-[#FAFAFA] text-slate-900`}>
-        <ToastProvider>
-          {children}
-        </ToastProvider>
+        <ThemeProvider>
+          <ToastProvider>
+            {children}
+          </ToastProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

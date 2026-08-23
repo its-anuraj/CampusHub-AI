@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Menu, Bell, Search, PanelLeftClose, PanelLeft, ChevronDown, Sparkles } from 'lucide-react';
+import { Menu, Bell, Search, PanelLeftClose, PanelLeft, ChevronDown, Sparkles, Palette } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 import CommandPalette from '@/components/shared/CommandPalette';
+import ThemeCustomizerModal from '@/components/shared/ThemeCustomizerModal';
 
 interface HeaderProps {
   user: any;
@@ -16,6 +17,7 @@ interface HeaderProps {
 export default function Header({ user, sidebarOpen, onToggleSidebar, onMobileMenuOpen }: HeaderProps) {
   const [notifOpen, setNotifOpen] = useState(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const [themeModalOpen, setThemeModalOpen] = useState(false);
 
   const notifications = [
     { id: 1, text: 'Mid-Semester exam schedule published', time: '2h ago', unread: true },
@@ -29,6 +31,10 @@ export default function Header({ user, sidebarOpen, onToggleSidebar, onMobileMen
         isOpen={commandPaletteOpen}
         onClose={() => setCommandPaletteOpen(false)}
         userRole={user?.role}
+      />
+      <ThemeCustomizerModal
+        isOpen={themeModalOpen}
+        onClose={() => setThemeModalOpen(false)}
       />
       <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-4 lg:px-8 py-3">
         <div className="flex items-center gap-3">
@@ -67,6 +73,15 @@ export default function Header({ user, sidebarOpen, onToggleSidebar, onMobileMen
 
         {/* Right Action Bar */}
         <div className="flex items-center gap-3">
+          {/* Theme Palette Customizer Button */}
+          <button
+            onClick={() => setThemeModalOpen(true)}
+            className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-blue-600 transition-colors cursor-pointer"
+            title="Customize Campus Theme"
+          >
+            <Palette className="w-4 h-4" />
+          </button>
+
           {/* AI Helper Quick Tag */}
           <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-50 border border-blue-100 text-blue-700 text-xs font-medium">
             <Sparkles className="w-3.5 h-3.5 text-blue-600" />
