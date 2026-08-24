@@ -219,3 +219,244 @@ model CourseEnrollment {
   createdAt DateTime @default(now())
 }
 
+model HostelRoom {
+  id          String             @id @default(uuid())
+  block       String             // Block A, Block B, Block C (Girls), Block D (PG)
+  roomNumber  String             // e.g. 101, 204, 305
+  capacity    Int                @default(2)
+  occupied    Int                @default(0)
+  roomType    String             @default("DOUBLE_AC") // SINGLE_AC, DOUBLE_AC, TRIPLE_NON_AC
+  floor       Int                @default(1)
+  monthlyRent Float              @default(6500)
+  status      String             @default("AVAILABLE") // AVAILABLE, OCCUPIED, MAINTENANCE
+  allocations HostelAllocation[]
+}
+
+model HostelAllocation {
+  id         String     @id @default(uuid())
+  roomId     String
+  room       HostelRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  studentId  String
+  allocatedAt DateTime  @default(now())
+  status     String     @default("ACTIVE") // ACTIVE, VACATED
+}
+
+model HostelMaintenance {
+  id          String   @id @default(uuid())
+  studentName String
+  roomNumber  String
+  block       String
+  category    String   // PLUMBING, ELECTRICAL, FURNITURE, INTERNET, CLEANING
+  issue       String
+  status      String   @default("PENDING") // PENDING, IN_PROGRESS, RESOLVED
+  priority    String   @default("MEDIUM") // LOW, MEDIUM, HIGH
+  createdAt   DateTime @default(now())
+}
+
+model CampusEvent {
+  id            String              @id @default(uuid())
+  title         String
+  description   String
+  category      String              // HACKATHON, WORKSHOP, CULTURAL, SPORTS, SEMINAR
+  venue         String
+  date          DateTime
+  time          String
+  organizer     String
+  bannerUrl     String?
+  maxCapacity   Int                 @default(100)
+  registered    Int                 @default(0)
+  status        String              @default("UPCOMING") // UPCOMING, ONGOING, COMPLETED
+  registrations EventRegistration[]
+  createdAt     DateTime            @default(now())
+}
+
+model EventRegistration {
+  id            String      @id @default(uuid())
+  eventId       String
+  event         CampusEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  studentName   String
+  rollNumber    String
+  email         String
+  ticketCode    String      @unique
+  checkedIn     Boolean     @default(false)
+  registeredAt  DateTime    @default(now())
+}
+
+model DigitalCertificate {
+  id             String   @id @default(uuid())
+  certificateId  String   @unique // e.g. CHUB-CERT-2026-9812
+  studentName    String
+  rollNumber     String
+  courseOrTitle  String
+  type           String   // BONAFIDE, COURSE_COMPLETION, MERIT, INTERNSHIP_NOC
+  issueDate      DateTime @default(now())
+  issuedBy       String   @default("Office of Academic Affairs")
+  digitalHash    String   // SHA-256 integrity hash
+  status         String   @default("VERIFIED") // VERIFIED, REVOKED
+}
+
+model FacultyLeave {
+  id          String    @id @default(uuid())
+  facultyName String
+  employeeId  String
+  department  String
+  leaveType   String    // CASUAL, MEDICAL, DUTY_LEAVE, MATERNITY_PATERNITY
+  startDate   DateTime
+  endDate     DateTime
+  daysCount   Int
+  reason      String
+  status      String    @default("PENDING") // PENDING, APPROVED, REJECTED
+  substitute  String?
+  reviewedBy  String?
+  appliedAt   DateTime  @default(now())
+}
+
+model AlumniProfile {
+  id          String   @id @default(uuid())
+  name        String
+  batch       String   // e.g. Class of 2022
+  department  String
+  company     String
+  designation String
+  linkedinUrl String?
+  location    String
+  avatar      String?
+  bio         String
+  isMentor    Boolean  @default(true)
+}
+
+model LostFoundItem {
+  id          String   @id @default(uuid())
+  title       String
+  type        String   // LOST, FOUND
+  category    String   // ELECTRONICS, ID_CARDS, BAGS, KEYS, BOOKS, OTHER
+  location    String
+  date        DateTime @default(now())
+  description String
+  reportedBy  String
+  contactInfo String
+  status      String   @default("OPEN") // OPEN, CLAIMED, HANDED_OVER
+  imageUrl    String?
+}
+
+model Scholarship {
+  id           String                   @id @default(uuid())
+  title        String
+  provider     String                   // Institute, Government, Alumni Fund, Corporate
+  amount       Float
+  deadline     DateTime
+  minCgpa      Float                    @default(7.5)
+  familyIncome Float                    @default(500000)
+  description  String
+  category     String                   // MERIT, NEED_BASED, MINORITY, SPORTS
+  status       String                   @default("ACTIVE")
+  applications ScholarshipApplication[]
+}
+
+model ScholarshipApplication {
+  id            String      @id @default(uuid())
+  scholarshipId String
+  scholarship   Scholarship @relation(fields: [scholarshipId], references: [id], onDelete: Cascade)
+  studentName   String
+  rollNumber    String
+  cgpa          Float
+  annualIncome  Float
+  status        String      @default("SUBMITTED") // SUBMITTED, UNDER_REVIEW, APPROVED, REJECTED
+  appliedAt     DateTime    @default(now())
+}
+
+model CafeteriaItem {
+  id          String   @id @default(uuid())
+  name        String
+  stall       String   // Food Court A, South Stall, Nescafe Cafe, Juice Bar
+  category    String   // BREAKFAST, LUNCH, SNACKS, BEVERAGES
+  price       Float
+  calories    Int      @default(250)
+  isVeg       Boolean  @default(true)
+  isAvailable Boolean  @default(true)
+  imageUrl    String?
+}
+
+model WellnessAppointment {
+  id          String   @id @default(uuid())
+  studentName String
+  rollNumber  String
+  counselor   String   @default("Dr. Maya Sen (Senior Psychologist)")
+  type        String   // MENTAL_HEALTH, CLINICAL_DOCTOR, ACADEMIC_STRESS
+  slotTime    String
+  date        DateTime
+  isAnonymous Boolean  @default(false)
+  status      String   @default("CONFIRMED") // CONFIRMED, COMPLETED, CANCELLED
+}
+
+model ResearchPaper {
+  id          String   @id @default(uuid())
+  title       String
+  facultyName String
+  department  String
+  journal     String   // IEEE Transactions, Springer Nature, Elsevier
+  doi         String?
+  year        Int      @default(2026)
+  citations   Int      @default(0)
+  abstract    String
+  downloadUrl String?
+  createdAt   DateTime @default(now())
+}
+
+model LabEquipment {
+  id          String   @id @default(uuid())
+  name        String   // NVIDIA DGX GPU Cluster, 3D Resin Printer, IoT Sensor Rig
+  labName     String   // Advanced AI Lab, Robotics Lab, VLSI Fab
+  department  String
+  totalUnits  Int      @default(1)
+  status      String   @default("OPERATIONAL") // OPERATIONAL, UNDER_MAINTENANCE
+  hourlyRate  Float    @default(0)
+}
+
+model CampusAsset {
+  id           String   @id @default(uuid())
+  assetTag     String   @unique // ASSET-2026-IT-004
+  name         String
+  category     String   // COMPUTING, AV_EQUIPMENT, LAB_HARDWARE, FURNITURE
+  location     String   // Room 402, Admin Block, Audi-1
+  purchaseDate DateTime
+  warrantyEnd  DateTime
+  cost         Float
+  status       String   @default("ACTIVE") // ACTIVE, MAINTENANCE, RETIRED
+}
+
+model EmergencyAlert {
+  id          String   @id @default(uuid())
+  title       String
+  message     String
+  severity    String   // CRITICAL, HIGH, WARNING, INFO
+  channels    String   // SMS, EMAIL, PUSH, SIREN (CSV)
+  active      Boolean  @default(true)
+  sentBy      String
+  createdAt   DateTime @default(now())
+}
+
+model StudentClub {
+  id          String   @id @default(uuid())
+  name        String   // Robotics Club, ACM Student Chapter, Google Developer Group
+  category    String   // TECHNICAL, CULTURAL, SPORTS, LITERARY
+  president   String
+  facultyLead String
+  members     Int      @default(0)
+  description String
+  bannerUrl   String?
+}
+
+model ParentFeedback {
+  id          String   @id @default(uuid())
+  parentName  String
+  studentRoll String
+  category    String   // ACADEMICS, HOSTEL, TRANSPORT, SAFETY, FEES
+  subject     String
+  message     String
+  status      String   @default("PENDING") // PENDING, INVESTIGATING, RESOLVED
+  response    String?
+  createdAt   DateTime @default(now())
+}
+
+
