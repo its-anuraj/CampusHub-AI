@@ -13,6 +13,13 @@ export interface Toast {
   duration?: number;
 }
 
+export interface ToastOptions {
+  title?: string;
+  message: string;
+  type?: ToastType;
+  duration?: number;
+}
+
 interface ToastContextType {
   toast: {
     success: (message: string, title?: string, duration?: number) => void;
@@ -20,6 +27,7 @@ interface ToastContextType {
     warning: (message: string, title?: string, duration?: number) => void;
     info: (message: string, title?: string, duration?: number) => void;
   };
+  addToast: (options: ToastOptions | ((type: ToastType, message: string, title?: string, duration?: number) => void)) => void;
   dismiss: (id: string) => void;
 }
 
@@ -28,7 +36,7 @@ const ToastContext = createContext<ToastContextType | undefined>(undefined);
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  const addToast = useCallback((type: ToastType, message: string, title?: string, duration = 4000) => {
+  const triggerToast = useCallback((type: ToastType, message: string, title?: string, duration = 4000) => {
     const id = Math.random().toString(36).substring(2, 9);
     setToasts((prev) => [...prev, { id, type, title, message, duration }]);
 
@@ -39,19 +47,25 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  const addToast = useCallback((options: any) => {
+    if (typeof options === 'object' && options !== null) {
+      triggerToast(options.type || 'info', options.message || '', options.title, options.duration || 4000);
+    }
+  }, [triggerToast]);
+
   const dismiss = useCallback((id: string) => {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
   const toast = {
-    success: (message: string, title?: string, duration?: number) => addToast('success', message, title, duration),
-    error: (message: string, title?: string, duration?: number) => addToast('error', message, title, duration),
-    warning: (message: string, title?: string, duration?: number) => addToast('warning', message, title, duration),
-    info: (message: string, title?: string, duration?: number) => addToast('info', message, title, duration),
+    success: (message: string, title?: string, duration?: number) => triggerToast('success', message, title, duration),
+    error: (message: string, title?: string, duration?: number) => triggerToast('error', message, title, duration),
+    warning: (message: string, title?: string, duration?: number) => triggerToast('warning', message, title, duration),
+    info: (message: string, title?: string, duration?: number) => triggerToast('info', message, title, duration),
   };
 
   return (
-    <ToastContext.Provider value={{ toast, dismiss }}>
+    <ToastContext.Provider value={{ toast, addToast, dismiss }}>
       {children}
       {/* Floating Glassmorphic Container */}
       <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-2.5 max-w-sm w-full pointer-events-none px-3 sm:px-0">

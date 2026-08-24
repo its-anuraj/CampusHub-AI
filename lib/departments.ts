@@ -19,3 +19,6 @@ export const DEPARTMENTS: Department[] = [
   { code: 'BBA', name: 'Bachelor of Business Administration', category: 'MANAGEMENT' },
   { code: 'ASH', name: 'Applied Sciences & Humanities', category: 'SCIENCES' },
 ];
+
+export const departments = DEPARTMENTS;
+

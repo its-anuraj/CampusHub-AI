@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Users, Briefcase, MapPin, Linkedin, Video, Calendar, Search, Sparkles, CheckCircle2, X } from 'lucide-react';
+import { Users, Briefcase, MapPin, Globe, Video, Calendar, Search, Sparkles, CheckCircle2, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/lib/toastContext';
 
