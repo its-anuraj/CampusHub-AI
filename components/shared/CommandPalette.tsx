@@ -20,6 +20,17 @@ import {
   LayoutDashboard,
   Bus,
   Library,
+  Compass,
+  ShieldCheck,
+  BedDouble,
+  Heart,
+  Cpu,
+  HardDrive,
+  Package,
+  ShieldAlert,
+  Utensils,
+  Award,
+  Calendar,
 } from 'lucide-react';
 
 interface CommandItem {
@@ -35,6 +46,16 @@ interface CommandItem {
 const COMMAND_ITEMS: CommandItem[] = [
   // Student
   { id: 's-dash', title: 'Student Dashboard', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student', icon: LayoutDashboard },
+  { id: 's-map', title: 'Interactive 2D Campus Map & GPS Guide', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/campus-map', icon: Compass },
+  { id: 's-rsm', title: 'AI Resume Builder & ATS Score Analyzer', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/resume-builder', icon: FileText },
+  { id: 's-crt', title: 'Verifiable Digital Credentials & Certificates', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/certificates', icon: ShieldCheck },
+  { id: 's-alm', title: 'Alumni Network & 1:1 Mentorship Booking', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/alumni', icon: Users },
+  { id: 's-evt', title: 'Campus Events, Hackathons & QR Passes', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/events', icon: Calendar },
+  { id: 's-hst', title: 'Hostel Rooms, Mess Menu & Maintenance', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/hostel', icon: BedDouble },
+  { id: 's-caf', title: 'Smart Cafeteria & Meal Pre-Ordering', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/cafeteria', icon: Utensils },
+  { id: 's-sch', title: 'Scholarships & Institutional Grants', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/scholarships', icon: Award },
+  { id: 's-wln', title: 'Health & Wellness Sanctuary (SOS & Counseling)', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/wellness', icon: Heart },
+  { id: 's-lnf', title: 'Campus Lost & Found Desk', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/lost-found', icon: Package },
   { id: 's-ai', title: 'AI Study Assistant & Chat', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/ai-chat', icon: Sparkles },
   { id: 's-att', title: 'Attendance & AI Prediction', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/attendance', icon: UserCheck },
   { id: 's-tt', title: 'Interactive Weekly Timetable', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/timetable', icon: Clock },
@@ -49,6 +70,10 @@ const COMMAND_ITEMS: CommandItem[] = [
 
   // Faculty
   { id: 'f-dash', title: 'Faculty Dashboard', category: 'Faculty Portal', role: 'FACULTY', href: '/dashboard/faculty', icon: LayoutDashboard },
+  { id: 'f-res', title: 'Faculty Research, Publications & Grants', category: 'Faculty Portal', role: 'FACULTY', href: '/dashboard/faculty/research', icon: BookOpen },
+  { id: 'f-lab', title: 'Research Labs & Equipment Slot Booking', category: 'Faculty Portal', role: 'FACULTY', href: '/dashboard/faculty/labs', icon: Cpu },
+  { id: 'f-lea', title: 'Faculty Leaves & On-Duty (OD) Desk', category: 'Faculty Portal', role: 'FACULTY', href: '/dashboard/faculty/leaves', icon: Calendar },
+  { id: 'f-evt', title: 'Event Organizer & QR Check-in Terminal', category: 'Faculty Portal', role: 'FACULTY', href: '/dashboard/faculty/events', icon: Calendar },
   { id: 'f-att', title: 'Mark Daily Attendance', category: 'Faculty Portal', role: 'FACULTY', href: '/dashboard/faculty/attendance', icon: UserCheck },
   { id: 'f-mrk', title: 'Gradebook & Marks Entry', category: 'Faculty Portal', role: 'FACULTY', href: '/dashboard/faculty/marks', icon: GraduationCap },
   { id: 'f-ass', title: 'Manage Course Assignments', category: 'Faculty Portal', role: 'FACULTY', href: '/dashboard/faculty/assignments', icon: FileText },
@@ -58,6 +83,11 @@ const COMMAND_ITEMS: CommandItem[] = [
 
   // Admin
   { id: 'a-dash', title: 'Admin Command Center', category: 'Admin Console', role: 'ADMIN', href: '/dashboard/admin', icon: LayoutDashboard },
+  { id: 'a-sos', title: 'Emergency Siren & Multichannel Broadcast', category: 'Admin Console', role: 'ADMIN', href: '/dashboard/admin/emergency', icon: ShieldAlert },
+  { id: 'a-hst', title: 'Hostel Housing & Occupancy Operations', category: 'Admin Console', role: 'ADMIN', href: '/dashboard/admin/hostel', icon: BedDouble },
+  { id: 'a-inv', title: 'Asset Lifecycle & Hardware Inventory', category: 'Admin Console', role: 'ADMIN', href: '/dashboard/admin/inventory', icon: HardDrive },
+  { id: 'a-sch', title: 'Scholarship Disbursement & Approvals', category: 'Admin Console', role: 'ADMIN', href: '/dashboard/admin/scholarships', icon: Award },
+  { id: 'a-lea', title: 'Faculty Leave Approvals Desk', category: 'Admin Console', role: 'ADMIN', href: '/dashboard/admin/leaves', icon: Calendar },
   { id: 'a-usr', title: 'User & Role Management', category: 'Admin Console', role: 'ADMIN', href: '/dashboard/admin/users', icon: Users },
   { id: 'a-dep', title: 'Department Infrastructure', category: 'Admin Console', role: 'ADMIN', href: '/dashboard/admin/departments', icon: Building2 },
   { id: 'a-plc', title: 'Placement Drives & Drives', category: 'Admin Console', role: 'ADMIN', href: '/dashboard/admin/placements', icon: Building2 },
@@ -67,9 +97,11 @@ const COMMAND_ITEMS: CommandItem[] = [
 
   // Parent
   { id: 'p-dash', title: 'Parent Portal Dashboard', category: 'Parent Portal', role: 'PARENT', href: '/dashboard/parent', icon: LayoutDashboard },
+  { id: 'p-grv', title: 'Parent Grievance & Dean Feedback Desk', category: 'Parent Portal', role: 'PARENT', href: '/dashboard/parent/feedback', icon: MessageSquare },
   { id: 'p-att', title: 'Child Attendance Alerts', category: 'Parent Portal', role: 'PARENT', href: '/dashboard/parent/attendance', icon: UserCheck },
   { id: 'p-fee', title: 'Online Fee Payment', category: 'Parent Portal', role: 'PARENT', href: '/dashboard/parent/fees', icon: CreditCard },
   { id: 'p-bus', title: 'Live Bus & Transport Tracking', category: 'Parent Portal', role: 'PARENT', href: '/dashboard/parent/transport', icon: Bus },
+
 ];
 
 interface CommandPaletteProps {

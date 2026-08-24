@@ -7,14 +7,16 @@ import {
   LayoutDashboard, BookOpen, ClipboardList, Calendar, Bell, GraduationCap,
   Users, BarChart3, Settings, LogOut, Building2, CreditCard,
   Library, MessageSquare, Briefcase, FileText, UserCheck, AlertTriangle,
-  Bus, BookMarked, Award, UserCog, PieChart, Megaphone, Database, Timer
+  Bus, BookMarked, Award, UserCog, PieChart, Megaphone, Database, Timer,
+  Home, Utensils, Heart, Compass, Cpu, HardDrive, Package, ShieldAlert,
+  ShieldCheck, Radio, Sparkles, BedDouble
 } from 'lucide-react';
 
 interface NavItem {
   label: string;
   href: string;
   icon: React.ElementType;
-  badge?: number;
+  badge?: number | string;
 }
 
 interface NavGroup {
@@ -29,6 +31,7 @@ const studentNav: NavGroup[] = [
       { label: 'Dashboard', href: '/dashboard/student', icon: LayoutDashboard },
       { label: 'Timetable', href: '/dashboard/student/timetable', icon: Calendar },
       { label: 'Attendance', href: '/dashboard/student/attendance', icon: UserCheck },
+      { label: 'Interactive Campus Map', href: '/dashboard/student/campus-map', icon: Compass },
     ],
   },
   {
@@ -37,22 +40,30 @@ const studentNav: NavGroup[] = [
       { label: 'Courses & Syllabus', href: '/dashboard/student/courses', icon: BookOpen },
       { label: 'Assignments', href: '/dashboard/student/assignments', icon: ClipboardList, badge: 3 },
       { label: 'Study Planner', href: '/dashboard/student/study-planner', icon: Timer },
-      { label: 'Notice Board', href: '/dashboard/student/notices', icon: Bell, badge: 5 },
       { label: 'Library Catalog', href: '/dashboard/student/library', icon: BookMarked },
       { label: 'Academic Results', href: '/dashboard/student/results', icon: Award },
+      { label: 'Verifiable Credentials', href: '/dashboard/student/certificates', icon: ShieldCheck },
     ],
   },
   {
     label: 'Career & Community',
     items: [
+      { label: 'AI Resume Builder', href: '/dashboard/student/resume-builder', icon: FileText, badge: 'AI' },
       { label: 'Placements', href: '/dashboard/student/placement', icon: Briefcase },
+      { label: 'Alumni Network', href: '/dashboard/student/alumni', icon: Users },
+      { label: 'Events & Hackathons', href: '/dashboard/student/events', icon: Calendar },
       { label: 'Campus Forum', href: '/dashboard/student/discussion', icon: MessageSquare },
-      { label: 'AI Assistant', href: '/dashboard/student/ai-chat', icon: BookOpen },
+      { label: 'AI Assistant', href: '/dashboard/student/ai-chat', icon: Sparkles },
     ],
   },
   {
-    label: 'Student Services',
+    label: 'Student Life & Services',
     items: [
+      { label: 'Hostel & Housing', href: '/dashboard/student/hostel', icon: BedDouble },
+      { label: 'Smart Cafeteria', href: '/dashboard/student/cafeteria', icon: Utensils },
+      { label: 'Scholarships & Aid', href: '/dashboard/student/scholarships', icon: Award },
+      { label: 'Health & Wellness Sanctuary', href: '/dashboard/student/wellness', icon: Heart },
+      { label: 'Lost & Found Desk', href: '/dashboard/student/lost-found', icon: Package },
       { label: 'Digital ID Card', href: '/dashboard/student/id-card', icon: Award },
       { label: 'Fee Payments', href: '/dashboard/student/fees', icon: CreditCard },
       { label: 'Grievances', href: '/dashboard/student/complaints', icon: AlertTriangle },
@@ -66,6 +77,7 @@ const facultyNav: NavGroup[] = [
     items: [
       { label: 'Dashboard', href: '/dashboard/faculty', icon: LayoutDashboard },
       { label: 'Class Schedule', href: '/dashboard/faculty/classes', icon: Calendar },
+      { label: 'Faculty Leaves & OD', href: '/dashboard/faculty/leaves', icon: Calendar },
     ],
   },
   {
@@ -79,6 +91,14 @@ const facultyNav: NavGroup[] = [
     ],
   },
   {
+    label: 'Research & Labs',
+    items: [
+      { label: 'Research & Grants', href: '/dashboard/faculty/research', icon: BookOpen },
+      { label: 'Research Lab Hardware', href: '/dashboard/faculty/labs', icon: Cpu },
+      { label: 'Symposium & Events', href: '/dashboard/faculty/events', icon: Calendar },
+    ],
+  },
+  {
     label: 'Student Performance',
     items: [
       { label: 'Student Directory', href: '/dashboard/faculty/students', icon: Users },
@@ -89,10 +109,11 @@ const facultyNav: NavGroup[] = [
 
 const adminNav: NavGroup[] = [
   {
-    label: 'Executive',
+    label: 'Executive & Safety',
     items: [
       { label: 'Dashboard', href: '/dashboard/admin', icon: LayoutDashboard },
       { label: 'Campus Analytics', href: '/dashboard/admin/analytics', icon: PieChart },
+      { label: 'Emergency Siren Blast', href: '/dashboard/admin/emergency', icon: ShieldAlert, badge: 'SOS' },
     ],
   },
   {
@@ -101,13 +122,17 @@ const adminNav: NavGroup[] = [
       { label: 'User Directory', href: '/dashboard/admin/users', icon: UserCog },
       { label: 'Departments', href: '/dashboard/admin/departments', icon: Building2 },
       { label: 'Master Courses', href: '/dashboard/admin/courses', icon: BookOpen },
-      { label: 'Campus Notices', href: '/dashboard/admin/notices', icon: Megaphone },
+      { label: 'Faculty Leave Approvals', href: '/dashboard/admin/leaves', icon: Calendar },
+      { label: 'Scholarships Desk', href: '/dashboard/admin/scholarships', icon: Award },
       { label: 'Placement Cell', href: '/dashboard/admin/placements', icon: Briefcase },
+      { label: 'Campus Notices', href: '/dashboard/admin/notices', icon: Megaphone },
     ],
   },
   {
-    label: 'Operations',
+    label: 'Operations & Housing',
     items: [
+      { label: 'Hostel Housing', href: '/dashboard/admin/hostel', icon: BedDouble },
+      { label: 'Hardware Inventory', href: '/dashboard/admin/inventory', icon: HardDrive },
       { label: 'Fee Operations', href: '/dashboard/admin/fees', icon: CreditCard },
       { label: 'Helpdesk Tickets', href: '/dashboard/admin/complaints', icon: AlertTriangle, badge: 12 },
       { label: 'System Logs', href: '/dashboard/admin/logs', icon: Database },
@@ -122,13 +147,14 @@ const parentNav: NavGroup[] = [
       { label: 'Dashboard', href: '/dashboard/parent', icon: LayoutDashboard },
       { label: 'Attendance Record', href: '/dashboard/parent/attendance', icon: UserCheck },
       { label: 'Marks & Progress', href: '/dashboard/parent/performance', icon: BarChart3 },
+      { label: 'Grievance Desk', href: '/dashboard/parent/feedback', icon: MessageSquare },
     ],
   },
   {
     label: 'Finances & Transport',
     items: [
       { label: 'Fee Payments', href: '/dashboard/parent/fees', icon: CreditCard },
-      { label: 'Bus Tracking', href: '/dashboard/parent/transport', icon: Bus },
+      { label: 'Live Bus Tracking', href: '/dashboard/parent/transport', icon: Bus },
       { label: 'Notices', href: '/dashboard/parent/notices', icon: Bell },
     ],
   },
@@ -219,7 +245,11 @@ export default function Sidebar({ user, isOpen, mobileOpen, onMobileClose }: Sid
                       <>
                         <span className="flex-1 truncate">{item.label}</span>
                         {item.badge && (
-                          <span className="bg-slate-200/70 text-slate-700 text-[10px] font-semibold px-1.5 py-0.2 rounded-md">
+                          <span className={cn(
+                            'text-[10px] font-semibold px-1.5 py-0.2 rounded-md',
+                            item.badge === 'SOS' ? 'bg-rose-600 text-white animate-pulse' :
+                            item.badge === 'AI' ? 'bg-purple-100 text-purple-700 font-bold' : 'bg-slate-200/70 text-slate-700'
+                          )}>
                             {item.badge}
                           </span>
                         )}
