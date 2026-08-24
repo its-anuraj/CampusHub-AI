@@ -368,10 +368,72 @@ async function main() {
     });
   }
 
-  // 9. Audit Logs
+  // 9. Hostel Rooms
+  try {
+    await prisma.hostelRoom.createMany({
+      data: [
+        { block: 'Block A (Boys - Everest)', roomNumber: '101', capacity: 2, occupied: 1, roomType: 'DOUBLE_AC', floor: 1, monthlyRent: 7500, status: 'AVAILABLE' },
+        { block: 'Block A (Boys - Everest)', roomNumber: '102', capacity: 2, occupied: 2, roomType: 'DOUBLE_AC', floor: 1, monthlyRent: 7500, status: 'OCCUPIED' },
+        { block: 'Block C (Girls - Sarojini)', roomNumber: '101', capacity: 2, occupied: 1, roomType: 'DOUBLE_AC', floor: 1, monthlyRent: 7500, status: 'AVAILABLE' },
+      ],
+    });
+  } catch {}
+
+  // 10. Campus Events
+  try {
+    await prisma.campusEvent.createMany({
+      data: [
+        {
+          title: 'HackNova 2026: 36-Hour National AI Hackathon',
+          description: 'Build cutting-edge agentic AI, LLM agents, and Web3 applications. ₹2.5 Lakhs in cash prizes.',
+          category: 'HACKATHON',
+          venue: 'Campus Innovation Hub & Auditorium',
+          date: new Date('2026-09-12T09:00:00.000Z'),
+          time: '09:00 AM - 09:00 PM (36 Hours)',
+          organizer: 'Department of CSE & ACM Chapter',
+          maxCapacity: 250,
+          registered: 184,
+          status: 'UPCOMING',
+        },
+        {
+          title: 'Generative AI & LLM Systems Hands-on Workshop',
+          description: 'Prompt engineering, RAG architectures with vector embeddings, and fine-tuning on GPUs.',
+          category: 'WORKSHOP',
+          venue: 'Advanced Computing Lab 3',
+          date: new Date('2026-08-30T10:00:00.000Z'),
+          time: '10:00 AM - 04:00 PM',
+          organizer: 'Google Developer Group (GDG On-Campus)',
+          maxCapacity: 80,
+          registered: 76,
+          status: 'UPCOMING',
+        },
+      ],
+    });
+  } catch {}
+
+  // 11. Scholarships
+  try {
+    await prisma.scholarship.createMany({
+      data: [
+        {
+          title: 'Chancellor’s Academic Merit Scholarship',
+          provider: 'CampusHub Institutional Endowment',
+          amount: 75000,
+          deadline: new Date('2026-09-30T23:59:59.000Z'),
+          minCgpa: 8.5,
+          familyIncome: 1200000,
+          description: 'Awarded to top 5% academic scorers across each department with exceptional research potential.',
+          category: 'MERIT',
+          status: 'ACTIVE',
+        },
+      ],
+    });
+  } catch {}
+
+  // 12. Audit Logs
   await prisma.auditLog.createMany({
     data: [
-      { action: 'Database initialized & seeded successfully with Courses catalog', type: 'SUCCESS' },
+      { action: 'Database initialized & seeded successfully with full CampusHub AI v2.5.0 ecosystem', type: 'SUCCESS' },
       { action: 'Student Arjun Singh logged in', type: 'INFO' },
       { action: 'Notice "Mid-Semester Exam Schedule" published', type: 'INFO' },
     ],

@@ -597,6 +597,46 @@ GET    /admin/fees/report       → Fee collection report
 GET    /admin/audit-logs        → Audit trail
 ```
 
+#### Student Life & Housing
+```
+GET    /api/hostel              → Room inventory, allocation, mess menu & maintenance
+POST   /api/hostel              → Book room or submit maintenance work order
+GET    /api/events              → Campus hackathons, workshops & symposiums
+POST   /api/events              → RSVP & generate digital admission ticket pass
+GET    /api/certificates        → List cryptographically signed academic credentials
+POST   /api/certificates        → Issue verifiable certificate with SHA-256 hash
+GET    /api/alumni              → Alumni directory & mentorship profiles
+POST   /api/alumni              → Book 1:1 Google Meet mentorship consultation
+GET    /api/lost-found          → Community lost and found item catalog
+POST   /api/lost-found          → Report missing item or claim security ownership
+GET    /api/scholarships        → Merit & need-based scholarship grant catalog
+POST   /api/scholarships        → Submit scholarship application with CGPA verification
+GET    /api/cafeteria           → Daily stall menus, pricing, and calorie counts
+POST   /api/cafeteria           → Pre-order meal and generate kitchen pickup token
+GET    /api/wellness            → Confidential counselors, clinic slots & 24/7 SOS
+POST   /api/wellness            → Book psychologist session or log daily mood
+```
+
+#### Faculty Research & Operations
+```
+GET    /api/leaves              → Faculty leave quotas (CL, ML, OD) & history
+POST   /api/leaves              → Apply for leave / duty or update approval status
+GET    /api/research            → Research papers, citations, h-index, and active grants
+POST   /api/research            → Log new IEEE/Springer journal publication
+GET    /api/labs                → Supercomputer GPU clusters, 3D printers & fab equipment
+POST   /api/labs                → Reserve specialized hardware / compute slot
+```
+
+#### Admin & Governance
+```
+GET    /api/inventory           → Capital asset ledger, barcode tags & warranty monitoring
+POST   /api/inventory           → Register new hardware asset tag and valuation
+GET    /api/emergency-alerts    → Active campus emergency broadcasts
+POST   /api/emergency-alerts    → Trigger multichannel broadcast siren (SMS/Push/Email)
+GET    /api/parent-feedback     → Parent queries, suggestions, and grievance tickets
+POST   /api/parent-feedback     → Submit direct inquiry to Dean with 48h SLA
+```
+
 #### AI
 ```
 POST   /ai/chat                 → AI chat message
