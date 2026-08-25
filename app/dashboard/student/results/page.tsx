@@ -12,8 +12,12 @@ import {
   AlertCircle,
   Sparkles,
   BarChart2,
+  ShieldCheck,
+  Building2,
+  FileCheck
 } from 'lucide-react';
 import { useToast } from '@/lib/toastContext';
+import { cn } from '@/lib/utils';
 
 interface SubjectResult {
   code: string;
@@ -58,84 +62,75 @@ const SEMESTER_TREND = [
 ];
 
 export default function StudentResultsPage() {
-  const { toast } = useToast();
+  const { addToast } = useToast();
   const [selectedSem, setSelectedSem] = useState(5);
 
   const currentData = SEMESTERS_DATA[selectedSem] || SEMESTERS_DATA[5];
   const cgpa = 8.27;
 
   const handleDownloadTranscript = () => {
-    toast.success('Provisional Semester Transcript PDF generated!', 'Transcript Downloaded');
+    addToast({
+      title: 'Provisional Transcript Downloaded',
+      message: 'Official Digitally Signed Grade Card (PDF) saved to your device.',
+      type: 'success'
+    });
   };
 
   const handlePrint = () => {
-    toast.info('Opening official university marksheet print view...');
+    addToast({
+      title: 'Print Preview Ready',
+      message: 'Preparing official university marksheet layout with registrar stamp...',
+      type: 'info'
+    });
     window.print();
   };
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200/60 pb-5">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Academic Results & CGPA Analytics</h1>
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 uppercase">
-              First Class with Distinction
-            </span>
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-700 via-indigo-700 to-cyan-700 p-6 sm:p-8 text-white shadow-xl">
+        <div className="relative z-10 max-w-3xl space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-semibold uppercase tracking-wider">
+            <Award className="w-3.5 h-3.5 text-yellow-300" /> First Class with Distinction
           </div>
-          <p className="text-xs text-slate-500 mt-1">
-            Official semester performance transcripts, credit audit, and progressive SGPA trajectory
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Academic Results & CGPA Transcript</h1>
+          <p className="text-white/90 text-sm sm:text-base">
+            Official semester marksheet transcripts, credit audits, SGPA trajectory curves, and downloadable registrar verified PDF cards.
           </p>
         </div>
-
-        <div className="flex items-center gap-2">
-          <button
-            onClick={handlePrint}
-            className="p-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600 transition-colors cursor-pointer"
-            title="Print Marksheet"
-          >
-            <Printer className="w-4 h-4" />
-          </button>
-          <button
-            onClick={handleDownloadTranscript}
-            className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-2 cursor-pointer shadow-xs transition-colors"
-          >
-            <Download className="w-3.5 h-3.5" /> Download Transcript (.pdf)
-          </button>
-        </div>
+        <div className="absolute right-0 top-0 -mt-10 -mr-10 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none" />
       </div>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
-          <span className="text-[11px] text-slate-500 font-medium">Cumulative CGPA</span>
-          <p className="text-2xl font-black text-blue-600 mt-1">{cgpa} / 10.0</p>
+        <div className="bg-card border border-border rounded-2xl p-5 shadow-xs">
+          <span className="text-xs text-muted-foreground font-medium">Cumulative CGPA</span>
+          <p className="text-2xl font-black text-blue-600 dark:text-blue-400 mt-1 font-mono">{cgpa} / 10.0</p>
         </div>
-        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
-          <span className="text-[11px] text-slate-500 font-medium">Semester SGPA</span>
-          <p className="text-2xl font-black text-emerald-600 mt-1">{currentData.sgpa}</p>
+        <div className="bg-card border border-border rounded-2xl p-5 shadow-xs">
+          <span className="text-xs text-muted-foreground font-medium">Semester SGPA</span>
+          <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1 font-mono">{currentData.sgpa}</p>
         </div>
-        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
-          <span className="text-[11px] text-slate-500 font-medium">Credits Earned</span>
-          <p className="text-2xl font-black text-slate-900 mt-1">104 / 160</p>
+        <div className="bg-card border border-border rounded-2xl p-5 shadow-xs">
+          <span className="text-xs text-muted-foreground font-medium">Credits Earned</span>
+          <p className="text-2xl font-black text-foreground mt-1 font-mono">104 / 160</p>
         </div>
-        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
-          <span className="text-[11px] text-slate-500 font-medium">Active Backlogs</span>
-          <p className="text-2xl font-black text-slate-900 mt-1">0 (Clean Record)</p>
+        <div className="bg-card border border-border rounded-2xl p-5 shadow-xs">
+          <span className="text-xs text-muted-foreground font-medium">Active Backlogs</span>
+          <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1 font-mono">0 (Clean)</p>
         </div>
       </div>
 
       {/* Progressive SGPA Trajectory Card */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
+      <div className="bg-card border border-border rounded-2xl p-6 shadow-xs space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-emerald-600" /> SGPA Growth Progression
             </h3>
-            <p className="text-[11px] text-slate-500">Continuous upward trend across all 5 semesters</p>
+            <p className="text-xs text-muted-foreground">Continuous upward trend across all 5 semesters</p>
           </div>
-          <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-xl border border-emerald-200">
+          <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-xl border border-emerald-500/20">
             +0.80 GPA Improvement
           </span>
         </div>
@@ -144,44 +139,61 @@ export default function StudentResultsPage() {
         <div className="grid grid-cols-5 gap-3 pt-2">
           {SEMESTER_TREND.map((item) => (
             <div key={item.sem} className="flex flex-col items-center gap-2">
-              <div className="w-full bg-slate-100 rounded-xl h-24 flex items-end p-1.5 justify-center">
+              <div className="w-full bg-muted rounded-xl h-24 flex items-end p-1.5 justify-center">
                 <div
                   className="w-full bg-gradient-to-t from-blue-600 to-indigo-500 rounded-lg transition-all duration-700"
                   style={{ height: `${(item.sgpa / 10) * 100}%` }}
                 />
               </div>
-              <span className="text-[11px] font-bold text-slate-800 font-mono">{item.sgpa}</span>
-              <span className="text-[10px] text-slate-400 font-medium">{item.sem}</span>
+              <span className="text-xs font-bold text-foreground font-mono">{item.sgpa}</span>
+              <span className="text-[10px] text-muted-foreground font-medium">{item.sem}</span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Semester Selector */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-bold text-slate-700">Detailed Marksheet:</span>
+      {/* Action Bar & Semester Selector */}
+      <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4">
+        <div className="flex items-center gap-2 overflow-x-auto">
+          <span className="text-xs font-bold text-foreground whitespace-nowrap">Marksheet:</span>
           {[5, 4, 3, 2, 1].map((s) => (
             <button
               key={s}
               onClick={() => setSelectedSem(s)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={cn(
+                "px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs",
                 selectedSem === s
-                  ? 'bg-blue-600 text-white shadow-xs'
-                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-              }`}
+                  ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
+                  : "bg-card border border-border text-muted-foreground hover:bg-muted"
+              )}
             >
               Semester {s}
             </button>
           ))}
         </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handlePrint}
+            className="p-2 rounded-xl border border-border hover:bg-muted text-foreground transition"
+            title="Print Official Marksheet"
+          >
+            <Printer className="w-4 h-4" />
+          </button>
+          <button
+            onClick={handleDownloadTranscript}
+            className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-2 shadow-md shadow-blue-500/20 transition"
+          >
+            <Download className="w-3.5 h-3.5" /> Download Transcript PDF
+          </button>
+        </div>
       </div>
 
       {/* Subject Marks Table */}
-      <div className="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden">
+      <div className="bg-card border border-border rounded-2xl shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-semibold uppercase text-[10px]">
+          <table className="w-full text-left text-xs sm:text-sm">
+            <thead className="bg-muted/60 border-b border-border text-muted-foreground font-semibold uppercase text-[11px]">
               <tr>
                 <th className="px-5 py-3.5">Course Code</th>
                 <th className="px-5 py-3.5">Subject Title</th>
@@ -190,32 +202,33 @@ export default function StudentResultsPage() {
                 <th className="px-4 py-3.5 text-center">End-Sem (70)</th>
                 <th className="px-4 py-3.5 text-center">Total (100)</th>
                 <th className="px-4 py-3.5 text-center">Grade</th>
-                <th className="px-4 py-3.5 text-center">Points</th>
+                <th className="px-4 py-3.5 text-center pr-5">Points</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 font-medium">
+            <tbody className="divide-y divide-border/60 font-medium">
               {currentData.subjects.map((sub) => (
-                <tr key={sub.code} className="hover:bg-slate-50/50 transition-colors">
-                  <td className="px-5 py-3.5 font-mono font-bold text-blue-700">{sub.code}</td>
-                  <td className="px-5 py-3.5 text-slate-900 font-bold">{sub.title}</td>
-                  <td className="px-4 py-3.5 text-center text-slate-600">{sub.credits}</td>
-                  <td className="px-4 py-3.5 text-center text-slate-600">{sub.internal}</td>
-                  <td className="px-4 py-3.5 text-center text-slate-600">{sub.external}</td>
-                  <td className="px-4 py-3.5 text-center font-bold text-slate-900">{sub.total}</td>
+                <tr key={sub.code} className="hover:bg-muted/30 transition-colors">
+                  <td className="px-5 py-3.5 font-mono font-bold text-blue-600 dark:text-blue-400">{sub.code}</td>
+                  <td className="px-5 py-3.5 text-foreground font-bold">{sub.title}</td>
+                  <td className="px-4 py-3.5 text-center text-muted-foreground">{sub.credits}</td>
+                  <td className="px-4 py-3.5 text-center text-muted-foreground">{sub.internal}</td>
+                  <td className="px-4 py-3.5 text-center text-muted-foreground">{sub.external}</td>
+                  <td className="px-4 py-3.5 text-center font-bold text-foreground font-mono">{sub.total}</td>
                   <td className="px-4 py-3.5 text-center">
                     <span
-                      className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold border uppercase ${
+                      className={cn(
+                        "inline-block px-2.5 py-0.5 rounded-full text-xs font-bold border uppercase font-mono",
                         sub.grade === 'O'
-                          ? 'bg-emerald-100 text-emerald-800 border-emerald-200'
+                          ? "bg-emerald-500/10 text-emerald-600 border-emerald-500/20"
                           : sub.grade === 'A+'
-                          ? 'bg-blue-100 text-blue-800 border-blue-200'
-                          : 'bg-slate-100 text-slate-700 border-slate-200'
-                      }`}
+                          ? "bg-blue-500/10 text-blue-600 border-blue-500/20"
+                          : "bg-muted text-foreground border-border"
+                      )}
                     >
                       {sub.grade}
                     </span>
                   </td>
-                  <td className="px-4 py-3.5 text-center font-bold text-slate-800">{sub.gradePoints}</td>
+                  <td className="px-4 py-3.5 text-center font-bold text-foreground font-mono pr-5">{sub.gradePoints}</td>
                 </tr>
               ))}
             </tbody>
