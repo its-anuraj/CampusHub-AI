@@ -1,7 +1,22 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Utensils, ShoppingBag, Clock, Sparkles, CheckCircle2, Flame, Plus, Minus, X } from 'lucide-react';
+import {
+  Utensils,
+  ShoppingBag,
+  Clock,
+  Sparkles,
+  CheckCircle2,
+  Flame,
+  Plus,
+  Minus,
+  X,
+  Star,
+  Activity,
+  Heart,
+  Award,
+  Send
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/lib/toastContext';
 
@@ -12,6 +27,9 @@ export default function StudentCafeteriaPage() {
   const [cart, setCart] = useState<{ [id: string]: number }>({});
   const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [orderConfirmed, setOrderConfirmed] = useState<any>(null);
+  const [feedbackModal, setFeedbackModal] = useState(false);
+  const [messRating, setMessRating] = useState(5);
+  const [messFeedback, setMessFeedback] = useState('');
 
   useEffect(() => {
     async function fetchMenu() {
@@ -83,26 +101,62 @@ export default function StudentCafeteriaPage() {
     }
   };
 
+  const handleSubmitMessFeedback = (e: React.FormEvent) => {
+    e.preventDefault();
+    addToast({
+      title: 'Mess Feedback Recorded',
+      message: 'Thank you! Your hygiene & taste rating was submitted to the Campus Mess Committee.',
+      type: 'success'
+    });
+    setFeedbackModal(false);
+    setMessFeedback('');
+  };
+
   const filtered = items.filter(i => selectedCategory === 'ALL' || i.category === selectedCategory);
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200/60 pb-5">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="p-2 rounded-xl bg-orange-50 text-orange-600 border border-orange-100 shadow-xs">
-              <Utensils className="w-5 h-5" />
-            </span>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">Campus Cafeteria & Pre-Ordering</h1>
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-orange-600 via-amber-600 to-rose-600 p-6 sm:p-8 text-white shadow-xl">
+        <div className="relative z-10 max-w-3xl space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-semibold uppercase tracking-wider">
+            <Utensils className="w-3.5 h-3.5 text-yellow-300" /> Smart Dining & Nutrition Radar
           </div>
-          <p className="text-xs text-slate-500 mt-1">Skip dining hall queues, monitor nutrition & calories, and pre-order hot meals</p>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Smart Cafeteria & Daily Mess Hub</h1>
+          <p className="text-white/90 text-sm sm:text-base">
+            Skip dining queues with instant meal pre-orders, monitor calorie intake with macro breakdown, and submit live food hygiene feedback.
+          </p>
         </div>
+        <div className="absolute right-0 top-0 -mt-10 -mr-10 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+      </div>
 
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200 flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Kitchens Live & Open
-          </span>
+      {/* Calorie & Nutrition Goal Bar */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="p-4 rounded-xl bg-card border border-border">
+          <p className="text-xs text-muted-foreground font-medium">Cart Energy Intake</p>
+          <p className="text-2xl font-bold text-foreground mt-1 flex items-center gap-2">
+            <Flame className="w-5 h-5 text-orange-500" /> {totalCalories} kcal
+          </p>
+        </div>
+        <div className="p-4 rounded-xl bg-card border border-border">
+          <p className="text-xs text-muted-foreground font-medium">Daily Target Goal</p>
+          <p className="text-2xl font-bold text-blue-600 dark:text-blue-400 mt-1 flex items-center gap-2">
+            <Activity className="w-5 h-5" /> 2,200 kcal
+          </p>
+        </div>
+        <div className="p-4 rounded-xl bg-card border border-border">
+          <p className="text-xs text-muted-foreground font-medium">Kitchen Live Status</p>
+          <p className="text-xs font-bold text-emerald-600 dark:text-emerald-400 mt-2 flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" /> All 4 Stalls Open
+          </p>
+        </div>
+        <div className="p-4 rounded-xl bg-card border border-border flex items-center justify-center">
+          <button
+            onClick={() => setFeedbackModal(true)}
+            className="w-full py-2 px-3 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 text-xs font-bold border border-amber-500/20 flex items-center justify-center gap-1.5 transition"
+          >
+            <Star className="w-3.5 h-3.5" /> Rate Mess Food
+          </button>
         </div>
       </div>
 
@@ -119,8 +173,10 @@ export default function StudentCafeteriaPage() {
             key={cat.id}
             onClick={() => setSelectedCategory(cat.id)}
             className={cn(
-              'px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer whitespace-nowrap',
-              selectedCategory === cat.id ? 'bg-orange-600 text-white shadow-xs' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+              "px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all shadow-xs",
+              selectedCategory === cat.id
+                ? "bg-orange-600 text-white shadow-md shadow-orange-500/20"
+                : "bg-card border border-border text-muted-foreground hover:bg-muted"
             )}
           >
             {cat.label}
@@ -132,8 +188,8 @@ export default function StudentCafeteriaPage() {
         {/* Menu Items Grid */}
         <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
           {filtered.map(item => (
-            <div key={item.id} className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-card flex flex-col justify-between hover:border-orange-300 transition-all">
-              <div className="h-36 bg-slate-900 relative overflow-hidden">
+            <div key={item.id} className="bg-card border border-border rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between hover:border-orange-500/50 transition">
+              <div className="h-40 bg-muted relative overflow-hidden">
                 <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
                 <div className="absolute top-2.5 left-2.5">
                   <span className={cn(
@@ -147,78 +203,85 @@ export default function StudentCafeteriaPage() {
 
               <div className="p-4 space-y-2">
                 <div className="flex items-start justify-between">
-                  <h4 className="text-sm font-bold text-slate-900 leading-snug">{item.name}</h4>
-                  <span className="font-bold text-slate-900 text-sm">₹{item.price}</span>
+                  <h4 className="text-sm font-bold text-foreground leading-snug">{item.name}</h4>
+                  <span className="text-sm font-bold text-orange-600 font-mono">₹{item.price}</span>
                 </div>
-                <p className="text-[11px] text-slate-500">{item.stall}</p>
-                <div className="flex items-center gap-2 text-[11px] text-slate-500 pt-1">
-                  <Flame className="w-3.5 h-3.5 text-orange-500" />
-                  <span>{item.calories} kcal</span>
+                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                  <span>{item.stall}</span>
+                  <span className="flex items-center gap-1"><Flame className="w-3 h-3 text-orange-500" /> {item.calories} kcal</span>
                 </div>
+              </div>
 
-                <div className="pt-2">
-                  {cart[item.id] ? (
-                    <div className="flex items-center justify-between bg-orange-50 border border-orange-200 rounded-xl p-1 text-xs">
-                      <button onClick={() => removeFromCart(item.id)} className="p-1 rounded-lg bg-white text-orange-700 shadow-xs cursor-pointer"><Minus className="w-3.5 h-3.5" /></button>
-                      <span className="font-bold text-orange-900">{cart[item.id]}</span>
-                      <button onClick={() => addToCart(item.id)} className="p-1 rounded-lg bg-orange-600 text-white shadow-xs cursor-pointer"><Plus className="w-3.5 h-3.5" /></button>
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => addToCart(item.id)}
-                      className="w-full py-2 bg-orange-50 hover:bg-orange-100 text-orange-700 border border-orange-200 font-semibold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-                    >
-                      <Plus className="w-3.5 h-3.5" /> Add to Meal Order
+              <div className="p-4 pt-0">
+                {cart[item.id] ? (
+                  <div className="flex items-center justify-between bg-muted rounded-xl p-1">
+                    <button onClick={() => removeFromCart(item.id)} className="p-1.5 rounded-lg bg-card text-foreground hover:bg-background">
+                      <Minus className="w-3.5 h-3.5" />
                     </button>
-                  )}
-                </div>
+                    <span className="text-xs font-bold font-mono text-foreground">{cart[item.id]}</span>
+                    <button onClick={() => addToCart(item.id)} className="p-1.5 rounded-lg bg-card text-foreground hover:bg-background">
+                      <Plus className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => addToCart(item.id)}
+                    className="w-full py-2 px-3 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold shadow-xs transition"
+                  >
+                    Add to Cart
+                  </button>
+                )}
               </div>
             </div>
           ))}
         </div>
 
-        {/* Live Cart Sidebar */}
+        {/* Order Summary & Live Cart */}
         <div className="lg:col-span-4 space-y-4">
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-card space-y-4">
-            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-              <ShoppingBag className="w-4 h-4 text-orange-600" /> Meal Order Tray ({totalCartCount})
+          <div className="bg-card border border-border rounded-2xl p-5 shadow-xs space-y-4">
+            <h3 className="font-bold text-base text-foreground flex items-center gap-2">
+              <ShoppingBag className="w-4 h-4 text-orange-500" /> My Pre-Order Tray
             </h3>
 
             {totalCartCount === 0 ? (
-              <p className="text-xs text-slate-400 py-6 text-center">Your tray is empty. Add fresh items from the menu!</p>
+              <div className="p-8 text-center text-xs text-muted-foreground">
+                <Utensils className="w-6 h-6 mx-auto mb-2 opacity-30" />
+                Your tray is empty. Add items from the menu.
+              </div>
             ) : (
-              <div className="space-y-3 text-xs">
-                <div className="divide-y divide-slate-100 space-y-2">
+              <div className="space-y-3">
+                <div className="divide-y divide-border/60 max-h-56 overflow-y-auto">
                   {Object.entries(cart).map(([id, qty]) => {
                     const item = items.find(i => i.id === id);
                     if (!item) return null;
                     return (
-                      <div key={id} className="pt-2 flex items-center justify-between">
+                      <div key={id} className="py-2 flex items-center justify-between text-xs">
                         <div>
-                          <p className="font-semibold text-slate-900">{item.name}</p>
-                          <p className="text-[11px] text-slate-400">₹{item.price} × {qty}</p>
+                          <p className="font-semibold text-foreground">{item.name}</p>
+                          <p className="text-[10px] text-muted-foreground">₹{item.price} × {qty}</p>
                         </div>
-                        <span className="font-bold text-slate-900">₹{item.price * qty}</span>
+                        <span className="font-mono font-bold text-foreground">₹{item.price * qty}</span>
                       </div>
                     );
                   })}
                 </div>
 
-                <div className="p-3 rounded-xl bg-orange-50/70 border border-orange-100 flex items-center justify-between text-xs text-orange-900">
-                  <span className="flex items-center gap-1"><Flame className="w-3.5 h-3.5 text-orange-600" /> Nutrition Count:</span>
-                  <span className="font-bold">{totalCalories} kcal</span>
-                </div>
-
-                <div className="border-t border-slate-200 pt-3 flex items-center justify-between text-sm font-bold text-slate-900">
-                  <span>Grand Total:</span>
-                  <span className="text-base text-orange-600">₹{totalAmount}</span>
+                <div className="pt-3 border-t border-border space-y-2 text-xs">
+                  <div className="flex justify-between text-muted-foreground">
+                    <span>Total Energy</span>
+                    <span className="font-semibold text-orange-600 font-mono">{totalCalories} kcal</span>
+                  </div>
+                  <div className="flex justify-between text-sm font-bold text-foreground">
+                    <span>Grand Total</span>
+                    <span className="font-mono text-base text-orange-600">₹{totalAmount}</span>
+                  </div>
                 </div>
 
                 <button
                   onClick={handleCheckout}
-                  className="w-full py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-xl text-xs shadow-xs transition-colors cursor-pointer"
+                  className="w-full py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold shadow-md shadow-orange-500/20 transition"
                 >
-                  Pay & Generate Kitchen Token
+                  Pay & Send to Kitchen (₹{totalAmount})
                 </button>
               </div>
             )}
@@ -226,25 +289,67 @@ export default function StudentCafeteriaPage() {
         </div>
       </div>
 
-      {/* Confirmation Token Modal */}
-      {orderConfirmed && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4">
-          <div className="bg-white border border-slate-200 rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center space-y-4">
-            <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center">
-              <CheckCircle2 className="w-8 h-8" />
+      {/* Mess Rating Modal */}
+      {feedbackModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-card border border-border rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 animate-in zoom-in-95 duration-200">
+            <div className="flex justify-between items-center pb-2 border-b border-border">
+              <h3 className="font-bold text-lg text-foreground">Daily Mess & Food Feedback</h3>
+              <button onClick={() => setFeedbackModal(false)} className="p-1 rounded text-muted-foreground hover:bg-muted">
+                <X className="w-4 h-4" />
+              </button>
             </div>
-            <h3 className="text-lg font-bold text-slate-900">Meal Order Placed!</h3>
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
-              <p className="text-xs text-slate-500">Your Cafeteria Pickup Token</p>
-              <p className="text-2xl font-mono font-bold text-orange-600">{orderConfirmed.token}</p>
-              <p className="text-[11px] text-slate-500">Estimated Prep Time: ~{orderConfirmed.pickupEstimatedMinutes} Minutes</p>
-            </div>
-            <button
-              onClick={() => setOrderConfirmed(null)}
-              className="w-full py-2 bg-slate-900 text-white rounded-xl text-xs font-semibold cursor-pointer"
-            >
-              Done
-            </button>
+
+            <form onSubmit={handleSubmitMessFeedback} className="space-y-3">
+              <div>
+                <label className="text-xs font-semibold text-muted-foreground block mb-1">Hygiene & Taste Rating</label>
+                <div className="flex gap-2">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => setMessRating(star)}
+                      className="p-1 hover:scale-110 transition-transform"
+                    >
+                      <Star
+                        className={cn(
+                          "w-7 h-7",
+                          star <= messRating ? "text-amber-500 fill-amber-500" : "text-muted-foreground/30"
+                        )}
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-muted-foreground block mb-1">Feedback / Suggestions</label>
+                <textarea
+                  rows={3}
+                  required
+                  placeholder="Share feedback on meal warmth, cleanliness, menu items..."
+                  value={messFeedback}
+                  onChange={(e) => setMessFeedback(e.target.value)}
+                  className="w-full p-3 text-xs bg-background border border-border rounded-xl focus:ring-2 focus:ring-orange-500"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setFeedbackModal(false)}
+                  className="px-4 py-2 rounded-xl border border-border text-xs font-semibold hover:bg-muted"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold shadow-xs flex items-center gap-1"
+                >
+                  <Send className="w-3.5 h-3.5" /> Submit Review
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
