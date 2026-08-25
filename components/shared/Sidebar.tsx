@@ -9,7 +9,7 @@ import {
   Library, MessageSquare, Briefcase, FileText, UserCheck, AlertTriangle,
   Bus, BookMarked, Award, UserCog, PieChart, Megaphone, Database, Timer,
   Home, Utensils, Heart, Compass, Cpu, HardDrive, Package, ShieldAlert,
-  ShieldCheck, Radio, Sparkles, BedDouble
+  ShieldCheck, Radio, Sparkles, BedDouble, Activity
 } from 'lucide-react';
 
 interface NavItem {
@@ -138,6 +138,7 @@ const adminNav: NavGroup[] = [
       { label: 'Hardware Inventory', href: '/dashboard/admin/inventory', icon: HardDrive },
       { label: 'Fee Operations', href: '/dashboard/admin/fees', icon: CreditCard },
       { label: 'Helpdesk Tickets', href: '/dashboard/admin/complaints', icon: AlertTriangle, badge: 12 },
+      { label: 'System Health & Uptime', href: '/dashboard/admin/system-health', icon: Activity },
       { label: 'System Logs', href: '/dashboard/admin/logs', icon: Database },
     ],
   },

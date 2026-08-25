@@ -31,6 +31,7 @@ import {
   Utensils,
   Award,
   Calendar,
+  Activity,
 } from 'lucide-react';
 
 interface CommandItem {
@@ -96,6 +97,7 @@ const COMMAND_ITEMS: CommandItem[] = [
   { id: 'a-plc', title: 'Placement Drives & Drives', category: 'Admin Console', role: 'ADMIN', href: '/dashboard/admin/placements', icon: Building2 },
   { id: 'a-fee', title: 'Fee Collection & Dues', category: 'Admin Console', role: 'ADMIN', href: '/dashboard/admin/fees', icon: CreditCard },
   { id: 'a-log', title: 'Security & Audit Logs', category: 'Admin Console', role: 'ADMIN', href: '/dashboard/admin/logs', icon: Shield },
+  { id: 'a-hlth', title: 'System Health, Uptime & Telemetry Monitor', category: 'Admin Console', role: 'ADMIN', href: '/dashboard/admin/system-health', icon: Activity },
   { id: 'a-set', title: 'Campus System Settings', category: 'Admin Console', role: 'ADMIN', href: '/dashboard/admin/settings', icon: LayoutDashboard },
 
   // Parent
