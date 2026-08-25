@@ -29,7 +29,7 @@ const MOCK_PUBLICATIONS = [
   }
 ];
 
-const MOCK_GRANTS = [
+let mockGrants = [
   {
     id: 'grt-1',
     title: 'Development of Next-Gen Agentic AI Systems for Healthcare Triage',
@@ -37,6 +37,7 @@ const MOCK_GRANTS = [
     grantAmount: 4500000,
     duration: '2025 - 2028 (3 Years)',
     status: 'SANCTIONED & ACTIVE',
+    progress: 65,
     leadPi: 'Dr. Ramesh Kumar (Principal Investigator)'
   },
   {
@@ -46,6 +47,7 @@ const MOCK_GRANTS = [
     grantAmount: 2800000,
     duration: '2026 - 2027 (18 Months)',
     status: 'IN_PROGRESS',
+    progress: 40,
     leadPi: 'Dr. Ramesh Kumar (Co-PI)'
   }
 ];
@@ -59,7 +61,7 @@ export async function GET() {
 
     return apiSuccess({
       publications: papers.length > 0 ? papers : MOCK_PUBLICATIONS,
-      grants: MOCK_GRANTS,
+      grants: mockGrants,
       metrics: {
         totalPapers: 24,
         totalCitations: 1420,
@@ -76,7 +78,22 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { title, journal, doi, year, citations, abstract, facultyName, department } = body;
+    const { action, title, journal, doi, year, citations, abstract, facultyName, department, agency, grantAmount, duration } = body;
+
+    if (action === 'APPLY_GRANT') {
+      const newGrant = {
+        id: `grt-${Date.now().toString().slice(-4)}`,
+        title,
+        agency: agency || 'DST - SERB',
+        grantAmount: Number(grantAmount) || 2500000,
+        duration: duration || '2026 - 2029 (3 Years)',
+        status: 'UNDER_PEER_REVIEW',
+        progress: 10,
+        leadPi: facultyName || 'Dr. Ramesh Kumar (Principal Investigator)'
+      };
+      mockGrants = [newGrant, ...mockGrants];
+      return apiSuccess(newGrant, 'Research grant proposal submitted for institutional and sponsoring agency peer review.');
+    }
 
     let newPaper;
     try {
