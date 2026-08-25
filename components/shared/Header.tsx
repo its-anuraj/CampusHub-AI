@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 
 import CommandPalette from '@/components/shared/CommandPalette';
 import ThemeCustomizerModal from '@/components/shared/ThemeCustomizerModal';
+import NotificationCenter from '@/components/shared/NotificationCenter';
 
 interface HeaderProps {
   user: any;
@@ -19,12 +20,6 @@ export default function Header({ user, sidebarOpen, onToggleSidebar, onMobileMen
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [themeModalOpen, setThemeModalOpen] = useState(false);
 
-  const notifications = [
-    { id: 1, text: 'Mid-Semester exam schedule published', time: '2h ago', unread: true },
-    { id: 2, text: 'Assignment "BST Implementation" due tomorrow', time: '4h ago', unread: true },
-    { id: 3, text: 'TCS Placement drive registration opened', time: '1d ago', unread: false },
-  ];
-
   return (
     <>
       <CommandPalette
@@ -35,6 +30,10 @@ export default function Header({ user, sidebarOpen, onToggleSidebar, onMobileMen
       <ThemeCustomizerModal
         isOpen={themeModalOpen}
         onClose={() => setThemeModalOpen(false)}
+      />
+      <NotificationCenter
+        isOpen={notifOpen}
+        onClose={() => setNotifOpen(false)}
       />
       <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-4 lg:px-8 py-3">
         <div className="flex items-center gap-3">
@@ -89,32 +88,14 @@ export default function Header({ user, sidebarOpen, onToggleSidebar, onMobileMen
           </div>
 
           {/* Notifications Button */}
-          <div className="relative">
-            <button
-              onClick={() => setNotifOpen(!notifOpen)}
-              className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors relative"
-            >
-              <Bell className="w-4 h-4" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-blue-600 rounded-full" />
-            </button>
-
-            {notifOpen && (
-              <div className="absolute right-0 top-full mt-2 w-80 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden z-50 animate-fade-in">
-                <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 bg-slate-50/50">
-                  <p className="text-slate-900 font-semibold text-xs">Notifications</p>
-                  <span className="text-[10px] text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full font-medium">3 unread</span>
-                </div>
-                <div className="divide-y divide-slate-100">
-                  {notifications.map(n => (
-                    <div key={n.id} className={cn('p-3 hover:bg-slate-50 transition-colors cursor-pointer', n.unread && 'bg-blue-50/20')}>
-                      <p className="text-slate-800 text-xs leading-snug">{n.text}</p>
-                      <p className="text-slate-400 text-[10px] mt-1">{n.time}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
+          <button
+            onClick={() => setNotifOpen(true)}
+            className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors relative cursor-pointer"
+            title="Open Notification Center"
+          >
+            <Bell className="w-4 h-4" />
+            <span className="absolute top-1 right-1 w-2 h-2 bg-blue-600 rounded-full animate-pulse" />
+          </button>
 
           {/* Profile Badge */}
           <div className="flex items-center gap-2 pl-3 border-l border-slate-200">
