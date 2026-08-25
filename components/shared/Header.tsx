@@ -1,13 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import { Menu, Bell, Search, PanelLeftClose, PanelLeft, ChevronDown, Sparkles, Palette, Sun } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Menu, Bell, Search, PanelLeftClose, PanelLeft, ChevronDown, Sparkles, Palette, Sun, Keyboard } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 import CommandPalette from '@/components/shared/CommandPalette';
 import ThemeCustomizerModal from '@/components/shared/ThemeCustomizerModal';
 import NotificationCenter from '@/components/shared/NotificationCenter';
 import CampusWeatherWidget from '@/components/shared/CampusWeatherWidget';
+import KeyboardShortcutsModal from '@/components/shared/KeyboardShortcutsModal';
 
 interface HeaderProps {
   user: any;
@@ -21,6 +22,18 @@ export default function Header({ user, sidebarOpen, onToggleSidebar, onMobileMen
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [themeModalOpen, setThemeModalOpen] = useState(false);
   const [weatherOpen, setWeatherOpen] = useState(false);
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.shiftKey && e.key === '?') {
+        e.preventDefault();
+        setShortcutsOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <>
@@ -40,6 +53,10 @@ export default function Header({ user, sidebarOpen, onToggleSidebar, onMobileMen
       <CampusWeatherWidget
         isOpen={weatherOpen}
         onClose={() => setWeatherOpen(false)}
+      />
+      <KeyboardShortcutsModal
+        isOpen={shortcutsOpen}
+        onClose={() => setShortcutsOpen(false)}
       />
       <header className="sticky top-0 z-20 bg-white/90 dark:bg-card/90 backdrop-blur-md border-b border-slate-200/80 dark:border-border px-4 lg:px-8 py-3">
         <div className="flex items-center gap-3">
@@ -86,6 +103,15 @@ export default function Header({ user, sidebarOpen, onToggleSidebar, onMobileMen
             >
               <Sun className="w-3.5 h-3.5 text-amber-500" />
               <span>27°C • AQI 38</span>
+            </button>
+
+            {/* Keyboard Shortcuts Trigger Button */}
+            <button
+              onClick={() => setShortcutsOpen(true)}
+              className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-foreground transition-colors cursor-pointer"
+              title="Keyboard Shortcuts (Shift + ?)"
+            >
+              <Keyboard className="w-4 h-4" />
             </button>
 
             {/* Theme Palette Customizer Button */}
