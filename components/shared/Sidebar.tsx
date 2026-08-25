@@ -49,6 +49,7 @@ const studentNav: NavGroup[] = [
     label: 'Career & Community',
     items: [
       { label: 'AI Resume Builder', href: '/dashboard/student/resume-builder', icon: FileText, badge: 'AI' },
+      { label: 'Clubs & Societies', href: '/dashboard/student/clubs', icon: Users },
       { label: 'Placements', href: '/dashboard/student/placement', icon: Briefcase },
       { label: 'Alumni Network', href: '/dashboard/student/alumni', icon: Users },
       { label: 'Events & Hackathons', href: '/dashboard/student/events', icon: Calendar },

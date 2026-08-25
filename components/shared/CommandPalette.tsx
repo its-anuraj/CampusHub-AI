@@ -50,6 +50,7 @@ const COMMAND_ITEMS: CommandItem[] = [
   { id: 's-rsm', title: 'AI Resume Builder & ATS Score Analyzer', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/resume-builder', icon: FileText },
   { id: 's-crt', title: 'Verifiable Digital Credentials & Certificates', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/certificates', icon: ShieldCheck },
   { id: 's-alm', title: 'Alumni Network & 1:1 Mentorship Booking', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/alumni', icon: Users },
+  { id: 's-clb', title: 'Clubs & Societies Hub', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/clubs', icon: Users },
   { id: 's-evt', title: 'Campus Events, Hackathons & QR Passes', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/events', icon: Calendar },
   { id: 's-hst', title: 'Hostel Rooms, Mess Menu & Maintenance', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/hostel', icon: BedDouble },
   { id: 's-caf', title: 'Smart Cafeteria & Meal Pre-Ordering', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/cafeteria', icon: Utensils },
