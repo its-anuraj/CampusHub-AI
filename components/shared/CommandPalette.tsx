@@ -53,6 +53,7 @@ const COMMAND_ITEMS: CommandItem[] = [
   { id: 's-clb', title: 'Clubs & Societies Hub', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/clubs', icon: Users },
   { id: 's-evt', title: 'Campus Events, Hackathons & QR Passes', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/events', icon: Calendar },
   { id: 's-hst', title: 'Hostel Rooms, Mess Menu & Maintenance', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/hostel', icon: BedDouble },
+  { id: 's-trn', title: 'Campus Bus Live Tracker & Route Radar', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/transport', icon: Bus },
   { id: 's-caf', title: 'Smart Cafeteria & Meal Pre-Ordering', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/cafeteria', icon: Utensils },
   { id: 's-sch', title: 'Scholarships & Institutional Grants', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/scholarships', icon: Award },
   { id: 's-wln', title: 'Health & Wellness Sanctuary (SOS & Counseling)', category: 'Student Portal', role: 'STUDENT', href: '/dashboard/student/wellness', icon: Heart },

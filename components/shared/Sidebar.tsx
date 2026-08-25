@@ -61,6 +61,7 @@ const studentNav: NavGroup[] = [
     label: 'Student Life & Services',
     items: [
       { label: 'Hostel & Housing', href: '/dashboard/student/hostel', icon: BedDouble },
+      { label: 'Campus Bus & Transit', href: '/dashboard/student/transport', icon: Bus },
       { label: 'Smart Cafeteria', href: '/dashboard/student/cafeteria', icon: Utensils },
       { label: 'Scholarships & Aid', href: '/dashboard/student/scholarships', icon: Award },
       { label: 'Health & Wellness Sanctuary', href: '/dashboard/student/wellness', icon: Heart },
