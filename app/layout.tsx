@@ -13,6 +13,11 @@ export const metadata: Metadata = {
   description: 'Enterprise AI-Powered Smart Campus Operating System for Students, Faculty, Admin, and Parents.',
   keywords: 'campus management, student portal, faculty portal, attendance, assignments, placement, AI',
   authors: [{ name: 'CampusHub AI Team' }],
+  manifest: '/manifest.json',
+  icons: {
+    icon: '/globe.svg',
+    apple: '/globe.svg',
+  },
 };
 
 import { ToastProvider } from '@/lib/toastContext';
