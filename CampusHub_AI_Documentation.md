@@ -599,6 +599,14 @@ GET    /admin/audit-logs        → Audit trail
 
 #### Student Life & Housing
 ```
+GET    /api/clubs               → Student clubs directory, categories & leader contacts
+POST   /api/clubs               → Submit student club membership application
+GET    /api/transport           → Live bus GPS telemetry tracker, routes & ETA countdown
+POST   /api/transport           → Renew digital campus bus commuter pass
+GET    /api/gatepass            → Active day/night campus outpasses & security QR
+POST   /api/gatepass            → Request digital leave outpass with warden routing
+GET    /api/course-feedback     → 360-degree anonymous course & faculty ratings
+POST   /api/course-feedback     → Submit anonymous Likert scale survey response
 GET    /api/hostel              → Room inventory, allocation, mess menu & maintenance
 POST   /api/hostel              → Book room or submit maintenance work order
 GET    /api/events              → Campus hackathons, workshops & symposiums
@@ -622,13 +630,17 @@ POST   /api/wellness            → Book psychologist session or log daily mood
 GET    /api/leaves              → Faculty leave quotas (CL, ML, OD) & history
 POST   /api/leaves              → Apply for leave / duty or update approval status
 GET    /api/research            → Research papers, citations, h-index, and active grants
-POST   /api/research            → Log new IEEE/Springer journal publication
+POST   /api/research            → Log new IEEE/Springer journal publication or extramural grant
 GET    /api/labs                → Supercomputer GPU clusters, 3D printers & fab equipment
 POST   /api/labs                → Reserve specialized hardware / compute slot
 ```
 
 #### Admin & Governance
 ```
+GET    /api/system-health       → Real-time server telemetry, memory heap & uptime monitor
+POST   /api/system-health       → Trigger Redis/Prisma cache purge & service ping
+GET    /api/budget              → Department annual budget allocation, spent & available
+POST   /api/budget              → Create or sanction departmental CapEx requisition
 GET    /api/inventory           → Capital asset ledger, barcode tags & warranty monitoring
 POST   /api/inventory           → Register new hardware asset tag and valuation
 GET    /api/emergency-alerts    → Active campus emergency broadcasts
