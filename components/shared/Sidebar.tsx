@@ -42,6 +42,7 @@ const studentNav: NavGroup[] = [
       { label: 'Study Planner', href: '/dashboard/student/study-planner', icon: Timer },
       { label: 'Library Catalog', href: '/dashboard/student/library', icon: BookMarked },
       { label: 'Academic Results', href: '/dashboard/student/results', icon: Award },
+      { label: 'Faculty & Course Feedback', href: '/dashboard/student/feedback', icon: MessageSquare },
       { label: 'Verifiable Credentials', href: '/dashboard/student/certificates', icon: ShieldCheck },
     ],
   },
