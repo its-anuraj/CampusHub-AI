@@ -138,6 +138,7 @@ const adminNav: NavGroup[] = [
       { label: 'Hostel Housing', href: '/dashboard/admin/hostel', icon: BedDouble },
       { label: 'Hardware Inventory', href: '/dashboard/admin/inventory', icon: HardDrive },
       { label: 'Fee Operations', href: '/dashboard/admin/fees', icon: CreditCard },
+      { label: 'Department Budgets', href: '/dashboard/admin/budget', icon: CreditCard },
       { label: 'Helpdesk Tickets', href: '/dashboard/admin/complaints', icon: AlertTriangle, badge: 12 },
       { label: 'System Health & Uptime', href: '/dashboard/admin/system-health', icon: Activity },
       { label: 'System Logs', href: '/dashboard/admin/logs', icon: Database },
