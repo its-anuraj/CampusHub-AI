@@ -1,20 +1,39 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { UserCheck, Award, DollarSign, Calendar, Bus, MessageSquare, Bell, Loader2 } from 'lucide-react';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { UserCheck, Award, DollarSign, Calendar, Bus, MessageSquare, Bell, Loader2, Download, TrendingUp, Sparkles, CheckCircle2, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 import { formatCurrency } from '@/lib/utils';
+import { useToast } from '@/lib/toastContext';
 
 import PtmSchedulerModal from '@/components/shared/PtmSchedulerModal';
 
+const SUBJECT_COMPETENCIES = [
+  { subject: 'Data Structures & Algorithms', score: 92, classAvg: 74, grade: 'A+' },
+  { subject: 'Database Management Systems', score: 88, classAvg: 70, grade: 'A' },
+  { subject: 'Computer Networks', score: 85, classAvg: 68, grade: 'A' },
+  { subject: 'Operating Systems', score: 79, classAvg: 65, grade: 'B+' },
+  { subject: 'Software Engineering', score: 94, classAvg: 76, grade: 'A+' },
+];
+
 export default function ParentDashboardPage() {
+  const { addToast } = useToast();
   const [user, setUser] = useState<any>(null);
   const [studentData, setStudentData] = useState<any>(null);
   const [attendanceChart, setAttendanceChart] = useState<any[]>([]);
   const [recentMarks, setRecentMarks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showPtmModal, setShowPtmModal] = useState(false);
+
+  const handleDownloadReport = () => {
+    addToast({
+      title: 'Progress Report Generated 📄',
+      message: 'Official Term Progress Card downloaded for student records.',
+      type: 'success'
+    });
+    window.print();
+  };
 
   useEffect(() => {
     const u = localStorage.getItem('campushub_user');
@@ -67,12 +86,20 @@ export default function ParentDashboardPage() {
           <p className="text-xs text-slate-500 mt-1">Monitoring academic progress and campus activities</p>
         </div>
 
-        <button
-          onClick={() => setShowPtmModal(true)}
-          className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-2 cursor-pointer shadow-xs transition-colors"
-        >
-          <Calendar className="w-4 h-4" /> Book Faculty Consultation (PTM)
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleDownloadReport}
+            className="px-4 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-800 text-xs font-bold flex items-center gap-2 cursor-pointer shadow-xs transition-colors"
+          >
+            <Download className="w-4 h-4 text-blue-600" /> Download Term Progress Card
+          </button>
+          <button
+            onClick={() => setShowPtmModal(true)}
+            className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-2 cursor-pointer shadow-xs transition-colors"
+          >
+            <Calendar className="w-4 h-4" /> Book Faculty Consultation (PTM)
+          </button>
+        </div>
       </div>
 
       <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-card flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -178,6 +205,64 @@ export default function ParentDashboardPage() {
               <p className="text-xs text-slate-400 mt-0.5">Results will appear after exams are graded</p>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Subject Competency & Class Average Benchmark */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="lg:col-span-8 bg-white border border-slate-200 rounded-2xl p-6 shadow-card space-y-4">
+          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div>
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                <TrendingUp className="w-4 h-4 text-blue-600" /> Subject-wise Competency vs Class Average
+              </h3>
+              <p className="text-[11px] text-slate-500">Benchmark comparison against semester batch percentile</p>
+            </div>
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+              Top 15% in Batch
+            </span>
+          </div>
+
+          <div className="space-y-3.5 pt-1">
+            {SUBJECT_COMPETENCIES.map((comp) => (
+              <div key={comp.subject} className="space-y-1.5">
+                <div className="flex items-center justify-between text-xs font-semibold">
+                  <span className="text-slate-800">{comp.subject}</span>
+                  <div className="flex items-center gap-2 font-mono">
+                    <span className="text-blue-600 font-bold">{comp.score}%</span>
+                    <span className="text-slate-400 text-[10px]">(Avg: {comp.classAvg}%)</span>
+                    <span className="px-1.5 py-0.2 rounded bg-blue-50 text-blue-700 text-[10px] border border-blue-100">{comp.grade}</span>
+                  </div>
+                </div>
+                <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden flex">
+                  <div
+                    className="bg-blue-600 h-full rounded-full transition-all duration-500"
+                    style={{ width: `${comp.score}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Academic Advisor Remarks */}
+        <div className="lg:col-span-4 bg-gradient-to-br from-blue-50/60 to-indigo-50/60 border border-blue-100 rounded-2xl p-6 shadow-card space-y-4 flex flex-col justify-between">
+          <div className="space-y-2">
+            <span className="text-xs font-bold text-blue-700 flex items-center gap-1.5 uppercase tracking-wider">
+              <Sparkles className="w-3.5 h-3.5 text-blue-600" /> Faculty Mentor Remarks
+            </span>
+            <h4 className="text-sm font-bold text-slate-900">Dr. Rajesh Swaminathan</h4>
+            <p className="text-xs text-slate-600 leading-relaxed italic">
+              &ldquo;{childName} demonstrates exceptional problem-solving in Data Structures and Algorithms. Recommended to participate in upcoming hackathons to further strengthen practical distributed systems knowledge.&rdquo;
+            </p>
+          </div>
+
+          <div className="pt-3 border-t border-blue-200/60 flex items-center justify-between text-xs">
+            <span className="text-slate-500 font-medium">Term Conduct:</span>
+            <span className="font-bold text-emerald-600 flex items-center gap-1">
+              <CheckCircle2 className="w-3.5 h-3.5" /> Exemplary (A+)
+            </span>
+          </div>
         </div>
       </div>
 
