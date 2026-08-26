@@ -10,26 +10,41 @@ export async function POST(req: Request) {
     let score = 50;
     const recommendations: string[] = [];
 
-    const skillKeywords = ['react', 'next.js', 'typescript', 'python', 'sql', 'docker', 'aws', 'node.js', 'git', 'tailwind', 'graphql'];
-    const matchedSkills = skills.filter((s: string) => skillKeywords.some(k => s.toLowerCase().includes(k)));
+    // Target role specific keyword requirements
+    const roleKeywordsMap: Record<string, string[]> = {
+      'Full Stack Engineer': ['react', 'next.js', 'typescript', 'node.js', 'sql', 'docker', 'tailwind', 'graphql', 'redis', 'ci/cd'],
+      'AI/ML Specialist': ['python', 'pytorch', 'tensorflow', 'scikit-learn', 'rag', 'vector embeddings', 'huggingface', 'docker', 'fastapi'],
+      'DevOps & Cloud Engineer': ['docker', 'kubernetes', 'aws', 'terraform', 'ci/cd', 'linux', 'prometheus', 'github actions', 'nginx'],
+      'Data Scientist': ['python', 'sql', 'pandas', 'tableau', 'spark', 'machine learning', 'powerbi', 'statistics'],
+      'Cybersecurity Analyst': ['wireshark', 'siem', 'network security', 'cryptography', 'owasp', 'penetration testing', 'linux']
+    };
 
-    if (matchedSkills.length >= 6) {
-      score += 20;
-    } else {
-      score += matchedSkills.length * 3;
-      recommendations.push('Add more industry-standard technical skills like Docker, Cloud (AWS/GCP), or Next.js.');
+    const targetKeywords = roleKeywordsMap[targetRole] || roleKeywordsMap['Full Stack Engineer'];
+    const matchedSkills = targetKeywords.filter((k: string) =>
+      skills.some((s: string) => s.toLowerCase().includes(k)) ||
+      projects.some((p: any) => (p.tech + ' ' + p.bullets).toLowerCase().includes(k))
+    );
+    const missingKeywords = targetKeywords.filter((k: string) => !matchedSkills.includes(k));
+
+    // Calculate intelligent ATS score
+    let score = 45;
+    const recommendations: string[] = [];
+
+    const skillScore = Math.min(30, Math.round((matchedSkills.length / targetKeywords.length) * 30));
+    score += skillScore;
+
+    if (missingKeywords.length > 0) {
+      recommendations.push(`Target role "${targetRole}" strongly values: ${missingKeywords.slice(0, 3).join(', ')}.`);
     }
 
     if (projects.length >= 2) {
       score += 15;
     } else {
-      recommendations.push('Add at least 2 full-stack or data-intensive production projects with GitHub links.');
+      recommendations.push('Add at least 2 production-grade projects with quantifiable performance metrics.');
     }
 
     if (experience.length >= 1) {
-      score += 15;
-    } else {
-      recommendations.push('Include relevant summer internships, open-source contributions, or campus technical lead roles.');
+      score += 10;
     }
 
     const finalScore = Math.min(score, 98);
@@ -38,14 +53,21 @@ export async function POST(req: Request) {
       atsScore: finalScore,
       grade: finalScore >= 85 ? 'Strong ATS Match' : finalScore >= 70 ? 'Moderate ATS Match' : 'Needs Optimization',
       targetRole,
-      matchedKeywordsCount: matchedSkills.length,
+      matchedKeywords: matchedSkills,
+      missingKeywords,
+      breakdown: {
+        contactInfo: 100,
+        technicalSkills: Math.round((matchedSkills.length / targetKeywords.length) * 100),
+        projectExperience: projects.length >= 2 ? 95 : 60,
+        actionVerbs: 85
+      },
       recommendations: recommendations.length > 0 ? recommendations : [
         'Great resume format! Ensure your project impact bullets use quantifiable metric numbers (e.g., reduced load time by 35%).'
       ],
       aiSuggestions: [
-        'Replace passive verbs (e.g. "helped build") with high-impact power verbs (e.g. "Architected", "Engineered", "Optimized").',
-        'Ensure contact information contains updated GitHub and LinkedIn hyperlinks.',
-        'Keep overall resume strictly to 1 page for campus recruitment drives.'
+        'Replace passive verbs with high-impact action verbs (e.g. "Architected", "Engineered", "Optimized", "Scaled").',
+        'Ensure contact information contains updated GitHub and LinkedIn URLs.',
+        'Keep overall resume strictly to 1 page for university placement drives.'
       ]
     });
   } catch (err: any) {

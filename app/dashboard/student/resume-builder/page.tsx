@@ -23,10 +23,18 @@ export default function StudentResumeBuilderPage() {
     { title: 'Distributed Real-time Auction Engine', tech: 'Node.js, Redis, WebSockets, Docker', bullets: 'Built low-latency bidding microservices handling 5,000+ concurrent WebSocket connections with sub-15ms execution.' },
   ]);
 
+  const [targetRole, setTargetRole] = useState('Full Stack Engineer');
   const [atsAnalysis, setAtsAnalysis] = useState<any>({
     atsScore: 88,
     grade: 'Strong ATS Match',
-    matchedKeywordsCount: 8,
+    matchedKeywords: ['react', 'next.js', 'typescript', 'node.js', 'sql', 'docker', 'tailwind'],
+    missingKeywords: ['redis', 'ci/cd', 'graphql'],
+    breakdown: {
+      contactInfo: 100,
+      technicalSkills: 88,
+      projectExperience: 92,
+      actionVerbs: 85
+    },
     recommendations: ['Quantify project impact with benchmark figures.'],
     aiSuggestions: [
       'Use action verbs like "Architected" and "Implemented".',
@@ -46,18 +54,29 @@ export default function StudentResumeBuilderPage() {
           skills: skillsArray,
           projects,
           experience: [{ title: 'Software Engineering Intern' }],
-          targetRole: 'Full Stack Engineer'
+          targetRole
         })
       });
       if (res.ok) {
         const json = await res.json();
         setAtsAnalysis(json.data || json);
-        addToast({ title: 'ATS Analysis Complete', message: `Your resume scored ${json.data?.atsScore || 88}/100.`, type: 'success' });
+        addToast({ title: 'ATS Analysis Complete', message: `Your resume scored ${json.data?.atsScore || 88}/100 for ${targetRole}.`, type: 'success' });
       }
     } catch {
       addToast({ title: 'Error', message: 'Failed to analyze resume', type: 'error' });
     } finally {
       setAnalyzing(false);
+    }
+  };
+
+  const handleAddMissingSkill = (skillName: string) => {
+    if (!skills.toLowerCase().includes(skillName.toLowerCase())) {
+      setSkills(prev => prev ? `${prev}, ${skillName.toUpperCase()}` : skillName.toUpperCase());
+      addToast({
+        title: 'Skill Added to Resume! ⚡',
+        message: `Added "${skillName.toUpperCase()}" to your Technical Proficiencies.`,
+        type: 'success'
+      });
     }
   };
 
@@ -101,39 +120,76 @@ export default function StudentResumeBuilderPage() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Form Inputs & ATS Score Card */}
         <div className="lg:col-span-5 space-y-6">
-          {/* ATS Score Card */}
-          {atsAnalysis && (
-            <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-card space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4 text-purple-600" /> Campus ATS Readiness
-                </span>
-                <span className="text-xs font-bold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200">
-                  {atsAnalysis.grade}
-                </span>
-              </div>
-
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-bold text-slate-900">{atsAnalysis.atsScore}</span>
-                <span className="text-xs text-slate-400">/ 100 Score</span>
-              </div>
-
-              <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                <div
-                  className="bg-gradient-to-r from-purple-500 to-blue-600 h-full rounded-full transition-all duration-500"
-                  style={{ width: `${atsAnalysis.atsScore}%` }}
-                />
-              </div>
-
-              <div className="space-y-1.5 text-[11px] text-slate-600 pt-2 border-t border-slate-100">
-                {atsAnalysis.aiSuggestions?.map((sug: string, i: number) => (
-                  <p key={i} className="flex items-start gap-1.5">
-                    <span className="text-purple-600 font-bold">•</span> {sug}
-                  </p>
-                ))}
-              </div>
+          {/* Target Role & ATS Score Card */}
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-card space-y-4">
+            <div className="space-y-1">
+              <label className="text-[11px] font-bold text-slate-600 uppercase tracking-wider block">Target Job Position</label>
+              <select
+                value={targetRole}
+                onChange={(e) => setTargetRole(e.target.value)}
+                className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl bg-slate-50 text-slate-800 font-semibold focus:ring-2 focus:ring-purple-500 outline-none"
+              >
+                <option value="Full Stack Engineer">Full Stack Engineer</option>
+                <option value="AI/ML Specialist">AI/ML Specialist</option>
+                <option value="DevOps & Cloud Engineer">DevOps & Cloud Engineer</option>
+                <option value="Data Scientist">Data Scientist</option>
+                <option value="Cybersecurity Analyst">Cybersecurity Analyst</option>
+              </select>
             </div>
-          )}
+
+            {atsAnalysis && (
+              <div className="space-y-3 pt-2 border-t border-slate-100">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                    <Sparkles className="w-4 h-4 text-purple-600" /> ATS Compatibility Score
+                  </span>
+                  <span className="text-xs font-bold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200">
+                    {atsAnalysis.grade}
+                  </span>
+                </div>
+
+                <div className="flex items-baseline gap-2">
+                  <span className="text-3xl font-bold text-slate-900">{atsAnalysis.atsScore}</span>
+                  <span className="text-xs text-slate-400">/ 100 Score</span>
+                </div>
+
+                <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                  <div
+                    className="bg-gradient-to-r from-purple-500 to-blue-600 h-full rounded-full transition-all duration-500"
+                    style={{ width: `${atsAnalysis.atsScore}%` }}
+                  />
+                </div>
+
+                {/* Missing Keywords Chips */}
+                {atsAnalysis.missingKeywords && atsAnalysis.missingKeywords.length > 0 && (
+                  <div className="space-y-1.5 pt-2 border-t border-slate-100">
+                    <span className="text-[10px] font-bold text-rose-600 uppercase tracking-wider block">
+                      Missing High-Impact Keywords (Click to add)
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {atsAnalysis.missingKeywords.map((kw: string) => (
+                        <button
+                          key={kw}
+                          onClick={() => handleAddMissingSkill(kw)}
+                          className="px-2 py-0.5 rounded-md bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-[10px] font-semibold flex items-center gap-1 transition"
+                        >
+                          + {kw}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="space-y-1.5 text-[11px] text-slate-600 pt-2 border-t border-slate-100">
+                  {atsAnalysis.aiSuggestions?.map((sug: string, i: number) => (
+                    <p key={i} className="flex items-start gap-1.5">
+                      <span className="text-purple-600 font-bold">•</span> {sug}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* Builder Form */}
           <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-card space-y-4 text-xs">
