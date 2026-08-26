@@ -15,8 +15,10 @@ import {
   UploadCloud,
   Sparkles,
   Filter,
+  Mic
 } from 'lucide-react';
 import { useToast } from '@/lib/toastContext';
+import VoiceNotesModal from '@/components/shared/VoiceNotesModal';
 
 interface NoteResource {
   id: string;
@@ -78,6 +80,21 @@ export default function FacultyNotesPage() {
   const [search, setSearch] = useState('');
   const [courseFilter, setCourseFilter] = useState('ALL');
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [showVoiceModal, setShowVoiceModal] = useState(false);
+
+  const handleSaveVoiceNote = (voiceNote: { title: string; transcript: string; summary: string }) => {
+    const newNote: NoteResource = {
+      id: `vn-${Date.now()}`,
+      title: `🎙️ ${voiceNote.title}`,
+      courseCode: 'CS501',
+      courseName: 'Data Structures & Algorithms',
+      type: 'SLIDES',
+      fileSize: '1.2 MB (Audio + Notes)',
+      uploadDate: 'Today',
+      downloadsCount: 1
+    };
+    setNotes(prev => [newNote, ...prev]);
+  };
 
   // Upload Form State
   const [title, setTitle] = useState('');
@@ -157,12 +174,20 @@ export default function FacultyNotesPage() {
           </p>
         </div>
 
-        <button
-          onClick={() => setShowUploadModal(true)}
-          className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-2 cursor-pointer shadow-xs transition-colors"
-        >
-          <Plus className="w-4 h-4" /> Upload New Material
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowVoiceModal(true)}
+            className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold flex items-center gap-2 cursor-pointer shadow-xs transition-colors"
+          >
+            <Mic className="w-4 h-4" /> Record Voice Memo
+          </button>
+          <button
+            onClick={() => setShowUploadModal(true)}
+            className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold flex items-center gap-2 cursor-pointer shadow-xs transition-colors"
+          >
+            <Plus className="w-4 h-4" /> Upload New Material
+          </button>
+        </div>
       </div>
 
       {/* Filters */}
@@ -332,6 +357,12 @@ export default function FacultyNotesPage() {
           </div>
         </div>
       )}
+      {/* Voice Notes Modal */}
+      <VoiceNotesModal
+        isOpen={showVoiceModal}
+        onClose={() => setShowVoiceModal(false)}
+        onSaveNote={handleSaveVoiceNote}
+      />
     </div>
   );
 }
