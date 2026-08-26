@@ -6,9 +6,13 @@
 import { GET as getClubs } from '../app/api/clubs/route';
 import { GET as getTransport } from '../app/api/transport/route';
 import { GET as getGatepass } from '../app/api/gatepass/route';
-import { GET as getSystemHealth } from '../app/api/system-health/route';
+import { GET as getSystemHealth, POST as postSystemHealth } from '../app/api/system-health/route';
 import { GET as getFeedback } from '../app/api/course-feedback/route';
 import { GET as getBudget } from '../app/api/budget/route';
+import { GET as getCafeteria } from '../app/api/cafeteria/route';
+import { GET as getAlumni } from '../app/api/alumni/route';
+import { GET as getWellness } from '../app/api/wellness/route';
+import { GET as getHostel } from '../app/api/hostel/route';
 
 interface TestResult {
   endpoint: string;
@@ -31,8 +35,13 @@ async function runEndpointTestSuite() {
     { name: '/api/transport', fn: async () => getTransport() },
     { name: '/api/gatepass', fn: async () => (getGatepass as any)() },
     { name: '/api/system-health', fn: async () => getSystemHealth() },
+    { name: '/api/system-health (DR Simulation)', fn: async () => postSystemHealth(new Request('http://localhost:3000/api/system-health', { method: 'POST', body: JSON.stringify({ action: 'DR_SIMULATION' }) })) },
     { name: '/api/course-feedback', fn: async () => (getFeedback as any)() },
     { name: '/api/budget', fn: async () => getBudget() },
+    { name: '/api/cafeteria', fn: async () => getCafeteria() },
+    { name: '/api/alumni', fn: async () => (getAlumni as any)(new Request('http://localhost:3000/api/alumni?search=')) },
+    { name: '/api/wellness', fn: async () => getWellness() },
+    { name: '/api/hostel', fn: async () => getHostel() },
   ];
 
   for (const test of testCases) {
@@ -53,7 +62,7 @@ async function runEndpointTestSuite() {
         details: isOk ? 'Payload Verified' : 'Unexpected error payload'
       });
 
-      console.log(`  ✓ ${test.name.padEnd(25)} [${response.status}] in ${durationMs}ms - OK`);
+      console.log(`  ✓ ${test.name.padEnd(35)} [${response.status}] in ${durationMs}ms - OK`);
     } catch (err: any) {
       const durationMs = Math.round(performance.now() - start);
       results.push({
@@ -64,7 +73,7 @@ async function runEndpointTestSuite() {
         durationMs,
         details: err.message
       });
-      console.log(`  ✗ ${test.name.padEnd(25)} [500] in ${durationMs}ms - FAILED: ${err.message}`);
+      console.log(`  ✗ ${test.name.padEnd(35)} [500] in ${durationMs}ms - FAILED: ${err.message}`);
     }
   }
 
