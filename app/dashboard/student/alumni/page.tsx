@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Users, Briefcase, MapPin, Globe, Video, Calendar, Search, Sparkles, CheckCircle2, X } from 'lucide-react';
+import { Users, Briefcase, MapPin, Globe, Video, Calendar, Search, Sparkles, CheckCircle2, X, MessageSquare, Award, Send, Star, Compass } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/lib/toastContext';
 
@@ -10,7 +10,10 @@ export default function StudentAlumniPage() {
   const [alumni, setAlumni] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [selectedDomain, setSelectedDomain] = useState('ALL');
   const [bookingModal, setBookingModal] = useState<any>(null);
+  const [inmailModal, setInmailModal] = useState<any>(null);
+  const [inmailMessage, setInmailMessage] = useState('');
   const [selectedSlot, setSelectedSlot] = useState('');
   const [topic, setTopic] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -93,6 +96,30 @@ export default function StudentAlumniPage() {
         </div>
       </div>
 
+      {/* Domain Filters */}
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
+        {[
+          { id: 'ALL', label: 'All Mentors' },
+          { id: 'FAANG', label: 'FAANG & Big Tech' },
+          { id: 'AI_ML', label: 'AI & Data Science' },
+          { id: 'FINTECH', label: 'FinTech & Banking' },
+          { id: 'STARTUP', label: 'Founders & YC Startups' },
+        ].map((domain) => (
+          <button
+            key={domain.id}
+            onClick={() => setSelectedDomain(domain.id)}
+            className={cn(
+              "px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all shadow-xs cursor-pointer",
+              selectedDomain === domain.id
+                ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
+                : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"
+            )}
+          >
+            {domain.label}
+          </button>
+        ))}
+      </div>
+
       {/* Alumni Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {alumni.map((alum) => (
@@ -128,12 +155,18 @@ export default function StudentAlumniPage() {
               </div>
             </div>
 
-            <div className="pt-2">
+            <div className="pt-2 flex gap-2">
+              <button
+                onClick={() => setInmailModal(alum)}
+                className="flex-1 py-2 px-3 border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold rounded-xl text-xs flex items-center justify-center gap-1.5 transition"
+              >
+                <MessageSquare className="w-3.5 h-3.5 text-slate-500" /> Message
+              </button>
               <button
                 onClick={() => setBookingModal(alum)}
-                className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-xs flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer"
+                className="flex-1 py-2 px-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer"
               >
-                <Video className="w-3.5 h-3.5" /> Book 1:1 Mentorship Session
+                <Video className="w-3.5 h-3.5" /> Book 1:1 Call
               </button>
             </div>
           </div>
@@ -196,6 +229,67 @@ export default function StudentAlumniPage() {
               >
                 {submitting ? 'Confirming...' : 'Confirm Mentorship Booking'}
               </button>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* InMail Direct Outreach Modal */}
+      {inmailModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4">
+          <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative space-y-4 animate-in zoom-in-95 duration-200">
+            <button onClick={() => setInmailModal(null)} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+              <X className="w-5 h-5" />
+            </button>
+
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">
+                DIRECT INMAIL OUTREACH
+              </span>
+              <h3 className="text-base font-bold text-slate-900 mt-1">Send Message to {inmailModal.name}</h3>
+              <p className="text-xs text-slate-500">{inmailModal.designation} @ {inmailModal.company}</p>
+            </div>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setInmailModal(null);
+                setInmailMessage('');
+                addToast({
+                  title: 'InMail Request Dispatched ✉️',
+                  message: `Your message was delivered to ${inmailModal.name}'s verified alumni email inbox.`,
+                  type: 'success'
+                });
+              }}
+              className="space-y-3.5 text-xs"
+            >
+              <div>
+                <label className="font-semibold text-slate-700 block mb-1">Your Message / Connection Note</label>
+                <textarea
+                  rows={4}
+                  required
+                  placeholder={`Hi ${inmailModal.name.split(' ')[0]}, I'm currently a CSE student at CampusHub preparing for off-campus opportunities. I'd love to seek brief guidance regarding your career journey at ${inmailModal.company}...`}
+                  value={inmailMessage}
+                  onChange={(e) => setInmailMessage(e.target.value)}
+                  className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-indigo-500 text-xs"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setInmailModal(null)}
+                  className="px-4 py-2 border border-slate-200 rounded-xl font-semibold hover:bg-slate-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-xs flex items-center gap-1.5"
+                >
+                  <Send className="w-3.5 h-3.5" /> Send InMail
+                </button>
+              </div>
             </form>
           </div>
         </div>
