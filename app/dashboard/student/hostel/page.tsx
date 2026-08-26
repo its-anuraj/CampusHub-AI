@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Home, Users, Utensils, Wrench, Shield, CheckCircle2, Clock, Phone, AlertCircle, Sparkles, Building, BedDouble, Plus, Calendar } from 'lucide-react';
+import { Home, Users, Utensils, Wrench, Shield, CheckCircle2, Clock, Phone, AlertCircle, Sparkles, Building, BedDouble, Plus, Calendar, FileCheck, Moon, DoorOpen, Key, X, Send } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/lib/toastContext';
 
@@ -9,11 +9,20 @@ export default function StudentHostelPage() {
   const { addToast } = useToast();
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'MY_ROOM' | 'ROOM_CATALOG' | 'MESS_MENU' | 'MAINTENANCE'>('MY_ROOM');
+  const [activeTab, setActiveTab] = useState<'MY_ROOM' | 'ROOM_CATALOG' | 'MESS_MENU' | 'MAINTENANCE' | 'AGREEMENT'>('MY_ROOM');
   const [selectedBlock, setSelectedBlock] = useState('Block A (Boys - Everest)');
   const [issueCategory, setIssueCategory] = useState('PLUMBING');
   const [issueDesc, setIssueDesc] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [gatePassModal, setGatePassModal] = useState(false);
+  const [nightOutReason, setNightOutReason] = useState('');
+  const [returnDate, setReturnDate] = useState('');
+
+  // Roommate Agreement State
+  const [lightsOutTime, setLightsOutTime] = useState('11:30 PM');
+  const [quietHoursAgreed, setQuietHoursAgreed] = useState(true);
+  const [guestPolicyAgreed, setGuestPolicyAgreed] = useState(true);
+  const [choreRotationAgreed, setChoreRotationAgreed] = useState(true);
 
   useEffect(() => {
     async function fetchHostel() {
@@ -89,6 +98,12 @@ export default function StudentHostelPage() {
         </div>
 
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => setGatePassModal(true)}
+            className="px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-xs transition"
+          >
+            <DoorOpen className="w-3.5 h-3.5" /> Apply Late / Night-Out Pass
+          </button>
           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
             <CheckCircle2 className="w-3.5 h-3.5" /> Allocated: Room {alloc?.roomNumber || '101'}
           </span>
@@ -99,6 +114,7 @@ export default function StudentHostelPage() {
       <div className="flex items-center gap-2 border-b border-slate-200 pb-2 overflow-x-auto text-xs font-medium">
         {[
           { id: 'MY_ROOM', label: 'My Room & Roommate', icon: BedDouble },
+          { id: 'AGREEMENT', label: 'Roommate Agreement', icon: FileCheck },
           { id: 'ROOM_CATALOG', label: 'Hostel Floor Explorer', icon: Building },
           { id: 'MESS_MENU', label: 'Daily Mess Menu', icon: Utensils },
           { id: 'MAINTENANCE', label: 'Maintenance & Repairs', icon: Wrench },
@@ -361,6 +377,154 @@ export default function StudentHostelPage() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Roommate Agreement & Quiet Hours Covenant */}
+      {activeTab === 'AGREEMENT' && (
+        <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-card space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+            <div>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 border border-indigo-100 px-2.5 py-0.5 rounded-full">
+                OFFICIAL ROOMMATE COVENANT
+              </span>
+              <h2 className="text-lg font-bold text-slate-900 mt-1">Room {alloc?.roomNumber || '101'} Living Agreement</h2>
+              <p className="text-xs text-slate-500">Mutual living standards signed between you and <strong>{alloc?.roommate || 'Roommate'}</strong></p>
+            </div>
+            <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full flex items-center gap-1.5 w-fit">
+              <CheckCircle2 className="w-3.5 h-3.5" /> Both Parties Signed
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div className="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="font-bold text-slate-900 flex items-center gap-1.5">
+                  <Moon className="w-4 h-4 text-indigo-600" /> Quiet & Sleep Hours
+                </span>
+                <span className="font-mono font-bold text-indigo-600">{lightsOutTime}</span>
+              </div>
+              <p className="text-slate-600">Main lights off by {lightsOutTime}. Use individual desk lamps and headphones for late night study.</p>
+            </div>
+
+            <div className="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="font-bold text-slate-900 flex items-center gap-1.5">
+                  <Users className="w-4 h-4 text-blue-600" /> Guest & Study Group Policy
+                </span>
+                <span className="font-bold text-emerald-600">Pre-approval Required</span>
+              </div>
+              <p className="text-slate-600">Non-resident study visitors allowed until 8:00 PM with mutual 2-hour advance verbal notice.</p>
+            </div>
+
+            <div className="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="font-bold text-slate-900 flex items-center gap-1.5">
+                  <Sparkles className="w-4 h-4 text-amber-600" /> Room Cleanliness & Chores
+                </span>
+                <span className="font-bold text-indigo-600">Alternating Weeks</span>
+              </div>
+              <p className="text-slate-600">Weekly trash disposal and floor sweeping rotated every Sunday evening before inspection.</p>
+            </div>
+
+            <div className="p-4 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="font-bold text-slate-900 flex items-center gap-1.5">
+                  <Key className="w-4 h-4 text-slate-700" /> Property & Personal Belongings
+                </span>
+                <span className="font-bold text-emerald-600">Strict Respect</span>
+              </div>
+              <p className="text-slate-600">Borrowing textbooks, gadgets, or stationery strictly requires explicit permission beforehand.</p>
+            </div>
+          </div>
+
+          <div className="pt-2 flex justify-end">
+            <button
+              onClick={() => addToast({ title: 'Agreement Updated', message: 'Signed covenant synced to Chief Warden portal.', type: 'success' })}
+              className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-xs"
+            >
+              Update Agreement Terms
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Night Out Gate Pass Modal */}
+      {gatePassModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white border border-slate-200 rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-4 shadow-2xl animate-in zoom-in-95 duration-200">
+            <div className="flex justify-between items-center pb-2 border-b border-slate-100">
+              <div>
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-100">
+                  DIGITAL SECURITY GATE PASS
+                </span>
+                <h3 className="font-bold text-base text-slate-900 mt-1">Apply Night-Out / Leave Pass</h3>
+              </div>
+              <button onClick={() => setGatePassModal(false)} className="p-1 rounded-xl text-slate-400 hover:bg-slate-50">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setGatePassModal(false);
+                setNightOutReason('');
+                setReturnDate('');
+                addToast({
+                  title: 'Gate Pass Dispatched 🛂',
+                  message: 'Warden & Parent SMS approval request dispatched. QR token generated.',
+                  type: 'success'
+                });
+              }}
+              className="space-y-3.5 text-xs"
+            >
+              <div>
+                <label className="font-semibold text-slate-700 block mb-1">Reason for Leave / Night-Out</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Home visit / Hackathon overnight participation"
+                  value={nightOutReason}
+                  onChange={(e) => setNightOutReason(e.target.value)}
+                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-indigo-500"
+                />
+              </div>
+
+              <div>
+                <label className="font-semibold text-slate-700 block mb-1">Expected Return Date & Time</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Tomorrow 08:00 AM"
+                  value={returnDate}
+                  onChange={(e) => setReturnDate(e.target.value)}
+                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-indigo-500"
+                />
+              </div>
+
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-[11px] text-amber-800 space-y-0.5">
+                <p className="font-bold">Automated Parent Verification:</p>
+                <p>An automated confirmation SMS will be triggered to your registered guardian phone upon approval.</p>
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setGatePassModal(false)}
+                  className="px-4 py-2 border border-slate-200 rounded-xl font-semibold hover:bg-slate-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-xs"
+                >
+                  Submit Gate Pass Request
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
