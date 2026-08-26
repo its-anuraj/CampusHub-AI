@@ -60,13 +60,57 @@ const INITIAL_ISSUED: IssuedBook[] = [
 
 export default function StudentLibraryPage() {
   const { addToast } = useToast();
-  const [activeTab, setActiveTab] = useState<'CATALOG' | 'ISSUED'>('CATALOG');
+  const [activeTab, setActiveTab] = useState<'CATALOG' | 'ISSUED' | 'INTER_LIBRARY'>('CATALOG');
   const [search, setSearch] = useState('');
   const [selectedSubject, setSelectedSubject] = useState('ALL');
   const [books, setBooks] = useState<any[]>(libraryBooks);
   const [issuedBooks, setIssuedBooks] = useState<IssuedBook[]>(INITIAL_ISSUED);
   const [eBookReader, setEBookReader] = useState<any>(null);
   const [reservationModal, setReservationModal] = useState<any>(null);
+  const [illModal, setIllModal] = useState(false);
+  const [illBookTitle, setIllBookTitle] = useState('');
+  const [illPartnerCampus, setIllPartnerCampus] = useState('North Campus Central Library');
+  const [interLibraryLoans, setInterLibraryLoans] = useState<any[]>([
+    {
+      id: 'ILL-9821',
+      title: 'Quantum Computing: An Applied Approach',
+      author: 'Jack D. Hidary',
+      partnerCampus: 'South Campus Technology Annex',
+      status: 'IN_TRANSIT',
+      estimatedArrival: 'Tomorrow, 02:00 PM'
+    }
+  ]);
+
+  const handleCreateIllRequest = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!illBookTitle.trim()) return;
+    const newReq = {
+      id: `ILL-${Math.floor(1000 + Math.random() * 9000)}`,
+      title: illBookTitle,
+      author: 'Academic Specialization Edition',
+      partnerCampus: illPartnerCampus,
+      status: 'REQUESTED',
+      estimatedArrival: 'In 3-5 Business Days'
+    };
+    setInterLibraryLoans([newReq, ...interLibraryLoans]);
+    setIllModal(false);
+    setIllBookTitle('');
+    addToast({
+      title: 'Inter-Library Transfer Requested! 🚚',
+      message: `Courier transfer initiated from ${illPartnerCampus}.`,
+      type: 'success'
+    });
+  };
+
+  const handleScanIsbn = () => {
+    const sampleIsbn = '978-0131103627';
+    setSearch(sampleIsbn);
+    addToast({
+      title: 'Barcode Scanner Simulated 📷',
+      message: `Scanned ISBN ${sampleIsbn} (C Programming Language)`,
+      type: 'info'
+    });
+  };
 
   const subjects = ['ALL', 'Computer Science', 'Electronics', 'Mathematics', 'Mechanical', 'Management'];
 
@@ -200,6 +244,15 @@ export default function StudentLibraryPage() {
               {issuedBooks.length}
             </span>
           </button>
+          <button
+            onClick={() => setActiveTab('INTER_LIBRARY')}
+            className={cn(
+              "px-4 py-2 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5",
+              activeTab === 'INTER_LIBRARY' ? "bg-card text-blue-600 dark:text-blue-400 shadow-xs" : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <span>Inter-Campus Loans ({interLibraryLoans.length})</span>
+          </button>
         </div>
 
         {activeTab === 'CATALOG' && (
@@ -214,6 +267,13 @@ export default function StudentLibraryPage() {
                 className="w-full pl-9 pr-3 py-2 text-xs bg-background border border-border rounded-xl focus:ring-2 focus:ring-blue-500"
               />
             </div>
+            <button
+              onClick={handleScanIsbn}
+              className="px-3 py-2 rounded-xl border border-border hover:bg-muted text-xs font-semibold flex items-center gap-1.5 transition"
+              title="Simulate Barcode ISBN Scan"
+            >
+              <QrCode className="w-3.5 h-3.5 text-blue-600" /> Scan ISBN
+            </button>
             <select
               value={selectedSubject}
               onChange={(e) => setSelectedSubject(e.target.value)}
@@ -224,6 +284,15 @@ export default function StudentLibraryPage() {
               ))}
             </select>
           </div>
+        )}
+
+        {activeTab === 'INTER_LIBRARY' && (
+          <button
+            onClick={() => setIllModal(true)}
+            className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs flex items-center gap-1.5 transition"
+          >
+            <BookOpen className="w-3.5 h-3.5" /> Request Partner Campus Book
+          </button>
         )}
       </div>
 
@@ -327,6 +396,106 @@ export default function StudentLibraryPage() {
               ))}
             </div>
           )}
+        </div>
+      ) : (
+        /* Inter-Library Loan Section */
+        <div className="space-y-4">
+          <div className="flex justify-between items-center bg-card p-4 rounded-2xl border border-border">
+            <div>
+              <h3 className="font-bold text-sm text-foreground">Inter-Campus Library Exchange Network</h3>
+              <p className="text-xs text-muted-foreground">Borrow rare academic volumes from connected national partner university libraries</p>
+            </div>
+            <button
+              onClick={() => setIllModal(true)}
+              className="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs transition"
+            >
+              + New Inter-Library Request
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {interLibraryLoans.map((loan) => (
+              <div key={loan.id} className="bg-card border border-border rounded-2xl p-5 shadow-xs space-y-3">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <span className="text-[10px] font-bold font-mono text-blue-600 bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">
+                      {loan.id}
+                    </span>
+                    <h4 className="font-bold text-sm text-foreground mt-1">{loan.title}</h4>
+                    <p className="text-xs text-muted-foreground">Source: <strong>{loan.partnerCampus}</strong></p>
+                  </div>
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-600 border border-amber-500/20">
+                    {loan.status}
+                  </span>
+                </div>
+
+                <div className="pt-2 border-t border-border flex justify-between items-center text-xs text-muted-foreground">
+                  <span>ETA: <strong className="text-foreground">{loan.estimatedArrival}</strong></span>
+                  <span className="text-blue-600 font-semibold">Courier Tracking Active</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Inter Library Request Modal */}
+      {illModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-card border border-border rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 animate-in zoom-in-95 duration-200">
+            <div className="flex justify-between items-center pb-2 border-b border-border">
+              <div>
+                <h3 className="font-bold text-base text-foreground">Request Inter-Library Book Loan</h3>
+                <p className="text-xs text-muted-foreground">Courier delivery from partner campuses</p>
+              </div>
+              <button onClick={() => setIllModal(false)} className="p-1 rounded text-muted-foreground hover:bg-muted">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateIllRequest} className="space-y-3 text-xs">
+              <div>
+                <label className="font-semibold text-muted-foreground block mb-1">Book Title & Edition</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Quantum Computing: An Applied Approach (2nd Ed)"
+                  value={illBookTitle}
+                  onChange={(e) => setIllBookTitle(e.target.value)}
+                  className="w-full p-2.5 bg-background border border-border rounded-xl focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="font-semibold text-muted-foreground block mb-1">Target Source Campus</label>
+                <select
+                  value={illPartnerCampus}
+                  onChange={(e) => setIllPartnerCampus(e.target.value)}
+                  className="w-full p-2.5 bg-background border border-border rounded-xl focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="North Campus Central Library">North Campus Central Library</option>
+                  <option value="South Campus Technology Annex">South Campus Technology Annex</option>
+                  <option value="National Institute of Technology Partner Library">National Institute of Technology Partner Library</option>
+                </select>
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIllModal(false)}
+                  className="px-4 py-2 rounded-xl border border-border text-xs font-semibold hover:bg-muted"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs"
+                >
+                  Submit Courier Request
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
 
