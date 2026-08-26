@@ -16,6 +16,11 @@ import {
   MessageCircle,
   Eye,
   Filter,
+  Code2,
+  Terminal,
+  Calculator,
+  Play,
+  Copy,
 } from 'lucide-react';
 import { useToast } from '@/lib/toastContext';
 
@@ -31,6 +36,11 @@ interface Post {
   isLiked?: boolean;
   replies: number;
   createdAt: string;
+  codeSnippet?: {
+    language: string;
+    code: string;
+    output?: string;
+  };
 }
 
 const INITIAL_POSTS: Post[] = [
@@ -38,15 +48,20 @@ const INITIAL_POSTS: Post[] = [
     id: 'p-1',
     title: 'How to prepare for Dynamic Programming in Technical Rounds?',
     content:
-      'Any recommended problem sets or patterns for mastering 2D DP and Bitmask DP before upcoming campus placement season? Currently doing LeetCode Mediums.',
+      'Here is an efficient bottom-up DP implementation for 0/1 Knapsack problem with O(W) space optimization:',
     author: 'Anuraj Singh',
-    category: 'Career & Placements',
+    category: 'Tech & Coding',
     isAnonymous: false,
     tags: ['DSA', 'Placements', 'Algorithms'],
     likes: 24,
     isLiked: false,
     replies: 8,
     createdAt: '3 hours ago',
+    codeSnippet: {
+      language: 'cpp',
+      code: `#include <vector>\n#include <iostream>\nusing namespace std;\n\nint knapSack(int W, vector<int>& wt, vector<int>& val) {\n    vector<int> dp(W + 1, 0);\n    for (int i = 0; i < wt.size(); i++)\n        for (int w = W; w >= wt[i]; w--)\n            dp[w] = max(dp[w], val[i] + dp[w - wt[i]]);\n    return dp[W];\n}`,
+      output: 'Max Value = 220 (Evaluated in 0.04ms)'
+    }
   },
   {
     id: 'p-2',
@@ -248,6 +263,35 @@ export default function StudentDiscussionPage() {
               </div>
 
               <p className="text-xs text-slate-600 leading-relaxed">{post.content}</p>
+
+              {/* Code Snippet Box */}
+              {post.codeSnippet && (
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 text-slate-100 overflow-hidden shadow-inner text-xs">
+                  <div className="flex justify-between items-center px-4 py-2 bg-slate-900 border-b border-slate-800">
+                    <span className="font-mono text-[11px] text-blue-400 font-bold flex items-center gap-1.5">
+                      <Code2 className="w-3.5 h-3.5" /> {post.codeSnippet.language.toUpperCase()} Sandbox
+                    </span>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(post.codeSnippet!.code);
+                        toast.success('Code copied to clipboard.', 'Copied');
+                      }}
+                      className="text-[10px] text-slate-400 hover:text-white flex items-center gap-1"
+                    >
+                      <Copy className="w-3 h-3" /> Copy Code
+                    </button>
+                  </div>
+                  <pre className="p-4 font-mono text-[11px] overflow-x-auto text-emerald-400 leading-relaxed">
+                    <code>{post.codeSnippet.code}</code>
+                  </pre>
+                  {post.codeSnippet.output && (
+                    <div className="px-4 py-2 bg-slate-900/90 border-t border-slate-800 flex items-center gap-2 font-mono text-[10px] text-slate-300">
+                      <Terminal className="w-3 h-3 text-emerald-400" />
+                      <span>Console Output: <strong className="text-emerald-300">{post.codeSnippet.output}</strong></span>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Tags */}
               {post.tags.length > 0 && (
