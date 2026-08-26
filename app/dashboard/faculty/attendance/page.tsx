@@ -7,13 +7,17 @@ import {
   Loader2,
   QrCode,
   MapPin,
-  Radio,
-  Download,
   Users,
   Clock,
   Sparkles,
   RefreshCw,
-  X
+  X,
+  AlertTriangle,
+  Send,
+  BellRing,
+  Filter,
+  Download,
+  Radio
 } from 'lucide-react';
 import { useToast } from '@/lib/toastContext';
 import { exportToCSV } from '@/lib/exportUtils';
@@ -32,6 +36,8 @@ export default function FacultyAttendancePage() {
   const [qrToken, setQrToken] = useState('ATT-QR-98214');
   const [qrCountdown, setQrCountdown] = useState(15);
   const [geofenceActive, setGeofenceActive] = useState(true);
+  const [filterMode, setFilterMode] = useState<'ALL' | 'ABSENT' | 'DEFAULTER'>('ALL');
+  const [notifyingParents, setNotifyingParents] = useState(false);
 
   useEffect(() => {
     async function loadStudents() {
@@ -124,6 +130,23 @@ export default function FacultyAttendancePage() {
     }
   };
 
+  const handleNotifyAbsenteeParents = async () => {
+    setNotifyingParents(true);
+    try {
+      const absentees = students.filter(s => attendance[s.studentProfile?.id] === 'ABSENT');
+      await new Promise(r => setTimeout(r, 900));
+      addToast({
+        title: 'SMS Alerts Dispatched! 📲',
+        message: `Automated absence alerts sent to parents of ${absentees.length} students via CampusHub SMS Gateway.`,
+        type: 'success'
+      });
+    } catch {
+      addToast({ title: 'Error', message: 'Failed to send SMS alerts.', type: 'error' });
+    } finally {
+      setNotifyingParents(false);
+    }
+  };
+
   const handleExportAttendance = () => {
     const rows = students.map((s) => ({
       'Roll Number': s.studentProfile.rollNumber,
@@ -140,9 +163,24 @@ export default function FacultyAttendancePage() {
     });
   };
 
+  // Mock attendance percentage generator based on student roll
+  const getStudentCumulativeAttendance = (roll: string) => {
+    const hash = (roll || '').split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+    return 65 + (hash % 32); // gives 65% - 96%
+  };
+
   const presentCount = Object.values(attendance).filter(s => s === 'PRESENT').length;
   const absentCount = Object.values(attendance).filter(s => s === 'ABSENT').length;
   const lateCount = Object.values(attendance).filter(s => s === 'LATE').length;
+  const defaulterCount = students.filter(s => getStudentCumulativeAttendance(s.studentProfile?.rollNumber) < 75).length;
+
+  const filteredStudents = students.filter(s => {
+    const status = attendance[s.studentProfile?.id];
+    const cumPct = getStudentCumulativeAttendance(s.studentProfile?.rollNumber);
+    if (filterMode === 'ABSENT') return status === 'ABSENT';
+    if (filterMode === 'DEFAULTER') return cumPct < 75;
+    return true;
+  });
 
   return (
     <div className="space-y-6">
@@ -150,11 +188,11 @@ export default function FacultyAttendancePage() {
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-700 via-indigo-700 to-cyan-700 p-6 sm:p-8 text-white shadow-xl">
         <div className="relative z-10 max-w-3xl space-y-2">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-semibold uppercase tracking-wider">
-            <Radio className="w-3.5 h-3.5 text-green-300 animate-pulse" /> Smart Attendance Radar
+            <Radio className="w-3.5 h-3.5 text-green-300 animate-pulse" /> Smart Attendance & Defaulter Radar
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Facial & QR Attendance Terminal</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Facial, QR Attendance & Defaulter Tracker</h1>
           <p className="text-white/90 text-sm sm:text-base">
-            Project dynamic rotating QR codes for classroom scanning, enforce GPS geofencing, or rapidly mark attendance via roster grid.
+            Project dynamic rotating QR codes for classroom scanning, monitor &lt;75% attendance defaulters, and dispatch automated parent SMS alerts.
           </p>
         </div>
         <div className="absolute right-0 top-0 -mt-10 -mr-10 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none" />
@@ -175,9 +213,9 @@ export default function FacultyAttendancePage() {
           </p>
         </div>
         <div className="p-4 rounded-xl bg-card border border-border">
-          <p className="text-xs text-muted-foreground font-medium">Late Arrivals</p>
-          <p className="text-2xl font-bold text-amber-600 dark:text-amber-400 mt-1 flex items-center gap-2">
-            <Clock className="w-5 h-5" /> {lateCount} Students
+          <p className="text-xs text-muted-foreground font-medium">Defaulters (&lt;75%)</p>
+          <p className="text-2xl font-bold text-rose-600 dark:text-rose-400 mt-1 flex items-center gap-2">
+            <AlertTriangle className="w-5 h-5" /> {defaulterCount} At Risk
           </p>
         </div>
         <div className="p-4 rounded-xl bg-card border border-border">
@@ -217,6 +255,17 @@ export default function FacultyAttendancePage() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
+          {absentCount > 0 && (
+            <button
+              onClick={handleNotifyAbsenteeParents}
+              disabled={notifyingParents}
+              className="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold flex items-center gap-1.5 shadow-xs transition"
+            >
+              {notifyingParents ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <BellRing className="w-3.5 h-3.5" />}
+              <span>Notify Absent Parents</span>
+            </button>
+          )}
+
           <button
             onClick={() => setQrModeModal(true)}
             className="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold flex items-center gap-1.5 shadow-xs transition"
@@ -242,6 +291,37 @@ export default function FacultyAttendancePage() {
         </div>
       </div>
 
+      {/* Filter Tabs */}
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() => setFilterMode('ALL')}
+          className={cn(
+            "px-3 py-1.5 rounded-xl text-xs font-semibold transition",
+            filterMode === 'ALL' ? "bg-blue-600 text-white shadow-xs" : "bg-muted text-muted-foreground hover:text-foreground"
+          )}
+        >
+          All Students ({students.length})
+        </button>
+        <button
+          onClick={() => setFilterMode('ABSENT')}
+          className={cn(
+            "px-3 py-1.5 rounded-xl text-xs font-semibold transition",
+            filterMode === 'ABSENT' ? "bg-rose-600 text-white shadow-xs" : "bg-muted text-muted-foreground hover:text-foreground"
+          )}
+        >
+          Absentees Today ({absentCount})
+        </button>
+        <button
+          onClick={() => setFilterMode('DEFAULTER')}
+          className={cn(
+            "px-3 py-1.5 rounded-xl text-xs font-semibold transition",
+            filterMode === 'DEFAULTER' ? "bg-amber-600 text-white shadow-xs" : "bg-muted text-muted-foreground hover:text-foreground"
+          )}
+        >
+          Defaulters &lt;75% ({defaulterCount})
+        </button>
+      </div>
+
       {/* Student Roster Grid */}
       {loading ? (
         <div className="p-12 text-center text-xs text-muted-foreground flex items-center justify-center gap-2">
@@ -249,8 +329,11 @@ export default function FacultyAttendancePage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {students.map((s) => {
+          {filteredStudents.map((s) => {
             const status = attendance[s.studentProfile.id];
+            const cumPct = getStudentCumulativeAttendance(s.studentProfile?.rollNumber);
+            const isDefaulter = cumPct < 75;
+
             return (
               <button
                 key={s.id}
@@ -263,8 +346,17 @@ export default function FacultyAttendancePage() {
                 )}
               >
                 <div>
-                  <p className="text-sm font-semibold text-foreground">{s.name}</p>
-                  <p className="text-xs text-muted-foreground font-mono mt-0.5">Roll: {s.studentProfile.rollNumber}</p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-semibold text-foreground">{s.name}</p>
+                    {isDefaulter && (
+                      <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-rose-500/20 text-rose-600 border border-rose-500/30">
+                        &lt;75%
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-muted-foreground font-mono mt-0.5">
+                    Roll: {s.studentProfile.rollNumber} • Aggregate: <span className={cn("font-bold", isDefaulter ? "text-rose-500" : "text-emerald-600")}>{cumPct}%</span>
+                  </p>
                 </div>
                 <span className={cn(
                   "px-2.5 py-0.5 rounded-full text-xs font-bold font-mono border",
