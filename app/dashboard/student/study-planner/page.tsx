@@ -17,10 +17,13 @@ import {
   Zap,
   Target,
   Volume2,
-  VolumeX,
   FileQuestion,
   HelpCircle,
-  X
+  X,
+  Layers,
+  Check,
+  RotateCw,
+  Award
 } from 'lucide-react';
 import { useToast } from '@/lib/toastContext';
 import { cn } from '@/lib/utils';
@@ -33,6 +36,23 @@ interface StudyTask {
   completed: boolean;
   priority: 'HIGH' | 'MEDIUM' | 'LOW';
 }
+
+interface Flashcard {
+  id: string;
+  subject: string;
+  question: string;
+  answer: string;
+  box: 1 | 2 | 3; // 1 = Review, 2 = Good, 3 = Mastered
+}
+
+const INITIAL_FLASHCARDS: Flashcard[] = [
+  { id: 'fc-1', subject: 'Design & Analysis of Algorithms', question: 'What is the time complexity of building a Heap from an array of N elements?', answer: 'O(N) amortized time using the bottom-up Floyd\'s heap construction algorithm.', box: 1 },
+  { id: 'fc-2', subject: 'Design & Analysis of Algorithms', question: 'What condition makes the Greedy Choice Property applicable?', answer: 'A global optimum can be arrived at by selecting a local optimum without revisiting past decisions.', box: 2 },
+  { id: 'fc-3', subject: 'Database Management Systems', question: 'What is the primary difference between 3NF and BCNF?', answer: 'In BCNF, for every non-trivial functional dependency X -> Y, X MUST be a superkey. 3NF allows Y to be a prime attribute.', box: 1 },
+  { id: 'fc-4', subject: 'Database Management Systems', question: 'What is Write-Ahead Logging (WAL)?', answer: 'A technique where changes are written to disk log before the actual database pages are written, ensuring Durability and Atomicity.', box: 3 },
+  { id: 'fc-5', subject: 'Operating Systems', question: 'What are the four Coffman conditions for Deadlock?', answer: '1. Mutual Exclusion\n2. Hold and Wait\n3. No Preemption\n4. Circular Wait', box: 2 },
+  { id: 'fc-6', subject: 'Operating Systems', question: 'What is Thrashing in Virtual Memory?', answer: 'A state where the CPU spends more time swapping pages in and out of swap space than executing user instructions.', box: 1 },
+];
 
 const INITIAL_TASKS: StudyTask[] = [
   { id: '1', title: 'Revise Dynamic Programming algorithms (Knapsack & LCS)', subject: 'Design & Analysis of Algorithms', duration: 45, completed: false, priority: 'HIGH' },
@@ -74,11 +94,49 @@ export default function StudyPlannerPage() {
   const [aiPredictModal, setAiPredictModal] = useState(false);
   const [selectedSubjectAi, setSelectedSubjectAi] = useState('Design & Analysis of Algorithms');
 
+  // AI Flashcards Modal & Leitner System
+  const [flashcardsModal, setFlashcardsModal] = useState(false);
+  const [flashcards, setFlashcards] = useState<Flashcard[]>(INITIAL_FLASHCARDS);
+  const [currentCardIdx, setCurrentCardIdx] = useState(0);
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [selectedFlashSubject, setSelectedFlashSubject] = useState('ALL');
+
   // Task states
   const [tasks, setTasks] = useState<StudyTask[]>(INITIAL_TASKS);
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [newTaskSubject, setNewTaskSubject] = useState('Design & Analysis of Algorithms');
   const [newTaskDuration, setNewTaskDuration] = useState(30);
+
+  const handleLeitnerAnswer = (known: boolean) => {
+    const card = activeFlashcards[currentCardIdx];
+    if (!card) return;
+
+    setFlashcards((prev) =>
+      prev.map((c) => {
+        if (c.id === card.id) {
+          const newBox = known ? (Math.min(3, c.box + 1) as 1 | 2 | 3) : 1;
+          return { ...c, box: newBox };
+        }
+        return c;
+      })
+    );
+
+    setIsFlipped(false);
+    if (currentCardIdx < activeFlashcards.length - 1) {
+      setCurrentCardIdx((prev) => prev + 1);
+    } else {
+      addToast({
+        title: 'Flashcard Sprint Finished! 🧠',
+        message: 'Spaced repetition schedule updated for optimal memory retention.',
+        type: 'success'
+      });
+      setCurrentCardIdx(0);
+    }
+  };
+
+  const activeFlashcards = flashcards.filter(
+    (c) => selectedFlashSubject === 'ALL' || c.subject === selectedFlashSubject
+  );
 
   const durations = {
     FOCUS: 25 * 60,
@@ -199,6 +257,12 @@ export default function StudyPlannerPage() {
         </div>
 
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => setFlashcardsModal(true)}
+            className="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold shadow-md shadow-purple-500/20 flex items-center gap-1.5 transition"
+          >
+            <Layers className="w-3.5 h-3.5 text-yellow-300" /> AI Flashcard Arena ({activeFlashcards.length})
+          </button>
           <button
             onClick={() => setAiPredictModal(true)}
             className="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-md shadow-indigo-500/20 flex items-center gap-1.5 transition"
@@ -437,6 +501,109 @@ export default function StudyPlannerPage() {
                 Close & Study Questions
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* AI Flashcard Arena Modal */}
+      {flashcardsModal && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-card border border-border rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl space-y-6 animate-in zoom-in-95 duration-200">
+            <div className="flex justify-between items-start pb-3 border-b border-border">
+              <div>
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 inline-flex items-center gap-1">
+                  <Layers className="w-3.5 h-3.5" /> LEITNER SPACED REPETITION ARENA
+                </span>
+                <h3 className="text-lg font-bold text-foreground mt-1">Smart AI Flashcard Deck</h3>
+              </div>
+              <button onClick={() => setFlashcardsModal(false)} className="p-1.5 rounded-xl text-muted-foreground hover:bg-muted">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Subject Selector & Leitner Stats */}
+            <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
+              <select
+                value={selectedFlashSubject}
+                onChange={(e) => {
+                  setSelectedFlashSubject(e.target.value);
+                  setCurrentCardIdx(0);
+                  setIsFlipped(false);
+                }}
+                className="px-3 py-1.5 rounded-xl bg-background border border-border font-semibold focus:ring-2 focus:ring-purple-500"
+              >
+                <option value="ALL">All Subjects ({flashcards.length} Cards)</option>
+                <option value="Design & Analysis of Algorithms">Algorithms</option>
+                <option value="Database Management Systems">DBMS</option>
+                <option value="Operating Systems">Operating Systems</option>
+              </select>
+
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded-md bg-rose-500/10 text-rose-600 font-bold border border-rose-500/20 text-[10px]">
+                  Box 1 (Review): {flashcards.filter(c => c.box === 1).length}
+                </span>
+                <span className="px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-600 font-bold border border-amber-500/20 text-[10px]">
+                  Box 2 (Learning): {flashcards.filter(c => c.box === 2).length}
+                </span>
+                <span className="px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-600 font-bold border border-emerald-500/20 text-[10px]">
+                  Box 3 (Mastered): {flashcards.filter(c => c.box === 3).length}
+                </span>
+              </div>
+            </div>
+
+            {/* Flashcard Body */}
+            {activeFlashcards.length > 0 ? (
+              <div className="space-y-4">
+                <div className="flex justify-between items-center text-xs text-muted-foreground">
+                  <span>Card {currentCardIdx + 1} of {activeFlashcards.length}</span>
+                  <span className="font-semibold text-purple-600 dark:text-purple-400">
+                    {activeFlashcards[currentCardIdx].subject}
+                  </span>
+                </div>
+
+                <div
+                  onClick={() => setIsFlipped(!isFlipped)}
+                  className="cursor-pointer min-h-[200px] p-6 rounded-2xl bg-gradient-to-br from-muted/50 to-muted/20 border-2 border-purple-500/30 hover:border-purple-500/60 transition-all flex flex-col justify-between text-center relative shadow-inner"
+                >
+                  <div className="flex justify-between items-center text-[10px] uppercase font-bold tracking-wider text-muted-foreground">
+                    <span>{isFlipped ? '💡 Answer (Click to Flip)' : '❓ Question (Click to Reveal)'}</span>
+                    <RotateCw className="w-3.5 h-3.5 text-purple-500" />
+                  </div>
+
+                  <div className="py-6 flex items-center justify-center">
+                    <p className="text-base sm:text-lg font-bold text-foreground leading-relaxed whitespace-pre-line">
+                      {isFlipped
+                        ? activeFlashcards[currentCardIdx].answer
+                        : activeFlashcards[currentCardIdx].question}
+                    </p>
+                  </div>
+
+                  <p className="text-[10px] text-muted-foreground italic">
+                    Tap anywhere on the card to flip
+                  </p>
+                </div>
+
+                {/* Leitner Actions */}
+                <div className="flex items-center gap-3 pt-2">
+                  <button
+                    onClick={() => handleLeitnerAnswer(false)}
+                    className="flex-1 py-2.5 rounded-xl border border-rose-500/40 bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 text-xs font-bold transition flex items-center justify-center gap-1.5"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5" /> Need Review (Box 1)
+                  </button>
+                  <button
+                    onClick={() => handleLeitnerAnswer(true)}
+                    className="flex-1 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md shadow-purple-500/20"
+                  >
+                    <Check className="w-3.5 h-3.5" /> I Knew This (+Level Up)
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="p-8 text-center text-xs text-muted-foreground">
+                No flashcards found for selected category.
+              </div>
+            )}
           </div>
         </div>
       )}
