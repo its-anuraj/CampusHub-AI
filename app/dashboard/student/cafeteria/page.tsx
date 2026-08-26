@@ -15,7 +15,12 @@ import {
   Activity,
   Heart,
   Award,
-  Send
+  Send,
+  QrCode,
+  Ticket,
+  Timer,
+  Bell,
+  Check
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/lib/toastContext';
@@ -26,10 +31,13 @@ export default function StudentCafeteriaPage() {
   const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState<{ [id: string]: number }>({});
   const [selectedCategory, setSelectedCategory] = useState('ALL');
+  const [dietFilter, setDietFilter] = useState<'ALL' | 'VEG' | 'HIGH_PROTEIN'>('ALL');
+  const [pickupSlot, setPickupSlot] = useState('1:15 PM (In 15 Mins)');
   const [orderConfirmed, setOrderConfirmed] = useState<any>(null);
   const [feedbackModal, setFeedbackModal] = useState(false);
   const [messRating, setMessRating] = useState(5);
   const [messFeedback, setMessFeedback] = useState('');
+  const [currentServingToken, setCurrentServingToken] = useState(408);
 
   useEffect(() => {
     async function fetchMenu() {
@@ -277,17 +285,66 @@ export default function StudentCafeteriaPage() {
                   </div>
                 </div>
 
+                {/* Pickup Time Slot Selection */}
+                <div className="space-y-1 pt-2 border-t border-border">
+                  <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block flex items-center gap-1">
+                    <Timer className="w-3 h-3 text-orange-500" /> Express Pickup Time
+                  </label>
+                  <select
+                    value={pickupSlot}
+                    onChange={(e) => setPickupSlot(e.target.value)}
+                    className="w-full p-2 text-xs bg-background border border-border rounded-xl font-medium focus:ring-2 focus:ring-orange-500"
+                  >
+                    <option value="1:15 PM (In 15 Mins)">1:15 PM (In 15 Mins)</option>
+                    <option value="1:30 PM (In 30 Mins)">1:30 PM (In 30 Mins)</option>
+                    <option value="1:45 PM (In 45 Mins)">1:45 PM (In 45 Mins)</option>
+                    <option value="2:00 PM (In 60 Mins)">2:00 PM (In 60 Mins)</option>
+                  </select>
+                </div>
+
                 <button
                   onClick={handleCheckout}
                   className="w-full py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold shadow-md shadow-orange-500/20 transition"
                 >
-                  Pay & Send to Kitchen (₹{totalAmount})
+                  Pay & Generate QR Meal Token (₹{totalAmount})
                 </button>
               </div>
             )}
           </div>
         </div>
       </div>
+
+      {/* Digital Meal Coupon Pass Modal */}
+      {orderConfirmed && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-card border border-border rounded-3xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl animate-in zoom-in-95 duration-200">
+            <div className="space-y-1">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-orange-500/10 text-orange-600 border border-orange-500/20">
+                VERIFIED CAFETERIA MEAL PASS
+              </span>
+              <h3 className="font-bold text-lg text-foreground mt-2">Token #{orderConfirmed.token || 'CHUB-MEAL-412'}</h3>
+              <p className="text-xs text-muted-foreground">Pickup: <strong className="text-foreground">{pickupSlot}</strong></p>
+            </div>
+
+            <div className="p-4 bg-white rounded-2xl shadow-inner inline-block mx-auto">
+              <QrCode className="w-40 h-40 text-slate-900 mx-auto" />
+            </div>
+
+            <div className="text-xs text-muted-foreground space-y-1 bg-muted/40 p-3 rounded-xl border border-border">
+              <p>Stall: <strong className="text-foreground">Express Counter 2</strong></p>
+              <p>Amount Paid: <strong className="text-orange-600 font-mono">₹{totalAmount || 180}</strong></p>
+              <p className="text-[10px] text-emerald-600 font-semibold mt-1">Show this QR pass at the kitchen counter for instant tray collection.</p>
+            </div>
+
+            <button
+              onClick={() => setOrderConfirmed(null)}
+              className="w-full py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold transition"
+            >
+              Done & Collect Tray
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Mess Rating Modal */}
       {feedbackModal && (
