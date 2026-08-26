@@ -1,32 +1,29 @@
-# 🎓 CampusHub AI – Enterprise Autonomous Campus Operating System (Release v3.0.0)
+# 🎓 CampusHub AI – Enterprise Autonomous Campus Operating System (Release v3.1.0)
 
 > **AI-Powered Autonomous Operating System for Modern Higher Education & University Campuses**  
 > One unified, multi-tenant, cloud-native platform for **Students, Faculty, University Administration, and Parents** across Web, PWA, and Mobile.
 
 ---
 
-## 🌟 Major Highlights & Production Features
+## 🌟 Major Highlights & Production Features (v3.1.0)
 
 - ⚡ **Next.js 16.3 (Turbopack) & React 19** with App Router architecture & TypeScript strictness.
-- 📱 **Progressive Web App (PWA)** with offline service worker, app manifest, and instant installability.
-- 🤖 **AI Study Planner, Pomodoro Engine & Exam Question Predictor** with ambient focus audio soundscapes.
-- 🪪 **Smart Digital ID Card & Gate Outpass** with flip card badges, NFC turnstile simulator, and security QR generation.
-- 📊 **Faculty Interactive Gradebook & Attendance Terminal** with CSV bulk marks upload and rotating QR classroom scanner.
-- 🚌 **Live GPS Campus Bus & Transit Tracker** with telemetry radars and digital bus pass renewal.
-- 🏫 **Student Clubs & Communities Hub** with category directories, lead rosters, and application modals.
-- 💬 **360-Degree Anonymous Course & Faculty Feedback Portal** with NAAC/NIRF compliance analytics.
-- 📈 **Institutional Accreditation & NIRF Metrics Reporting Dashboard** (TLR, RPC, GO, OI, SFR breakdown).
-- 🛠️ **Admin System Telemetry & Health Console** with memory heap graphs, database ping, and cache purge actions.
-- 💰 **Departmental Budget Allocation & CapEx Requisitions Console** with CFO approval workflows.
-- 💳 **Parent Real-Time Fee EMI & Installment Payment Calculator** with UPI QR simulation and printable receipts.
-- 🥪 **Smart Cafeteria & Pre-Ordering Hub** with nutrition calorie trackers and daily mess quality feedback.
-- 🏆 **Hackathon Arena & Team Matcher** with GitHub repository submissions and jury evaluations.
-- 💼 **Career Services & AI Mock Technical Interview Simulator** with keyword grading and ATS resume matching.
-- 📚 **Digital Library Hub & E-Book Reader** with 48h shelf reservations and overdue fine calculations.
-- 🌦️ **Campus Live Microclimate Weather & AQI Telemetry Widget**.
-- ⌨️ **Quick Keyboard Shortcuts Modal (`Shift + ?`) & Command Palette (`⌘K`)**.
-- 🔔 **Global Sliding Notification Drawer** with category filters and audio alerts.
-- 🔒 **Forensic Security Audit Logs & AI Anomaly Intelligence Detector**.
+- ♿ **Global Accessibility Suite**: High Contrast Mode, Dyslexic Spacing, and 85%-130% Text Scaler toolbar.
+- 🤖 **AI Study Flashcards & Leitner Spaced Repetition**: 3D flip card memory trainer with accuracy scoring.
+- 📄 **Resume ATS Score Analyzer & Keyword Optimizer**: Real-time role-based keyword gap analysis.
+- 🛡️ **Admin Automated Backup & Disaster Recovery Simulator**: Encrypted SHA-256 database snapshots & RTO/RPO failover testing.
+- 🔐 **Two-Factor Authentication (2FA) & Recovery Codes**: Google/Microsoft Authenticator TOTP and emergency backup codes.
+- 🥪 **Smart Cafeteria & QR Meal Passes**: Kitchen queue token simulator (#408) and express pickup times.
+- 👨‍👩‍👧 **Parent Academic Trajectory & Competency Benchmarks**: Subject-wise class percentile comparison & printable progress cards.
+- 📚 **Digital Library & Inter-Campus Loans**: 14-day loan renewal, ISBN scanner, and Inter-Library Loan courier tracker.
+- 🌿 **Student Wellness Sanctuary & 4-7-8 Breathing**: Neuro-calm breathing animation & anonymous peer support wall.
+- 🚌 **Live Campus Shuttle GPS Radar**: Spatial route telemetry, waypoint tracker, proximity alarms, and in-shuttle Lost & Found.
+- 🏆 **Campus Quest & Achievement Badges**: Gamified level progression, academic XP, and milestone badges.
+- 🏠 **Hostel Living & Roommate Covenant**: Signed roommate living agreements & digital Night-Out pass requests.
+- 🤝 **Alumni InMail & Mentorship**: Industry domain filtering (FAANG, AI, FinTech) & 1:1 Google Meet booking.
+- 🎪 **Student Clubs Budget Grants**: SAC funding proposal application workflow with multi-stage approval tracker.
+- 💬 **Discussion Forum Code Sandbox**: Formatted syntax highlighter and runnable code snippet executor.
+- 🧪 **Automated API Health & Endpoint Test Suite**: 11/11 automated endpoint test suite passing in sub-50ms.
 
 ---
 
@@ -49,7 +46,7 @@ npm install
 npx prisma db push
 npx prisma db seed # or npm run prisma:seed
 
-# 4. Verify API Health Test Suite
+# 4. Verify API Health Test Suite (11/11 Tests)
 npm run test:endpoints
 
 # 5. Start Local Development Server
@@ -64,10 +61,10 @@ Open [http://localhost:3000](http://localhost:3000) to access the application.
 
 | Role | Email | Password | Primary Capabilities |
 |------|-------|----------|----------------------|
-| **Student** | `student@campushub.edu` | `student123` | Digital ID, Timetable, Outpass, Clubs, Placement, Library, E-Books |
-| **Faculty** | `faculty@campushub.edu` | `faculty123` | Attendance QR Projector, Gradebook Moderation, Research Grants |
-| **Admin** | `admin@campushub.edu` | `admin123` | System Health, NIRF Reports, Audit Logs, Department Budgets, SOS Siren |
-| **Parent** | `parent@campushub.edu` | `parent123` | Attendance Alerts, 0% EMI Fee Planner, Live Bus GPS Radar, PTM |
+| **Student** | `student@campushub.edu` | `student123` | Digital ID, Timetable, Outpass, Clubs, Placement, Library, Quests |
+| **Faculty** | `faculty@campushub.edu` | `faculty123` | Attendance QR, Defaulter Alerts, Voice Memos, Research Grants |
+| **Admin** | `admin@campushub.edu` | `admin123` | 2FA Security, Disaster Recovery, System Health, NIRF Reports, SOS Siren |
+| **Parent** | `parent@campushub.edu` | `parent123` | Competency Radar, Progress Cards, 0% EMI Fee Planner, Bus GPS Radar |
 
 ---
 

@@ -2,6 +2,61 @@
 
 All notable changes to the CampusHub AI ecosystem are documented in this file.
 
+## [3.1.0] - 2026-08-26
+
+### 🌐 Global Accessibility & Universal Inclusivity
+- **Global Floating Accessibility Suite (`components/shared/AccessibilityToolbar.tsx`)**: High Contrast Mode toggle, Dyslexic-friendly font spacing, Text Size Scaler (85% - 130%), and Reduce Animation Motion mode with persistent local storage preferences across all portals.
+
+### 📅 Events & Calendar Integration
+- **Events Calendar Sync & RSVP Tracker (`/dashboard/student/events`)**: iCalendar (.ics) export for Google/Apple/Outlook calendars, 3-state RSVP selector (Going, Interested, Not Going), and personal event bookmarking.
+
+### 📊 Faculty Academic Operations & Attendance Radar
+- **Automated Attendance Analytics & Defaulter Alert System (`/dashboard/faculty/attendance`)**: Defaulter threshold radar (<75%), 1-click batch parent SMS notification dispatcher, and roster filter tabs (All, Regular, Defaulters).
+- **Faculty Voice Audio Memo Recorder (`components/shared/VoiceNotesModal.tsx`, `/dashboard/faculty/notes`)**: Quick audio notes recorder with simulated AI transcription for classroom notes.
+
+### 🤖 AI Study & Career Tools
+- **AI Study Flashcards Arena & Leitner Spaced Repetition (`/dashboard/student/study-planner`)**: 3D interactive flashcard flipping with Leitner boxes (Review / Good / Mastered) and dynamic accuracy scoring.
+- **Resume ATS Score Analyzer & Keyword Optimizer (`/dashboard/student/resume-builder`, `/api/ai/resume-analyzer`)**: Target industry role matcher (Full Stack, AI/ML, DevOps, Data Science, Cyber) with clickable missing keyword chips and live score breakdown.
+
+### 🏛️ Admin Disaster Recovery & Platform Security
+- **Automated Backup & Disaster Recovery Simulator (`/dashboard/admin/system-health`, `/api/system-health`)**: Encrypted SHA-256 database snapshots, RTO (< 15 mins), RPO (< 1 hr), and simulated disaster failover testing.
+- **Two-Factor Authentication (2FA) Setup & Recovery Codes (`/dashboard/admin/settings`)**: Google/Microsoft Authenticator TOTP QR setup with manual secret key, 8 emergency one-time backup recovery codes, and active device sessions manager.
+
+### 🥪 Smart Cafeteria & Dining Pass
+- **Digital Meal QR Coupon & Live Queue System (`/dashboard/student/cafeteria`)**: Express pickup time slot selector (15-min to 60-min intervals), live queue serving token indicator (#408), and digital QR meal coupon voucher pass.
+
+### 👨‍👩‍👧 Parent Academic Trajectory & Competency Benchmarks
+- **Subject Competency & Class Average Benchmark (`/dashboard/parent`)**: Subject-wise percentile comparison against semester batch average, printable Term Progress Card download, and Faculty Mentor Advisor remarks.
+
+### 📚 Library & Inter-Campus Loans
+- **Digital Book Lending Extension & Inter-Library Loan Tracker (`/dashboard/student/library`)**: 14-day loan auto-renewal, simulated ISBN barcode scanner, and Inter-Library Loan courier request workflow from partner universities.
+
+### 🌿 Student Health, Wellness & Peer Empathy
+- **Anonymous Peer Support Wall & 4-7-8 Neuro-Calm Breathing (`/dashboard/student/wellness`)**: Scientifically-guided 4-7-8 animated breathing timer (Inhale 4s, Hold 7s, Exhale 8s) and moderated anonymous peer encouragement message wall.
+
+### 🚌 Campus Shuttle GPS Radar & Lost-Found
+- **Live Campus Shuttle Spatial Telemetry & Proximity Alerts (`/dashboard/student/transport`)**: 2D waypoint radar map with moving bus marker, stop arrival proximity notifications, and in-shuttle Lost & Found inquiry reporter.
+
+### 🏆 Campus Gamification & Achievement Badges
+- **Campus Quest & Achievement Badges Arena (`/dashboard/student`)**: Level 4 Scholar XP progress bar (1,450 XP), unlocked milestone badges (Attendance Sentinel, Early Bird Solver, Bibliophile), and daily quests.
+
+### 🏠 Hostel Living & Roommate Covenant
+- **Roommate Living Agreement & Digital Night-Out Pass (`/dashboard/student/hostel`)**: Signed mutual living covenant (quiet hours, sleep schedule, chore rotation, guest policy) and digital parent-notified Night-Out gate pass application.
+
+### 🤝 Alumni InMail & Mentorship
+- **Alumni Industry Domain Filters & Direct InMail Outreach (`/dashboard/student/alumni`)**: Filter alumni by FAANG, AI/ML, FinTech, and Startups with direct InMail outreach and 1:1 Google Meet booking.
+
+### 🎪 Student Clubs Budget Grants
+- **Club Event Budget Grant Proposal Portal (`/dashboard/student/clubs`)**: SAC funding application workflow for hackathons and symposiums with live multistage approval tracking.
+
+### 💬 Discussion Forum Code Sandbox
+- **Code Snippet Runner & Sandbox (`/dashboard/student/discussion`)**: Formatted C++/Python/JavaScript syntax rendering with 1-click clipboard copy and console output execution preview.
+
+### 🧪 Automated End-to-End Test Suite
+- **Comprehensive API Verification Suite (`scripts/verify-endpoints.ts`)**: 11/11 automated endpoint health checks validating clubs, transport, gatepass, system health, DR simulation, feedback, budget, cafeteria, alumni, wellness, and hostel routes.
+
+---
+
 ## [2.5.0] - 2026-08-24
 
 ### 🏠 Student Life, Housing & Wellness Sanctuary
@@ -31,6 +86,8 @@ All notable changes to the CampusHub AI ecosystem are documented in this file.
 
 ### 👨‍👩‍👧 Parent Engagement
 - **Parent Grievance & Dean Feedback Desk (`/dashboard/parent/feedback`, `/api/parent-feedback`)**: Direct communication channel with Deans with 48-hour SLA response guarantees.
+
+---
 
 ## [2.0.0] - 2026-08-23
 
