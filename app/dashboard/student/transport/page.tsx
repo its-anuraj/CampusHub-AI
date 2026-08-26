@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Bus, MapPin, Clock, Phone, Navigation, ShieldCheck, Radio, Sparkles, CheckCircle2, AlertTriangle, RefreshCw, QrCode } from 'lucide-react';
+import { Bus, MapPin, Clock, Phone, Navigation, ShieldCheck, Radio, Sparkles, CheckCircle2, AlertTriangle, RefreshCw, QrCode, Bell, Compass, HelpCircle, Send, X, Volume2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/lib/toastContext';
 
@@ -13,6 +13,9 @@ export default function StudentTransportPage() {
   const [passModal, setPassModal] = useState(false);
   const [passDetails, setPassDetails] = useState<any>(null);
   const [renewing, setRenewing] = useState(false);
+  const [arrivalAlertEnabled, setArrivalAlertEnabled] = useState(true);
+  const [lostFoundModal, setLostFoundModal] = useState(false);
+  const [lostItemDesc, setLostItemDesc] = useState('');
 
   useEffect(() => {
     async function loadRoutes() {
@@ -187,6 +190,63 @@ export default function StudentTransportPage() {
               </div>
             </div>
 
+            {/* Live GPS Radar Graphic Simulation */}
+            <div className="p-4 rounded-2xl bg-slate-900 text-white space-y-3 shadow-inner relative overflow-hidden">
+              <div className="flex justify-between items-center text-xs">
+                <span className="font-bold flex items-center gap-1.5 text-blue-400">
+                  <Compass className="w-4 h-4 animate-spin" /> Live Spatial Telemetry
+                </span>
+                <span className="font-mono text-[10px] text-slate-400">GPS: 28.5450° N, 77.1926° E</span>
+              </div>
+
+              {/* Waypoint Track Visual */}
+              <div className="py-6 px-4 bg-slate-950/60 rounded-xl border border-slate-800 flex items-center justify-between relative">
+                <div className="absolute left-6 right-6 top-1/2 h-1 bg-slate-700 -translate-y-1/2 rounded" />
+                <div className="absolute left-6 right-1/2 top-1/2 h-1 bg-blue-500 -translate-y-1/2 rounded" />
+                
+                <div className="relative z-10 flex flex-col items-center">
+                  <div className="w-4 h-4 rounded-full bg-emerald-500 ring-4 ring-emerald-500/20" />
+                  <span className="text-[10px] text-slate-300 font-semibold mt-1">Terminal</span>
+                </div>
+
+                <div className="relative z-10 flex flex-col items-center">
+                  <div className="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center ring-4 ring-blue-500/40 animate-bounce">
+                    <Bus className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-[10px] text-blue-400 font-bold mt-1">Bus #{currentRoute?.vehicleNo}</span>
+                </div>
+
+                <div className="relative z-10 flex flex-col items-center">
+                  <div className="w-4 h-4 rounded-full bg-slate-700 ring-4 ring-slate-800" />
+                  <span className="text-[10px] text-slate-400 font-semibold mt-1">Campus Hub</span>
+                </div>
+              </div>
+
+              <div className="flex justify-between items-center pt-2 text-xs">
+                <button
+                  onClick={() => {
+                    setArrivalAlertEnabled(!arrivalAlertEnabled);
+                    addToast({
+                      title: arrivalAlertEnabled ? 'Alerts Muted' : 'Arrival Alert Set 🔔',
+                      message: arrivalAlertEnabled ? 'Proximity chime disabled.' : `You will be alerted 5 mins before stop arrival.`,
+                      type: 'info'
+                    });
+                  }}
+                  className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-1.5 transition"
+                >
+                  <Bell className={cn("w-3.5 h-3.5", arrivalAlertEnabled ? "text-yellow-400" : "text-slate-400")} />
+                  {arrivalAlertEnabled ? 'Arrival Alert Active' : 'Enable Proximity Alert'}
+                </button>
+
+                <button
+                  onClick={() => setLostFoundModal(true)}
+                  className="text-xs text-slate-400 hover:text-slate-200 flex items-center gap-1 underline transition"
+                >
+                  <HelpCircle className="w-3.5 h-3.5" /> Report Lost Item in Bus
+                </button>
+              </div>
+            </div>
+
             {/* Timeline Stops */}
             <div className="space-y-6 pl-2 relative">
               <div className="absolute left-[17px] top-3 bottom-3 w-0.5 bg-border" />
@@ -225,6 +285,62 @@ export default function StudentTransportPage() {
           </div>
         </div>
       </div>
+
+      {/* Lost and Found Modal */}
+      {lostFoundModal && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-card border border-border rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 animate-in zoom-in-95 duration-200">
+            <div className="flex justify-between items-center pb-2 border-b border-border">
+              <h3 className="font-bold text-base text-foreground">Report Lost Item in Shuttle</h3>
+              <button onClick={() => setLostFoundModal(false)} className="p-1 rounded text-muted-foreground hover:bg-muted">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                setLostFoundModal(false);
+                setLostItemDesc('');
+                addToast({
+                  title: 'Lost Item Report Dispatched 🔍',
+                  message: 'Bus depot supervisor & driver have been notified.',
+                  type: 'success'
+                });
+              }}
+              className="space-y-3 text-xs"
+            >
+              <div>
+                <label className="font-semibold text-muted-foreground block mb-1">Item Description & Seat Location</label>
+                <textarea
+                  rows={3}
+                  required
+                  placeholder="e.g. Blue HP Laptop bag left on row 4 window seat..."
+                  value={lostItemDesc}
+                  onChange={(e) => setLostItemDesc(e.target.value)}
+                  className="w-full p-2.5 bg-background border border-border rounded-xl focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="flex justify-end gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setLostFoundModal(false)}
+                  className="px-4 py-2 rounded-xl border border-border text-xs font-semibold hover:bg-muted"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs"
+                >
+                  Submit Inquiry
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Digital Pass Modal */}
       {passModal && (
