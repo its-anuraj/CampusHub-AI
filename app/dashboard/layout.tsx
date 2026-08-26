@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/shared/Sidebar';
 import Header from '@/components/shared/Header';
+import AccessibilityToolbar from '@/components/shared/AccessibilityToolbar';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -62,6 +63,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
         </main>
       </div>
+
+      {/* Floating Global Accessibility Suite */}
+      <AccessibilityToolbar />
     </div>
   );
 }
