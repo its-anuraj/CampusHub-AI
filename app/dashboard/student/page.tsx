@@ -1,14 +1,15 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
 import {
-  BookOpen, ClipboardList, Bell, CheckCircle2, Calendar, Star, Sparkles, ArrowUpRight, Clock, Loader2
+  BookOpen, ClipboardList, Bell, CheckCircle2, Calendar, Star, Sparkles, ArrowUpRight, Clock, Loader2, Trophy, Award, Flame, Zap, Check, Crown
 } from 'lucide-react';
 import Link from 'next/link';
 import { formatTime } from '@/lib/utils';
+import { useToast } from '@/lib/toastContext';
 
 interface DashboardData {
   attendancePercentage: number;
@@ -228,6 +229,68 @@ export default function StudentDashboardPage() {
               ))}
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Gamification: Student Quests & Campus Achievement Badges */}
+      <div className="bg-gradient-to-r from-indigo-900 via-blue-900 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
+          <div className="space-y-1">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-xs font-bold text-yellow-300">
+              <Crown className="w-3.5 h-3.5" /> LEVEL 4 SCHOLAR
+            </div>
+            <h2 className="text-xl font-bold tracking-tight">Campus Quest & Achievement Badges</h2>
+            <p className="text-xs text-white/70">Complete daily learning activities, maintain attendance, and earn semester XP points</p>
+          </div>
+
+          <div className="text-right sm:border-l sm:border-white/10 sm:pl-6">
+            <span className="text-[10px] font-bold text-white/60 uppercase tracking-wider block">Total Academic XP</span>
+            <div className="text-2xl font-bold font-mono text-yellow-400 flex items-center gap-1">
+              <Flame className="w-5 h-5 text-orange-400 fill-orange-400" /> 1,450 XP
+            </div>
+            <span className="text-[10px] text-white/60">50 XP to Level 5</span>
+          </div>
+        </div>
+
+        {/* Progress Bar */}
+        <div className="space-y-1.5">
+          <div className="flex justify-between text-xs font-semibold text-white/80">
+            <span>Semester Level 4 Progress</span>
+            <span className="font-mono text-yellow-300">92%</span>
+          </div>
+          <div className="w-full bg-white/10 h-2.5 rounded-full overflow-hidden flex">
+            <div className="bg-gradient-to-r from-yellow-400 to-amber-500 h-full rounded-full w-[92%]" />
+          </div>
+        </div>
+
+        {/* Badges Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {[
+            { name: 'Attendance Sentinel', desc: '>90% Monthly Rate', icon: '🛡️', unlocked: true },
+            { name: 'Early Bird Solver', desc: '5 Tasks Early Turn-in', icon: '⚡', unlocked: true },
+            { name: 'Bibliophile', desc: '5 Digital E-Books Read', icon: '📚', unlocked: true },
+            { name: 'Grandmaster Contributor', desc: 'Answer 10 Forum Queries', icon: '👑', unlocked: false },
+          ].map((badge) => (
+            <div
+              key={badge.name}
+              className={cn(
+                "p-3.5 rounded-2xl border transition-all text-center space-y-1.5",
+                badge.unlocked
+                  ? "bg-white/10 border-white/20 hover:bg-white/15"
+                  : "bg-white/5 border-white/5 opacity-50 grayscale"
+              )}
+            >
+              <span className="text-2xl block">{badge.icon}</span>
+              <p className="text-xs font-bold text-white">{badge.name}</p>
+              <p className="text-[10px] text-white/70">{badge.desc}</p>
+              <span className={cn(
+                "text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full inline-block mt-1",
+                badge.unlocked ? "bg-yellow-400/20 text-yellow-300" : "bg-white/10 text-white/40"
+              )}>
+                {badge.unlocked ? 'Unlocked' : 'Locked'}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
 
