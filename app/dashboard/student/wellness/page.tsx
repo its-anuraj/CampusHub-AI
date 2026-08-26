@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Heart, ShieldCheck, Phone, Calendar, Sparkles, CheckCircle2, AlertTriangle, Smile, Frown, Meh, Zap, X } from 'lucide-react';
+import { Heart, ShieldCheck, Phone, Calendar, Sparkles, CheckCircle2, AlertTriangle, Smile, Frown, Meh, Zap, X, Wind, MessageCircle, Send, ThumbsUp, Play, Pause, Flame } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/lib/toastContext';
 
@@ -14,6 +14,77 @@ export default function StudentWellnessPage() {
   const [selectedSlot, setSelectedSlot] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(true);
   const [bookingConfirmed, setBookingConfirmed] = useState<any>(null);
+
+  // 4-7-8 Breathing states
+  const [breathingActive, setBreathingActive] = useState(false);
+  const [breathPhase, setBreathPhase] = useState<'Inhale (4s)' | 'Hold (7s)' | 'Exhale (8s)'>('Inhale (4s)');
+  const [breathTimer, setBreathTimer] = useState(4);
+
+  // Peer support posts
+  const [peerPosts, setPeerPosts] = useState([
+    {
+      id: 'p1',
+      author: 'Anonymous Panda 🐼',
+      time: '15 mins ago',
+      content: 'Midsem exams are daunting, but remember your grades do not define your whole life! Take 15-min walks.',
+      likes: 12,
+      tag: 'Motivation'
+    },
+    {
+      id: 'p2',
+      author: 'Anonymous Falcon 🦅',
+      time: '1 hour ago',
+      content: 'Anyone else felt overwhelmed by back-to-back lab vivas? We got this batch of 2027!',
+      likes: 8,
+      tag: 'Exam Stress'
+    }
+  ]);
+  const [newPeerPost, setNewPeerPost] = useState('');
+
+  // Handle breathing timer
+  useEffect(() => {
+    let interval: any;
+    if (breathingActive) {
+      interval = setInterval(() => {
+        setBreathTimer((prev) => {
+          if (prev <= 1) {
+            if (breathPhase === 'Inhale (4s)') {
+              setBreathPhase('Hold (7s)');
+              return 7;
+            } else if (breathPhase === 'Hold (7s)') {
+              setBreathPhase('Exhale (8s)');
+              return 8;
+            } else {
+              setBreathPhase('Inhale (4s)');
+              return 4;
+            }
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [breathingActive, breathPhase]);
+
+  const handlePostPeerNote = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newPeerPost.trim()) return;
+    const post = {
+      id: `p-${Date.now()}`,
+      author: `Anonymous ${['Koala 🐨', 'Lion 🦁', 'Fox 🦊', 'Otter 🦦'][Math.floor(Math.random() * 4)]}`,
+      time: 'Just now',
+      content: newPeerPost.trim(),
+      likes: 1,
+      tag: 'Peer Support'
+    };
+    setPeerPosts([post, ...peerPosts]);
+    setNewPeerPost('');
+    addToast({
+      title: 'Peer Encouragement Shared 🌸',
+      message: 'Your anonymous message is posted to the student support wall.',
+      type: 'success'
+    });
+  };
 
   useEffect(() => {
     async function fetchWellness() {
@@ -161,6 +232,90 @@ export default function StudentWellnessPage() {
               <p className="text-[11px] text-slate-500">{h.desc}</p>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Mindful 4-7-8 Breathing & Anonymous Peer Forum */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* 4-7-8 Breathing Timer */}
+        <div className="lg:col-span-5 bg-gradient-to-br from-teal-50 to-cyan-50 border border-teal-200 rounded-3xl p-6 shadow-card space-y-4 text-center flex flex-col justify-between">
+          <div className="space-y-1">
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-100 text-teal-800 border border-teal-200 flex items-center gap-1 w-fit mx-auto">
+              <Wind className="w-3.5 h-3.5" /> MINDFUL DECOMPRESSION
+            </span>
+            <h3 className="text-sm font-bold text-slate-900 mt-2">4-7-8 Neuro-Calm Breathing</h3>
+            <p className="text-xs text-slate-600">Scientifically proven to lower exam anxiety & pulse rate in 60s</p>
+          </div>
+
+          <div className="relative w-36 h-36 mx-auto flex items-center justify-center">
+            <div
+              className={cn(
+                "absolute inset-0 rounded-full bg-teal-400/20 transition-all duration-1000",
+                breathingActive ? "scale-110 animate-pulse" : "scale-100"
+              )}
+            />
+            <div className="w-28 h-28 rounded-full bg-teal-600 text-white flex flex-col items-center justify-center shadow-lg transition-transform">
+              <span className="text-2xl font-bold font-mono">{breathTimer}s</span>
+              <span className="text-[10px] font-semibold tracking-wider uppercase opacity-90">{breathPhase}</span>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <button
+              onClick={() => setBreathingActive(!breathingActive)}
+              className={cn(
+                "w-full py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-xs transition",
+                breathingActive ? "bg-slate-800 hover:bg-slate-900 text-white" : "bg-teal-600 hover:bg-teal-700 text-white"
+              )}
+            >
+              {breathingActive ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+              {breathingActive ? 'Pause Exercise' : 'Start 4-7-8 Breathing'}
+            </button>
+          </div>
+        </div>
+
+        {/* Anonymous Peer Encouragement Wall */}
+        <div className="lg:col-span-7 bg-white border border-slate-200 rounded-3xl p-6 shadow-card space-y-4">
+          <div className="flex justify-between items-center pb-2 border-b border-slate-100">
+            <div>
+              <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                <MessageCircle className="w-4 h-4 text-rose-500" /> Anonymous Peer Support Wall
+              </h3>
+              <p className="text-xs text-slate-500">Kind messages & exam empathy from fellow batchmates</p>
+            </div>
+            <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+              Safe Space Moderated
+            </span>
+          </div>
+
+          <div className="space-y-2.5 max-h-44 overflow-y-auto pr-1">
+            {peerPosts.map((post) => (
+              <div key={post.id} className="p-3 bg-slate-50 rounded-2xl border border-slate-200/70 text-xs space-y-1">
+                <div className="flex justify-between items-center text-[10px]">
+                  <span className="font-bold text-slate-900">{post.author}</span>
+                  <span className="text-slate-400">{post.time}</span>
+                </div>
+                <p className="text-slate-700 leading-relaxed">&ldquo;{post.content}&rdquo;</p>
+              </div>
+            ))}
+          </div>
+
+          <form onSubmit={handlePostPeerNote} className="flex gap-2 pt-1 border-t border-slate-100">
+            <input
+              type="text"
+              required
+              placeholder="Leave an encouraging anonymous note for a fellow student..."
+              value={newPeerPost}
+              onChange={(e) => setNewPeerPost(e.target.value)}
+              className="flex-1 px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-rose-400"
+            />
+            <button
+              type="submit"
+              className="px-3 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold flex items-center gap-1 shadow-xs"
+            >
+              <Send className="w-3.5 h-3.5" /> Post
+            </button>
+          </form>
         </div>
       </div>
 
