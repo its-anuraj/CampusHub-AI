@@ -18,7 +18,12 @@ import {
   GitBranch,
   Link as LinkIcon,
   Send,
-  UserPlus
+  UserPlus,
+  Bookmark,
+  BookmarkCheck,
+  Download,
+  CalendarPlus,
+  Share2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/lib/toastContext';
@@ -32,6 +37,89 @@ export default function StudentEventsPage() {
   const [ticketModal, setTicketModal] = useState<any>(null);
   const [teamModal, setTeamModal] = useState<any>(null);
   const [submitProjectModal, setSubmitProjectModal] = useState<any>(null);
+  const [bookmarkedIds, setBookmarkedIds] = useState<string[]>([]);
+  const [rsvpMap, setRsvpMap] = useState<Record<string, 'GOING' | 'INTERESTED' | 'NOT_GOING'>>({});
+
+  useEffect(() => {
+    try {
+      const savedBookmarks = localStorage.getItem('campushub_event_bookmarks');
+      if (savedBookmarks) setBookmarkedIds(JSON.parse(savedBookmarks));
+      const savedRsvp = localStorage.getItem('campushub_event_rsvp');
+      if (savedRsvp) setRsvpMap(JSON.parse(savedRsvp));
+    } catch {}
+  }, []);
+
+  const toggleBookmark = (eventId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setBookmarkedIds((prev) => {
+      const next = prev.includes(eventId) ? prev.filter((id) => id !== eventId) : [...prev, eventId];
+      try {
+        localStorage.setItem('campushub_event_bookmarks', JSON.stringify(next));
+      } catch {}
+      addToast({
+        title: next.includes(eventId) ? 'Event Bookmarked' : 'Bookmark Removed',
+        message: next.includes(eventId) ? 'Added to your saved events list.' : 'Removed from saved events.',
+        type: 'info'
+      });
+      return next;
+    });
+  };
+
+  const handleRsvpChange = (eventId: string, status: 'GOING' | 'INTERESTED' | 'NOT_GOING') => {
+    setRsvpMap((prev) => {
+      const next = { ...prev, [eventId]: status };
+      try {
+        localStorage.setItem('campushub_event_rsvp', JSON.stringify(next));
+      } catch {}
+      addToast({
+        title: `RSVP: ${status.replace('_', ' ')}`,
+        message: `Your status has been updated.`,
+        type: status === 'GOING' ? 'success' : 'info'
+      });
+      return next;
+    });
+  };
+
+  const exportToICal = (event: any) => {
+    const startDate = new Date(event.date);
+    const endDate = new Date(startDate.getTime() + 4 * 60 * 60 * 1000); // 4 hours default
+
+    const formatDate = (date: Date) => {
+      return date.toISOString().replace(/-|:|\.\d\d\d/g, '').slice(0, 15) + 'Z';
+    };
+
+    const icsContent = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//CampusHub AI//Events Portal//EN',
+      'CALSCALE:GREGORIAN',
+      'BEGIN:VEVENT',
+      `SUMMARY:${event.title.replace(/,/g, '\\,')}`,
+      `DESCRIPTION:${event.description.replace(/,/g, '\\,')}`,
+      `LOCATION:${event.venue.replace(/,/g, '\\,')}`,
+      `DTSTART:${formatDate(startDate)}`,
+      `DTEND:${formatDate(endDate)}`,
+      `STATUS:CONFIRMED`,
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${event.title.replace(/[^a-zA-Z0-9]/g, '_')}.ics`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+
+    addToast({
+      title: 'Calendar Event Downloaded',
+      message: 'Import the .ics file to your Google Calendar, Outlook, or Apple Calendar.',
+      type: 'success'
+    });
+  };
 
   // Form State for Project Submission
   const [projectTitle, setProjectTitle] = useState('');
@@ -104,9 +192,13 @@ export default function StudentEventsPage() {
     setProjectDesc('');
   };
 
-  const filtered = events.filter((e) =>
-    !search || e.title.toLowerCase().includes(search.toLowerCase()) || e.description.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = events.filter((e) => {
+    const matchesSearch = !search || e.title.toLowerCase().includes(search.toLowerCase()) || e.description.toLowerCase().includes(search.toLowerCase());
+    if (!matchesSearch) return false;
+    if (selectedCategory === 'BOOKMARKED') return bookmarkedIds.includes(e.id);
+    if (selectedCategory === 'MY_RSVP') return !!rsvpMap[e.id];
+    return true;
+  });
 
   return (
     <div className="space-y-6">
@@ -114,11 +206,11 @@ export default function StudentEventsPage() {
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-violet-700 via-purple-700 to-indigo-700 p-6 sm:p-8 text-white shadow-xl">
         <div className="relative z-10 max-w-3xl space-y-2">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-semibold uppercase tracking-wider">
-            <Trophy className="w-3.5 h-3.5 text-yellow-300" /> Hackathons & Tech Symposiums
+            <Trophy className="w-3.5 h-3.5 text-yellow-300" /> Hackathons, Tech & Cultural Portal
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Campus Events, Hackathons & Team Matcher</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Campus Events, Calendar & Team Matcher</h1>
           <p className="text-white/90 text-sm sm:text-base">
-            Discover national hackathons, form cross-department engineering teams, submit project repositories for jury evaluation, and claim QR entry passes.
+            Discover national hackathons, RSVP & sync events with your personal calendar, form project teams, and claim QR entry passes.
           </p>
         </div>
         <div className="absolute right-0 top-0 -mt-10 -mr-10 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none" />
@@ -132,6 +224,8 @@ export default function StudentEventsPage() {
             { id: 'HACKATHON', label: 'Hackathons' },
             { id: 'WORKSHOP', label: 'Workshops' },
             { id: 'CULTURAL', label: 'Cultural' },
+            { id: 'BOOKMARKED', label: `Saved (${bookmarkedIds.length})` },
+            { id: 'MY_RSVP', label: 'My RSVPs' },
           ].map((cat) => (
             <button
               key={cat.id}
@@ -162,73 +256,124 @@ export default function StudentEventsPage() {
 
       {/* Events Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filtered.map((event) => (
-          <div key={event.id} className="bg-card border border-border hover:border-purple-500/50 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between transition">
-            <div className="h-44 bg-muted relative overflow-hidden">
-              <img
-                src={event.bannerUrl || 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&auto=format&fit=crop&q=60'}
-                alt={event.title}
-                className="w-full h-full object-cover opacity-90"
-              />
-              <div className="absolute top-3 right-3">
-                <span className={cn(
-                  'text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider',
-                  event.category === 'HACKATHON' ? 'bg-purple-600 text-white shadow-xs' :
-                  event.category === 'WORKSHOP' ? 'bg-blue-600 text-white shadow-xs' : 'bg-rose-600 text-white shadow-xs'
-                )}>
-                  {event.category}
-                </span>
-              </div>
-            </div>
+        {filtered.map((event) => {
+          const isSaved = bookmarkedIds.includes(event.id);
+          const rsvpStatus = rsvpMap[event.id];
 
-            <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-              <div className="space-y-2">
-                <h3 className="text-base font-bold text-foreground leading-snug">{event.title}</h3>
-                <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">{event.description}</p>
+          return (
+            <div key={event.id} className="bg-card border border-border hover:border-purple-500/50 rounded-2xl overflow-hidden shadow-xs flex flex-col justify-between transition">
+              <div className="h-44 bg-muted relative overflow-hidden">
+                <img
+                  src={event.bannerUrl || 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&auto=format&fit=crop&q=60'}
+                  alt={event.title}
+                  className="w-full h-full object-cover opacity-90"
+                />
+                <div className="absolute top-3 left-3 flex gap-2">
+                  <button
+                    onClick={(e) => toggleBookmark(event.id, e)}
+                    className={cn(
+                      "p-1.5 rounded-full backdrop-blur-md transition shadow-md",
+                      isSaved ? "bg-purple-600 text-white" : "bg-black/40 text-white hover:bg-black/60"
+                    )}
+                    title={isSaved ? "Remove Bookmark" : "Save Event"}
+                  >
+                    {isSaved ? <BookmarkCheck className="w-4 h-4" /> : <Bookmark className="w-4 h-4" />}
+                  </button>
+                  <button
+                    onClick={() => exportToICal(event)}
+                    className="p-1.5 rounded-full bg-black/40 text-white hover:bg-black/60 backdrop-blur-md transition shadow-md"
+                    title="Export to Calendar (.ics)"
+                  >
+                    <CalendarPlus className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="absolute top-3 right-3">
+                  <span className={cn(
+                    'text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider',
+                    event.category === 'HACKATHON' ? 'bg-purple-600 text-white shadow-xs' :
+                    event.category === 'WORKSHOP' ? 'bg-blue-600 text-white shadow-xs' : 'bg-rose-600 text-white shadow-xs'
+                  )}>
+                    {event.category}
+                  </span>
+                </div>
               </div>
 
-              <div className="space-y-2 text-xs text-muted-foreground border-t border-border/60 pt-3">
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-3.5 h-3.5 text-purple-500" />
-                  <span>{new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} • {event.time}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-3.5 h-3.5 text-emerald-500" />
-                  <span>{event.venue}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Users className="w-3.5 h-3.5 text-amber-500" />
-                  <span>{event.registered} / {event.maxCapacity} Registered</span>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-2 pt-2 border-t border-border/60">
-                {event.category === 'HACKATHON' && (
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => setTeamModal(event)}
-                      className="flex-1 py-1.5 rounded-xl border border-border hover:bg-muted text-[11px] font-semibold flex items-center justify-center gap-1 transition"
-                    >
-                      <UserPlus className="w-3 h-3 text-purple-500" /> Team Finder
-                    </button>
-                    <button
-                      onClick={() => setSubmitProjectModal(event)}
-                      className="flex-1 py-1.5 rounded-xl border border-border hover:bg-muted text-[11px] font-semibold flex items-center justify-center gap-1 transition"
-                    >
-                      <Code2 className="w-3 h-3 text-emerald-500" /> Submit Project
-                    </button>
+              <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-base font-bold text-foreground leading-snug">{event.title}</h3>
                   </div>
-                )}
-                <button
-                  onClick={() => handleRegister(event)}
-                  className="w-full py-2 px-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold shadow-md shadow-purple-500/20 flex items-center justify-center gap-1.5 transition"
-                >
-                  <Ticket className="w-3.5 h-3.5" /> Claim QR Entry Pass
-                </button>
+                  <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">{event.description}</p>
+                </div>
+
+                <div className="space-y-2 text-xs text-muted-foreground border-t border-border/60 pt-3">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-3.5 h-3.5 text-purple-500" />
+                    <span>{new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} • {event.time}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-3.5 h-3.5 text-emerald-500" />
+                    <span>{event.venue}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Users className="w-3.5 h-3.5 text-amber-500" />
+                    <span>{event.registered} / {event.maxCapacity} Registered</span>
+                  </div>
+                </div>
+
+                {/* RSVP Options */}
+                <div className="bg-muted/40 p-2.5 rounded-xl border border-border/70 space-y-1.5">
+                  <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Your RSVP Status</span>
+                  <div className="grid grid-cols-3 gap-1.5">
+                    {(['GOING', 'INTERESTED', 'NOT_GOING'] as const).map((status) => (
+                      <button
+                        key={status}
+                        onClick={() => handleRsvpChange(event.id, status)}
+                        className={cn(
+                          "py-1 px-1.5 rounded-lg text-[10px] font-semibold border transition text-center",
+                          rsvpStatus === status
+                            ? status === 'GOING'
+                              ? "bg-emerald-500/20 text-emerald-600 border-emerald-500/40 dark:text-emerald-400"
+                              : status === 'INTERESTED'
+                              ? "bg-amber-500/20 text-amber-600 border-amber-500/40 dark:text-amber-400"
+                              : "bg-rose-500/20 text-rose-600 border-rose-500/40 dark:text-rose-400"
+                            : "border-border text-muted-foreground hover:bg-muted"
+                        )}
+                      >
+                        {status === 'GOING' ? '✓ Going' : status === 'INTERESTED' ? '⭐ Interested' : '✗ Decline'}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-2 pt-2 border-t border-border/60">
+                  {event.category === 'HACKATHON' && (
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setTeamModal(event)}
+                        className="flex-1 py-1.5 rounded-xl border border-border hover:bg-muted text-[11px] font-semibold flex items-center justify-center gap-1 transition"
+                      >
+                        <UserPlus className="w-3 h-3 text-purple-500" /> Team Finder
+                      </button>
+                      <button
+                        onClick={() => setSubmitProjectModal(event)}
+                        className="flex-1 py-1.5 rounded-xl border border-border hover:bg-muted text-[11px] font-semibold flex items-center justify-center gap-1 transition"
+                      >
+                        <Code2 className="w-3 h-3 text-emerald-500" /> Submit Project
+                      </button>
+                    </div>
+                  )}
+                  <button
+                    onClick={() => handleRegister(event)}
+                    className="w-full py-2 px-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold shadow-md shadow-purple-500/20 flex items-center justify-center gap-1.5 transition"
+                  >
+                    <Ticket className="w-3.5 h-3.5" /> Claim QR Entry Pass
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Ticket Pass Modal */}
