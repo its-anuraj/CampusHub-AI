@@ -2,6 +2,49 @@
 
 All notable changes to the CampusHub AI ecosystem are documented in this file.
 
+## [3.2.0] - 2026-08-27
+
+### 🎓 Student Ecosystem Enhancements
+- **AI Code Plagiarism & Quality Auditor (`/dashboard/student/assignments/code-checker`, `/api/ai/code-check`)**: Syntax verification, cyclomatic complexity estimation, and plagiarism similarity scoring.
+- **Virtual Science & Engineering Labs (`/dashboard/student/labs`, `/api/labs/simulations`)**: Interactive circuit oscilloscope and physics mechanics mathematical simulators.
+- **Peer-to-Peer Study Pods & Virtual Rooms (`/dashboard/student/study-groups`, `/api/study-groups`)**: 1-click video study pods with daily revision streak counters.
+- **Hostel Laundry Token Booking (`/dashboard/student/hostel/laundry`, `/api/hostel/laundry`)**: IoT washing machine status tracker and digital QR token vouchers.
+- **Campus E-Cycle Sharing (`/dashboard/student/transport/bikes`, `/api/transport/bikes`)**: Green mobility bicycle unlock console and carbon offset counters.
+- **Campus Personal Budget Manager (`/dashboard/student/budget`, `/api/student-budget`)**: Expense category breakdown and monthly budget caps.
+- **Alumni Job Referral Board (`/dashboard/student/alumni/referrals`, `/api/alumni/referrals`)**: Direct InMail referral outreach to FAANG alumni.
+- **W3C Cryptographic Micro-Credentials (`/dashboard/student/certificates/export`, `lib/credentialVerifier.ts`)**: OpenBadges 3.0 export with cryptographic root authority signatures.
+- **Hackathon Live Audience Voting & Q&A Wall (`/dashboard/student/events/live-poll`, `/api/events/live-poll`)**: Real-time audience voting arena and question upvoting.
+- **AI Lost & Found Claim Matcher (`/dashboard/student/lost-found/claim-tracker`, `/api/lost-found/claims`)**: Ownership evidence verification and custody handover tracking.
+
+### 🔬 Faculty Academic Operations
+- **AI Exam Question Paper Generator (`/dashboard/faculty/exam-generator`, `/api/ai/exam-generator`)**: Bloom's taxonomy balanced university question sheets.
+- **Rubric-Based Assignment Evaluation Desk (`/dashboard/faculty/assignments/rubrics`, `/api/assignments/rubrics`)**: Standardized 5-criterion grading matrix.
+- **1-on-1 Office Hours Scheduler (`/dashboard/faculty/office-hours`, `/api/faculty/office-hours`)**: Consultation availability publisher and Google Meet integration.
+- **NBA & NAAC Accreditation Radar (`/dashboard/faculty/accreditation`, `/api/faculty/accreditation`)**: Program Outcome (PO1 - PO12) attainment calculation.
+- **Lab Equipment Calibration Logger (`/dashboard/faculty/labs/maintenance`, `/api/labs/maintenance`)**: Preventative maintenance log sheets and calibration schedules.
+
+### 🏛️ Admin Governance & Campus IoT
+- **Campus Sustainability & Solar Telemetry (`/dashboard/admin/sustainability`, `/api/admin/sustainability`)**: Real-time rooftop solar generation and building net zero audits.
+- **Visitor Pass Management & ANPR Parking (`/dashboard/admin/security/visitors`, `/api/security/visitors`)**: Automated number plate recognition and host authorizations.
+- **AI Timetable Conflict Optimizer (`/dashboard/admin/timetable-optimizer`, `/api/admin/timetable`)**: Automated professor double-booking and room constraint solver.
+- **Classroom IoT Environment & Air Quality (`/dashboard/admin/iot-sensors`, `/api/admin/iot`)**: CO2 ppm, temperature, and automated HVAC triggers.
+- **Alumni Endowment Trust Fund (`/dashboard/admin/endowment`, `/api/admin/endowment`)**: Institutional endowment grants and fellowship allocations.
+- **Cyber Forensic Audit Log Filter (`/dashboard/admin/audit-inspector`, `/api/admin/audit-logs`)**: Immutable RBAC activity log inspector.
+
+### 👨‍👩‍👧 Parent Engagement & Child Safety
+- **Parent-Teacher Meeting Video Booking (`/dashboard/parent/ptm`, `/api/parent/ptm`)**: 1-on-1 progress consultations with mentors.
+- **Student Safety Geofence & Check-In Timeline (`/dashboard/parent/safety`, `/api/parent/safety`)**: Turnstile logs and curfew compliance alerts.
+- **Hostel Mess Nutrition & Dietary Preferences (`/dashboard/parent/mess`, `/api/parent/mess`)**: Daily meal nutrition rater and allergy preferences.
+
+### 🧩 Shared Components & Infrastructure
+- **Web Audio Sound Effects Engine (`lib/soundEffects.ts`, `components/shared/SoundEffectsToggle.tsx`)**: Lightweight synthesized audio feedback.
+- **Offline Data Sync Engine (`lib/offlineSync.ts`, `components/shared/OfflineSyncIndicator.tsx`)**: Offline-first mutation queue with automatic online sync.
+- **Official Academic Transcript Generator (`lib/transcriptGenerator.ts`, `/api/certificates/generate-pdf`)**: Vector printable transcript exporter.
+- **Server Latency Profiler & System Diagnostics (`lib/profiler.ts`, `lib/systemDiagnostics.ts`)**: Real-time latency benchmarking and memory telemetry.
+- **Automated API Verification Suite (`scripts/verify-endpoints.ts`)**: 35/35 endpoint automated assertions with 100% pass rate.
+
+---
+
 ## [3.1.0] - 2026-08-26
 
 ### 🌐 Global Accessibility & Universal Inclusivity
