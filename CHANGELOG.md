@@ -2,6 +2,47 @@
 
 All notable changes to the CampusHub AI ecosystem are documented in this file.
 
+## [3.3.0] - 2026-08-28
+
+### 🎓 Student Ecosystem Innovations
+- **AI Research Paper Summarizer & Citation Generator (`/dashboard/student/research-ai`, `/api/ai/research-summarizer`)**: Distill dense academic PDFs, generate BibTeX/APA/IEEE citations, and extract key mathematical methodology contributions.
+- **Mock Technical Interview AI Simulator (`/dashboard/student/placement/mock-interview`, `/api/ai/mock-interview`)**: Voice-guided DSA and System Design mock technical interviews with instant bar-raiser scorecard grading.
+- **Campus Ride-Sharing & Carpool Pooling Coordinator (`/dashboard/student/transport/carpool`, `/api/transport/carpool`)**: Student carpool coordination, verified identity badges, cost-sharing, and women-only ride filters.
+- **Peer Tutoring & Skill Exchange Marketplace (`/dashboard/student/tutoring`, `/api/tutoring`)**: Connect with senior scholars for 1-on-1 concept clearing using campus knowledge tokens.
+- **Campus Printing Kiosk & Cloud Document Queue (`/dashboard/student/printing`, `/api/printing`)**: Cloud print spooling with secure 4-digit pickup PIN release across library and department kiosks.
+- **Virtual Dorm Room Decorator & Roommate Chore Wheel (`/dashboard/student/hostel/chores`, `/api/hostel/chores`)**: Rotating chore duty wheels, streak rewards, and shared room karma points.
+- **Campus Gym, Fitness Center & Sports Court Hub (`/dashboard/student/sports`, `/api/sports`)**: Real-time court occupancy telemetry, floodlit badminton/cricket slot reservation, and turnstile QR entry passes.
+
+### 🔬 Faculty Academic & Research Operations
+- **Grant Proposal & Sponsored Research Project Tracker (`/dashboard/faculty/research-grants`, `/api/faculty/grants`)**: DST, SERB, AICTE funded grant timeline management, budget burn-down, and milestone audits.
+- **Teaching Assistant (TA) Workload Allocator (`/dashboard/faculty/ta-allocator`, `/api/faculty/ta`)**: M.Tech and Ph.D. teaching assistant duty scheduling, lab supervision hours, and grading quotas.
+- **Continuous Internal Evaluation (CIE) & Attainment Matrix (`/dashboard/faculty/marks/cie-analyzer`, `/api/faculty/cie`)**: Course Outcome (CO1 - CO5) NBA attainment computation across internal tests and quizzes.
+- **Guest Lecture & Industry Speaker Invitation Portal (`/dashboard/faculty/guest-lectures`, `/api/faculty/guest-lectures`)**: Industry speaker pipeline, auditorium slot requests, and Dean honorarium approvals.
+- **Student At-Risk Early Warning System & Retention Radar (`/dashboard/faculty/early-warning`, `/api/faculty/early-warning`)**: Multi-factor predictive risk scoring combining attendance dips, missing labs, and LMS inactivity.
+- **Faculty Appraisal (PBAS / CAS) Portfolio & API Score (`/dashboard/faculty/appraisal`, `/api/faculty/appraisal`)**: UGC Career Advancement Scheme (CAS) points calculator across Teaching, Governance, and Scopus publications.
+- **Patent & Intellectual Property (IPR) Management Desk (`/dashboard/faculty/ipr`, `/api/faculty/ipr`)**: Invention disclosure filings, IPO patent lifecycle tracking, and university tech-transfer licensing.
+
+### 🏛️ Admin Governance, Smart Grid & Safety
+- **Campus EV Charging Station Grid & Fleet Management (`/dashboard/admin/ev-charging`, `/api/admin/ev-charging`)**: Real-time OCPP 2.0.1 charger telemetry, campus shuttle battery health, and solar load balancing.
+- **Automated Procurement & E-Tendering Vendor Management (`/dashboard/admin/procurement`, `/api/admin/procurement`)**: Capital requisition approvals, GeM vendor empanelment, and L1 comparative statements.
+- **Smart Water Management & Rainwater Harvesting Telemetry (`/dashboard/admin/water-management`, `/api/admin/water`)**: Overhead reservoir ultrasonic levels, rainwater aquifer sumps, and drinking water TDS/pH sensors.
+- **Disaster & Emergency Broadcast Siren Dispatcher (`/dashboard/admin/emergency-broadcast`, `/api/admin/emergency-broadcast`)**: Multi-channel broadcast relay to mobile push, SMS, PA horn sirens, and digital signage.
+- **Campus Key & Smart RFID Lock Access Control (`/dashboard/admin/rfid-access`, `/api/admin/rfid`)**: Biometric turnstile provisioning, server room dual-custody access, and momentary remote strike pulsing.
+- **University Ranking & NIRF / QS Benchmark Dashboard (`/dashboard/admin/rankings`, `/api/admin/rankings`)**: Institutional 5-pillar NIRF score tracking, graduation outcomes, and NAAC A++ compliance.
+
+### 👨‍👩‍👧 Parent Portal & Family Connect
+- **Student Healthcare, Medical History & Clinic Logs (`/dashboard/parent/health`, `/api/parent/health`)**: Dispensary visit logs, vitals, prescribed medicines, and institutional cashless health insurance.
+- **Fee Payment Installment Plan & UPI Auto-Debit (`/dashboard/parent/fee-installments`, `/api/parent/fee-installments`)**: Zero-interest 3-part semester split installment scheduler with automated UPI e-mandates.
+- **Campus Event Livestream & Virtual Convocation Seats (`/dashboard/parent/livestreams`, `/api/parent/livestreams`)**: 4K UHD ceremony live feeds with reserved virtual seats and big-screen cheer tickers.
+
+### 📱 Mobile Experience & Infrastructure
+- **Enhanced Mobile Dark Tokens & Haptics (`apps/mobile`)**: Upgraded color tokens, full CSS module compatibility, and clean layout structure.
+- **Student Quick Action Sheet (`apps/mobile/src/components/QuickActionSheet.tsx`)**: Quick access widgets for ID card, mess tokens, and shuttle radar.
+- **Campus Real-Time Event Bus (`lib/eventBus.ts`, `components/shared/LiveEventStreamWidget.tsx`)**: Lightweight pub-sub event dispatcher and non-intrusive floating event toaster.
+- **Expanded 60-Endpoint Automated Verification Suite (`scripts/verify-endpoints.ts`)**: 100% automated assertion pass rate across all micro-services.
+
+---
+
 ## [3.2.0] - 2026-08-27
 
 ### 🎓 Student Ecosystem Enhancements

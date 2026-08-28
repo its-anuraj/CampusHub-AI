@@ -844,6 +844,40 @@ CampusHub_AI/
 | Database Query Time | < 50ms |
 | Mobile App Load | < 2s |
 
+## 🚀 CampusHub AI v3.3.0 Release Specifications
+
+### Student Ecosystem
+- **AI Research Paper Summarizer (`/dashboard/student/research-ai`)**: Distills dense PDFs, extracts key contributions, and formats BibTeX/APA/IEEE citations.
+- **Mock Technical Interview Simulator (`/dashboard/student/placement/mock-interview`)**: Voice-guided DSA/System Design interview arena with automated rubric scorecards.
+- **Campus Ride-Sharing Coordinator (`/dashboard/student/transport/carpool`)**: Verified student carpool pool matching and fuel cost splitting.
+- **Peer Tutoring Marketplace (`/dashboard/student/tutoring`)**: 1-on-1 concept clearing sessions using campus knowledge credits.
+- **Campus Printing Kiosk Spooler (`/dashboard/student/printing`)**: Cloud print queue with 4-digit PIN kiosk pickup.
+- **Roommate Chore Wheel (`/dashboard/student/hostel/chores`)**: Automated weekly rotating chore duty and dorm karma pool.
+- **Sports Facility Reservation (`/dashboard/student/sports`)**: Floodlit turf/badminton court slots with instant QR passes.
+
+### Faculty Suite
+- **Sponsored Research Grants (`/dashboard/faculty/research-grants`)**: DST/SERB funding lifecycle and milestone burn-down tracker.
+- **Teaching Assistant Allocator (`/dashboard/faculty/ta-allocator`)**: M.Tech/Ph.D. TA duty roster and grading workload scheduler.
+- **CIE Outcome Attainment Matrix (`/dashboard/faculty/marks/cie-analyzer`)**: Course Outcome NBA attainment calculator.
+- **Guest Lecture Desk (`/dashboard/faculty/guest-lectures`)**: Industry speaker pipeline and Dean honorarium approvals.
+- **Retention Early Warning System (`/dashboard/faculty/early-warning`)**: Multi-factor student at-risk predictive radar.
+- **Faculty PBAS/CAS Appraisal (`/dashboard/faculty/appraisal`)**: UGC Academic Performance Indicator (API) calculator.
+- **IPR & Patent Filing Desk (`/dashboard/faculty/ipr`)**: Intellectual property disclosures and IPO lifecycle tracking.
+
+### Admin & Smart Campus Grid
+- **EV Fleet & Charging Grid (`/dashboard/admin/ev-charging`)**: OCPP 2.0.1 charger telemetry and solar micro-grid integration.
+- **E-Tendering & Procurement (`/dashboard/admin/procurement`)**: Capital requisition approvals and GeM L1 vendor evaluation.
+- **Smart Water Management (`/dashboard/admin/water-management`)**: Overhead reservoir fill telemetry and rainwater harvesting sumps.
+- **Emergency Siren Dispatcher (`/dashboard/admin/emergency-broadcast`)**: Multi-channel broadcast to push, SMS, PA horn sirens, and digital signage.
+- **RFID Smart Lock Access (`/dashboard/admin/rfid-access`)**: Biometric lab turnstiles and momentary remote door pulse.
+- **NIRF / QS Rankings Radar (`/dashboard/admin/rankings`)**: 5-pillar institutional score tracking and benchmarking.
+
+### Parent & Mobile Connect
+- **Student Medical History (`/dashboard/parent/health`)**: Dispensary visit logs, vitals, prescriptions, and health insurance.
+- **Fee Installment Scheduler (`/dashboard/parent/fee-installments`)**: Zero-interest 3-part split with automated UPI e-mandates.
+- **Convocation Livestreams (`/dashboard/parent/livestreams`)**: 4K UHD event streaming with virtual seats and cheer tickers.
+- **Mobile Quick Actions (`apps/mobile/src/components/QuickActionSheet.tsx`)**: Quick access widgets for ID pass, mess token, and shuttle radar.
+
 ---
 
 ## 🤝 Contributing
