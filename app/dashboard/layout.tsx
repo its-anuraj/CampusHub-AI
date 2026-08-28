@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/shared/Sidebar';
 import Header from '@/components/shared/Header';
 import AccessibilityToolbar from '@/components/shared/AccessibilityToolbar';
+import { LiveEventStreamWidget } from '@/components/shared/LiveEventStreamWidget';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -66,6 +67,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       {/* Floating Global Accessibility Suite */}
       <AccessibilityToolbar />
+      {/* Real-time Campus Event Stream Widget */}
+      <LiveEventStreamWidget />
     </div>
   );
 }
