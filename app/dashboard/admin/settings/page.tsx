@@ -20,7 +20,8 @@ import {
   ShieldAlert,
   Copy,
   Trash2,
-  X
+  X,
+  Smartphone
 } from 'lucide-react';
 import { useToast } from '@/lib/toastContext';
 

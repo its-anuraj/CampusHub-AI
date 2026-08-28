@@ -6,10 +6,6 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { skills = [], projects = [], experience = [], targetRole = 'Software Engineer' } = body;
 
-    // Calculate intelligent ATS score
-    let score = 50;
-    const recommendations: string[] = [];
-
     // Target role specific keyword requirements
     const roleKeywordsMap: Record<string, string[]> = {
       'Full Stack Engineer': ['react', 'next.js', 'typescript', 'node.js', 'sql', 'docker', 'tailwind', 'graphql', 'redis', 'ci/cd'],

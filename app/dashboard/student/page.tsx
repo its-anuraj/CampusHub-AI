@@ -8,7 +8,7 @@ import {
   BookOpen, ClipboardList, Bell, CheckCircle2, Calendar, Star, Sparkles, ArrowUpRight, Clock, Loader2, Trophy, Award, Flame, Zap, Check, Crown
 } from 'lucide-react';
 import Link from 'next/link';
-import { formatTime } from '@/lib/utils';
+import { formatTime, cn } from '@/lib/utils';
 import { useToast } from '@/lib/toastContext';
 
 interface DashboardData {

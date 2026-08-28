@@ -344,7 +344,7 @@ export default function StudentLibraryPage() {
             );
           })}
         </div>
-      ) : (
+      ) : activeTab === 'ISSUED' ? (
         /* Issued Books View */
         <div className="space-y-4">
           {issuedBooks.length === 0 ? (
