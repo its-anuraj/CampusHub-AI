@@ -86,10 +86,22 @@ export default function StudentDashboardPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200/60 pb-5">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-            {greeting}, {user?.name?.split(' ')[0] || 'Student'}
-          </h1>
-          <p className="text-xs text-slate-500 mt-1">Computer Science Engineering • Semester 5 • Section A</p>
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+              {greeting}, {user?.name?.split(' ')[0] || 'Student'}
+            </h1>
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 uppercase flex items-center gap-1">
+              <Check className="w-3 h-3" /> {user?.studentProfile?.verificationStatus || 'VERIFIED'}
+            </span>
+          </div>
+          <p className="text-xs text-slate-500 mt-1 flex items-center gap-2">
+            <span>{user?.studentProfile?.department || 'CSE'}</span> • 
+            <span>Year {user?.studentProfile?.year || 3} (Sem {user?.studentProfile?.semester || 5})</span> • 
+            <span className="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-mono font-bold">
+              Section {user?.studentProfile?.section || 'A'}
+            </span> •
+            <span className="text-slate-400">Mentor: {user?.studentProfile?.classAdvisor || 'Dr. Priya Sharma'}</span>
+          </p>
         </div>
         <div className="bg-white border border-slate-200 rounded-lg px-3 py-1.5 flex items-center gap-2 text-xs font-medium text-slate-600 shadow-xs">
           <Calendar className="w-3.5 h-3.5 text-blue-600" />

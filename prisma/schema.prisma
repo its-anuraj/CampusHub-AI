@@ -15,7 +15,8 @@ model User {
   role      String   // ADMIN, FACULTY, STUDENT, PARENT
   avatar    String?
   phone     String?
-  status    String   @default("ACTIVE") // ACTIVE, INACTIVE
+  status    String   @default("ACTIVE") // ACTIVE, INACTIVE, PENDING
+  verificationStatus String @default("VERIFIED") // VERIFIED, PENDING_APPROVAL, REJECTED
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -27,25 +28,30 @@ model User {
 }
 
 model Student {
-  id           String   @id @default(uuid())
-  userId       String   @unique
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  rollNumber   String   @unique
-  department   String
-  year         Int      @default(3)
-  semester     Int      @default(5)
-  section      String   @default("A")
-  cgpa         Float    @default(8.2)
-  backlogs     Int      @default(0)
-  parentId     String?
-  parent       Parent?  @relation(fields: [parentId], references: [id])
+  id                 String   @id @default(uuid())
+  userId             String   @unique
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rollNumber         String   @unique
+  admissionNumber    String?  @unique
+  department         String
+  year               Int      @default(3)
+  semester           Int      @default(5)
+  section            String   @default("A")
+  cgpa               Float    @default(8.2)
+  backlogs           Int      @default(0)
+  academicStatus     String   @default("REGULAR") // REGULAR, YEAR_BACK, DETAINED, PROMOTED
+  verificationStatus String   @default("VERIFIED") // VERIFIED, PENDING_APPROVAL, REJECTED
+  classAdvisor       String?  @default("Dr. Priya Sharma")
+  parentId           String?
+  parent             Parent?  @relation(fields: [parentId], references: [id])
 
-  submissions  Submission[]
-  attendance   Attendance[]
-  applications PlacementApplication[]
-  fees         FeeRecord[]
-  complaints   Complaint[]
-  courses      CourseEnrollment[]
+  submissions        Submission[]
+  attendance         Attendance[]
+  applications       PlacementApplication[]
+  fees               FeeRecord[]
+  complaints         Complaint[]
+  courses            CourseEnrollment[]
+  academicHistories  AcademicHistory[]
 }
 
 model Faculty {
@@ -457,6 +463,72 @@ model ParentFeedback {
   status      String   @default("PENDING") // PENDING, INVESTIGATING, RESOLVED
   response    String?
   createdAt   DateTime @default(now())
+}
+
+// --- Pre-Approved Admission Master Roster ---
+model AdmissionMaster {
+  id              String   @id @default(uuid())
+  admissionNumber String   @unique // Official College Roll / Admission No (e.g. CS2026-001)
+  studentName     String
+  department      String   // CSE, IT, ECE, MECH, CIVIL
+  admissionYear   Int      @default(2026)
+  initialYear     Int      @default(1)
+  initialSemester Int      @default(1)
+  initialSection  String   @default("A")
+  guardianPhone   String?
+  guardianName    String?
+  isClaimed       Boolean  @default(false)
+  claimedUserId   String?  @unique
+  createdAt       DateTime @default(now())
+}
+
+// --- Dynamic Academic Sessions & Sections ---
+model AcademicSession {
+  id          String         @id @default(uuid())
+  sessionName String         // e.g. "2026-2027 ODD SEMESTER"
+  startDate   DateTime
+  endDate     DateTime
+  isCurrent   Boolean        @default(true)
+  sections    ClassSection[]
+}
+
+model ClassSection {
+  id              String                 @id @default(uuid())
+  sessionId       String
+  session         AcademicSession        @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  department      String                 // CSE
+  year            Int                    // 1, 2, 3, 4
+  semester        Int                    // 1, 2, 3, 4, 5, 6, 7, 8
+  sectionName     String                 // "A", "B", "C"
+  classAdvisorId  String?                // Faculty Mentor
+  capacity        Int                    @default(60)
+  courseMappings  SectionCourseFaculty[]
+}
+
+model SectionCourseFaculty {
+  id             String       @id @default(uuid())
+  classSectionId String
+  classSection   ClassSection @relation(fields: [classSectionId], references: [id], onDelete: Cascade)
+  courseCode     String       // e.g. CS501
+  courseName     String       // Data Structures & Algorithms
+  facultyId      String       // Assigned Faculty User ID
+  facultyName    String
+}
+
+// --- Historical Transcript & Promotion Audit Trail ---
+model AcademicHistory {
+  id              String   @id @default(uuid())
+  studentId       String
+  student         Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  academicYear    String   // e.g. "2025-2026"
+  semester        Int      // 1
+  year            Int      // 1
+  section         String   // "A"
+  sgpa            Float    @default(8.0)
+  backlogsCount   Int      @default(0)
+  attendancePct   Float    @default(85.0)
+  promotionStatus String   // PROMOTED, YEAR_BACK, DETAINED, COMPLETED
+  createdAt       DateTime @default(now())
 }
 
 
