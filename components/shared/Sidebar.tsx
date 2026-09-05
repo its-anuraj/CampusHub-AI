@@ -123,6 +123,8 @@ const adminNav: NavGroup[] = [
   {
     label: 'Administration',
     items: [
+      { label: 'Semester Progression', href: '/dashboard/admin/promotion', icon: Sparkles, badge: 'New' },
+      { label: 'Admission Verification', href: '/dashboard/admin/verification', icon: ShieldCheck },
       { label: 'User Directory', href: '/dashboard/admin/users', icon: UserCog },
       { label: 'Departments', href: '/dashboard/admin/departments', icon: Building2 },
       { label: 'Master Courses', href: '/dashboard/admin/courses', icon: BookOpen },
