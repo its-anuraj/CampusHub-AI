@@ -1,109 +1,148 @@
-# 🎓 CampusHub AI — Autonomous Campus Operating System & Digitization Suite
+<div align="center">
 
-[![Next.js](https://img.shields.io/badge/Next.js-16.3%20(Turbopack)-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19.2-blue?style=for-the-badge&logo=react)](https://reactjs.org/)
-[![Expo](https://img.shields.io/badge/Expo-SDK%2054-000020?style=for-the-badge&logo=expo)](https://expo.dev/)
-[![React Native](https://img.shields.io/badge/React%20Native-0.81-61DAFB?style=for-the-badge&logo=react)](https://reactnative.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
-[![Prisma](https://img.shields.io/badge/Prisma-5.22-2D3748?style=for-the-badge&logo=prisma)](https://www.prisma.io/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4.0-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
+  <img src="public/logo-dark.png" alt="CampusHub AI Logo" width="130" style="border-radius: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);" />
 
-> **"A Smarter Campus, Brighter You."**  
-> An enterprise-grade, cloud-native Higher Education Campus Operating System built to digitize, unify, and automate academic and administrative workflows across **Web, PWA, and Mobile (iOS & Android)**.
+  # 🎓 CampusHub AI
+  ### **Autonomous Higher Education Operating System & Digitization Suite**
+  *A unified, cloud-native platform connecting Students, Faculty, University Directorate, and Parents across Web and Mobile.*
+
+  <p align="center">
+    <a href="#-targeted-audience--who-is-this-for"><img src="https://img.shields.io/badge/Platform-Web%20%2B%20Mobile%20(iOS%20%26%20Android)-0284C7?style=for-the-badge&logo=react" alt="Platform" /></a>
+    <a href="#-tech-stack-architecture"><img src="https://img.shields.io/badge/Next.js-16.3%20Turbopack-000000?style=for-the-badge&logo=next.js" alt="Next.js" /></a>
+    <a href="#-tech-stack-architecture"><img src="https://img.shields.io/badge/Expo-SDK%2054-000020?style=for-the-badge&logo=expo" alt="Expo" /></a>
+    <a href="#-tech-stack-architecture"><img src="https://img.shields.io/badge/React%20Native-0.81-61DAFB?style=for-the-badge&logo=react" alt="React Native" /></a>
+    <a href="#-enterprise-security--access-control"><img src="https://img.shields.io/badge/Security-Zero%20Trust%20RBAC-10B981?style=for-the-badge&logo=auth0" alt="Security" /></a>
+    <a href="#-automated-testing-quality-metrics"><img src="https://img.shields.io/badge/Tests-62%2F62%20Passed%20(100%25)-brightgreen?style=for-the-badge" alt="Tests" /></a>
+  </p>
+
+  <p align="center">
+    <b>"A Smarter Campus, Brighter You."</b> • <i>Modeled for KCC Institute of Technology & Management (KCCITM) Digitization</i>
+  </p>
+
+  <p align="center">
+    <a href="#-quick-demo-access-accounts">🔑 Demo Accounts</a> •
+    <a href="#-core-modules--workflows">⚡ Key Features</a> •
+    <a href="#-targeted-audience--who-is-this-for">👥 Target Audience</a> •
+    <a href="#-local-setup--quickstart">🚀 Run Locally</a> •
+    <a href="#-cloud-deployment--apk-build">🌐 Vercel & APK Guide</a>
+  </p>
+
+</div>
 
 ---
 
-## 🏛️ Institutional Context & Project Vision
+## 🧭 What is CampusHub AI? (At a Glance)
 
-**CampusHub AI** is an end-to-end higher education digitization platform designed specifically around the operational realities of engineering and management colleges (modeled for **KCC Institute of Technology & Management, Greater Noida**).
+Traditional higher education institutions suffer from **fragmented communication, paper-based passes, un-tracked student stress, and isolated department data**.
 
-Currently operating on a comprehensive, realistic prototype & mock telemetry layer, this platform is engineered with a **zero-trust, multi-tier institutional hierarchy** to transition directly into live college deployment:
-* **Central College Directorate**: Direct executive authority over department heads, staff appointments, and university-wide real-time attendance telemetry.
-* **Department Administration**: Department leads (Placement Cell, Library, Accounts, Exam Cell, Registrar, Security) managing faculty authorizations and operations.
-* **Faculty & Mentors**: Scoped strictly to assigned student sections, grading rubrics, attendance, and direct parent communication.
-* **Students & Parents**: Personalized learning companion, digital turnstile passes, fee ledgers, and confidential well-being check-ins.
+**CampusHub AI** replaces legacy siloed tools with **One Unified Digital Operating System**:
+* 🌐 **Full-Stack Web Portal:** High-performance Next.js 16 Web Dashboard for deep administrative and academic workflows.
+* 📱 **Native Mobile Application:** Cross-platform React Native (Expo SDK 54) App for instant campus access on iOS and Android.
+* 🛡️ **Zero-Trust Role Hierarchy:** Strictly partitioned data access across 4 distinct stakeholders (Director, Faculty, Students, Parents).
+* 🧠 **AI-Powered Campus Care:** 1:1 confidential emotional well-being check-ins, automated Bloom's rubric generation, and smart attendance telemetry.
 
 ---
 
-## ✨ System Architecture & Key Innovation Highlights
+## 👥 Targeted Audience & Who Is This For?
+
+<div align="center">
+
+| Persona | Core Focus & Responsibilities | Key Capabilities in CampusHub AI |
+| :--- | :--- | :--- |
+| <img src="https://api.iconify.design/lucide:crown.svg" width="24"/> <br/> **College Director** | **Institutional Governance & Oversight** | Real-time teacher attendance by department, student section attendance matrix, appointment & approval of department admin leads. |
+| <img src="https://api.iconify.design/lucide:shield.svg" width="24"/> <br/> **Admin Staff** | **Departmental Operations & Records** | Placement officer (TPO) drives, Librarian catalogue, Finance fee dues ledgers, Registrar admission approvals. |
+| <img src="https://api.iconify.design/lucide:book-open.svg" width="24"/> <br/> **Faculty / HODs** | **Classroom Delivery & Mentorship** | Scoped student directory, 1-tap class attendance, internal CIE marks grading, **Direct Parent Contact Desk** with calling windows. |
+| <img src="https://api.iconify.design/lucide:graduation-cap.svg" width="24"/> <br/> **Students** | **Learning, Career & Campus Life** | Live timetable, digital ID card, **1:1 AI Student Psychologist**, assignments desk, hostel gate outpass, canteen meal pre-orders. |
+| <img src="https://api.iconify.design/lucide:users.svg" width="24"/> <br/> **Parents** | **Ward Tracking & Fee Management** | Real-time ward attendance (75% cutoff alerts), subject marksheets, 0% EMI fee planner, digital gate movement logs. |
+
+</div>
+
+---
+
+## 🌐 Web & Mobile Seamless Parity
+
+Both the **Web Application** and **Mobile App (`apps/mobile`)** share 100% feature and workflow parity:
 
 ```
-                          ┌─────────────────────────────────────────┐
-                          │         CampusHub AI Ecosystem          │
-                          └─────────────────────────────────────────┘
-                                       │              │
-                   ┌───────────────────┴───┐      ┌───┴───────────────────┐
-                   │    Web Application    │      │   Mobile App (Expo)   │
-                   │   (Next.js 16 App)    │      │  (React Native / iOS) │
-                   └───────────────────────┘      └───────────────────────┘
-                                       │              │
-                   ┌───────────────────┴──────────────┴───┐
-                   │        Zero-Trust API Gateway        │
-                   │   62 Production Endpoints (RBAC)     │
-                   └──────────────────────────────────────┘
-                                       │
-                   ┌───────────────────┴──────────────────┐
-                   │        Database & Security Core      │
-                   │  Prisma ORM • Bcrypt • Audit Logs   │
-                   └──────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│                                 CampusHub AI Core                                │
+└──────────────────────────────────────────────────────────────────────────────────┘
+                 ▲                                                 ▲
+                 │                                                 │
+  ┌───────────────────────────────┐               ┌────────────────────────────────┐
+  │   🖥️ Next.js 16 Web Portal    │               │    📱 Expo Native Mobile App   │
+  ├───────────────────────────────┤               ├────────────────────────────────┤
+  │ • Turbopack SSR/SSG Engine    │               │ • React Native (Expo SDK 54)   │
+  │ • Tailwind CSS v4 System      │               │ • iOS & Android Single Codebase│
+  │ • Interactive Data Tables     │               │ • Offline-First Native Views   │
+  │ • Role-Specific Sidebars      │               │ • Smooth Bottom Tab Navigator  │
+  │ • High-Contrast Accessibility │               │ • QR Gatepass Scanner          │
+  └───────────────────────────────┘               └────────────────────────────────┘
 ```
+
+---
+
+## ⚡ Core Modules & Innovative Workflows
 
 ### 1. 🧠 1:1 Confidential AI Student Psychologist & Mind Companion
-* **Empathetic AI Care**: Bi-weekly (twice a month) 5–10 minute confidential voice/text check-in designed to detect exam stress, loneliness, or low marks anxiety without academic pressure.
-* **Faculty Advisor Bridge**: Automatically compiles an actionable, non-stigmatizing summary for the student's assigned class mentor to provide gentle guidance.
+* **✨ Coming Soon Highlight**: Designed as an empathetic, confidential AI talking companion for students.
+* **Proactive Well-Being**: Bi-weekly (twice a month) 5–10 minute voice/text check-in to detect exam depression, low marks anxiety, or hesitation in college.
+* **Faculty Advisor Bridge**: Generates non-stigmatizing, confidential briefings for the assigned mentor so faculty can provide support without putting students under pressure.
 
-### 2. 👑 College Director Executive Telemetry Desk
-* **Department-Wise Teacher Attendance**: Live presence & leave breakdown across CSE (94.1%), ECE (92.8%), ME (91.6%), CE (90.0%), and Management (93.5%).
-* **Granular Student Attendance Matrix**: Section, Year, and Semester-level attendance sheets with one-click export.
-* **Department Admin Staff Governance**: Appoint, approve, or suspend departmental leadership accounts.
+### 2. 👑 Director Attendance & Governance Telemetry Desk
+* **Department-Wise Teacher Presence**: Real-time breakdown across CSE (94.1%), ECE (92.8%), ME (91.6%), CE (90.0%), and Management (93.5%).
+* **Granular Student Attendance Matrix**: Filterable sheets by Year (1–4), Semester (1–8), and Section (A–D) with single-click export.
+* **Department Staff Authorization**: Director approves or suspends departmental administrative leads.
 
-### 3. 👩‍🏫 Faculty Teaching & Parent Direct Reachout Desk
-* **Scoped Student Directory**: Faculty can only view students enrolled in their assigned subjects and sections (zero unauthorized cross-department exposure).
-* **Direct Parent Contact Card**: Performance metrics + guardian verified phone numbers (`+91 98765 11223`) and preferred calling windows (*"After 04:00 PM"*).
-* **1-Tap Attendance & CIE Grading**: Automated alerts for students falling below the mandatory 75% cutoff.
+### 3. 👩‍🏫 Faculty Scoped Student & Direct Parent Reachout Desk
+* **Zero Cross-Exposure**: Faculty members only view students enrolled in their assigned subjects.
+* **Parent Reachout Card**: Verified guardian phone number (`+91 98765 11223`) and preferred calling window (*"After 04:00 PM"*).
+* **Automated Defaulter Alerts**: Automatic highlighting for students falling below the mandatory 75% attendance threshold.
 
-### 4. 👨‍🎓 Student Campus Life & Digital Identity
-* **Digital ID & Smart Gatepass**: QR-enabled turnstile pass for hostel outings with automated parent SMS sync.
-* **AI ATS Resume & Placement Hub**: Live job drives, CTC analytics (Amazon, TCS, Infosys), and ATS keyword score optimization.
-* **Smart Cafeteria & Library**: Real-time kitchen token queue simulator and digital library book renewals.
+### 4. 🎫 Smart Digital Gatepass & Turnstile Security
+* **Frictionless Outpass**: Digital hostel pass with live QR validation.
+* **Parent Synchronized Alerts**: Parents receive instant notification when an outpass is approved and when the student returns to campus.
 
-### 5. 👨‍👩‍👧 Parent Portal
-* **Ward Progress Radar**: Real-time attendance percentage, CGPA tracker, and subject marksheet.
-* **Digital Fee Ledger**: Fee installment schedules, 0% EMI planning, and online fee receipt generation.
-
----
-
-## 🔐 Enterprise Security, RBAC & Authentication
-
-* **Password Security**: Bcrypt hashing with 10 salt rounds. Universal password change workflow available across all roles on both Web and Mobile.
-* **Zero Trust RBAC**: Server-side role checks (`ADMIN`, `FACULTY`, `STUDENT`, `PARENT`) on every API route.
-* **Mandatory Profile Photo Enforcement**: Strict client and server-side image validation (JPEG, PNG, WebP < 2MB) required for official institutional ID verification.
-* **Security Audit Logs**: Immutable audit log entries (`db.auditLog.create`) generated on every authentication and sensitive action.
+### 5. 💼 AI ATS Resume Optimizer & Placement Drives Hub
+* **Real-Time Job Feeds**: Top recruitment drives (Amazon, TCS, Infosys) with CTC statistics.
+* **AI ATS Scoring**: Keyword match analysis against job descriptions with role-tailored optimization suggestions.
 
 ---
 
-## 🔑 Demo Access Credentials
+## 🔑 Quick Demo Access Accounts
 
-| Role | Title / Department | Email | Password | Primary Capabilities |
+<div align="center">
+
+| Role | Name & Title | Email Address | Password | Focus Area |
 | :--- | :--- | :--- | :--- | :--- |
-| **Director (Admin)** | College Director & Executive Admin | `ajsinghindolia@gmail.com` | `001234` | College governance, attendance sheets, staff approvals |
-| **Admin Staff** | Placement Officer (TPO) | `suresh.tpo@kcc.campushub.edu.in` | `Admin@123` | Drives, CTC statistics, placement clearance |
-| **Admin Staff** | Academic Registrar | `rakesh.acad@kcc.campushub.edu.in` | `Admin@123` | Student admissions, faculty profile verification |
-| **Admin Staff** | Finance & Accounts | `meena.fees@kcc.campushub.edu.in` | `Admin@123` | Fee collections, installment dues ledger |
-| **Faculty** | HOD / Assistant Professor (CSE) | `faculty@campushub.ai` | `Faculty@123` | Class attendance, CIE marks, parent reachout |
-| **Student** | B.Tech CSE (Year 3 - Sec A) | `student@campushub.ai` | `Student@123` | Timetable, ID pass, AI psychologist, library |
-| **Parent** | Guardian of Arjun Singh | `parent@campushub.ai` | `Parent@123` | Ward attendance, marksheet, fee payment, PTM |
+| **Director** | Anuraj Singh (Chief Executive Admin) | `ajsinghindolia@gmail.com` | `001234` | College governance & attendance telemetry |
+| **Admin** | Suresh Sharma (TPO Lead) | `suresh.tpo@kcc.campushub.edu.in` | `Admin@123` | Placement drives & CTC statistics |
+| **Admin** | Rakesh Kumar (Registrar) | `rakesh.acad@kcc.campushub.edu.in` | `Admin@123` | Admission approvals & student verifications |
+| **Faculty** | Dr. Priya Sharma (HOD CSE) | `faculty@campushub.ai` | `Faculty@123` | Class attendance, CIE grading & parent reachout |
+| **Student** | Arjun Singh (B.Tech CSE Year 3) | `student@campushub.ai` | `Student@123` | Timetable, ID pass, AI psychologist, library |
+| **Parent** | Sunita Singh (Guardian) | `parent@campushub.ai` | `Parent@123` | Ward marksheet, fee ledger, gatepass alerts |
+
+</div>
 
 ---
 
-## 🧪 Automated Testing & Quality Assurance
+## 🛠️ Tech Stack & Architecture
 
-CampusHub AI features a **100% Passing Automated API Health Test Suite** testing all 62 critical handlers in sub-millisecond execution time:
-
-```bash
-npm run test:endpoints
 ```
+┌─────────────────┬─────────────────────────────────────────────────────────────────┐
+│ Layer           │ Technology Stack                                                │
+├─────────────────┼─────────────────────────────────────────────────────────────────┤
+│ Web Frontend    │ Next.js 16.3 (Turbopack), React 19, Tailwind CSS v4, Lucide     │
+│ Mobile App      │ React Native 0.81, Expo SDK 54, React Native SVG, Reanimated    │
+│ Backend API     │ Next.js Route Handlers (RESTful, Zero-Trust Role Middleware)    │
+│ Database & ORM  │ Prisma ORM 5.22, SQLite (Local/Dev) / PostgreSQL (Production)   │
+│ Security & Auth │ Bcrypt Password Hashing, Session Cookies, Immutable Audit Logs │
+│ Type Safety     │ TypeScript 5.9 (Strict mode across Web & Mobile)                │
+└─────────────────┴─────────────────────────────────────────────────────────────────┘
+```
+
+<details>
+<summary><b>🧪 62/62 Automated API Endpoint Tests (Click to Expand)</b></summary>
 
 ```
 ====================================================
@@ -178,12 +217,13 @@ npm run test:endpoints
   Pass Rate: 100.0%
 ====================================================
 ```
+</details>
 
 ---
 
-## 💻 Local Setup & Development Guide
+## 🚀 Local Setup & Quickstart
 
-### 1. Clone & Install Dependencies
+### 1. Clone & Install
 ```bash
 git clone https://github.com/its-anuraj/CampusHub-AI.git
 cd CampusHub-AI
@@ -197,132 +237,60 @@ npm install
 cd ../..
 ```
 
-### 2. Environment Variables (`.env`)
-Create a `.env` file in the root directory:
-```env
-DATABASE_URL="file:./dev.db"
-NEXTAUTH_SECRET="campushub_enterprise_super_secret_jwt_key_2026"
-NEXTAUTH_URL="http://localhost:3000"
-NEXT_PUBLIC_APP_URL="http://localhost:3000"
-```
-
-### 3. Initialize Database & Seed Demo Users
+### 2. Environment Setup & Database Seed
 ```bash
+# Push database schema & seed demo users
 npx prisma db push
 npx prisma db seed
 ```
 
-### 4. Run Development Servers
-* **Run Web Application (Next.js):**
+### 3. Run Web & Mobile Apps
+* **Start Web Server:**
   ```bash
   npm run dev
   ```
-  Visit: `http://localhost:3000`
+  Open: `http://localhost:3000`
 
-* **Run Mobile Application (Expo):**
+* **Start Mobile App (with Tunnel for all phones):**
   ```bash
-  # Option A: From root
   npm run expo -- --tunnel -c
-
-  # Option B: From mobile directory
-  cd apps/mobile
-  npx expo start --tunnel -c
   ```
 
 ---
 
-## 🚀 Deployment Guide
+## 🌐 Cloud Deployment & APK Build
 
-### A. Deploy Web App to Vercel (Step-by-Step)
+### A. Deploy Web App to Vercel (1-Click Setup)
+1. Push your repository to GitHub.
+2. Go to [Vercel](https://vercel.com) and click **"Import Project"** for `CampusHub-AI`.
+3. Add Environment Variables:
+   * `DATABASE_URL`: Your Supabase / Neon PostgreSQL connection string.
+   * `NEXTAUTH_SECRET`: Random 32-character secret.
+   * `NEXTAUTH_URL`: Your production Vercel domain.
+4. Set Build Command: `prisma generate && prisma db push && next build`.
+5. Click **"Deploy"**!
 
-1. **Push your code to GitHub**:
-   ```bash
-   git add .
-   git commit -m "Deploy: CampusHub AI enterprise production build"
-   git push origin main
-   ```
-2. **Import Project in Vercel Dashboard**:
-   * Go to [Vercel](https://vercel.com) and click **"Add New Project"**.
-   * Select your `CampusHub-AI` GitHub repository.
-3. **Configure Build Settings**:
-   * **Framework Preset**: Next.js
-   * **Root Directory**: `./`
-   * **Build Command**: `prisma generate && prisma db push && next build`
-4. **Set Environment Variables**:
-   * `DATABASE_URL`: Your PostgreSQL / Supabase / Neon / Vercel Postgres connection string (or cloud SQLite).
-   * `NEXTAUTH_SECRET`: Random 32+ character string.
-   * `NEXTAUTH_URL`: Your production Vercel domain (e.g., `https://campushub-ai.vercel.app`).
-5. **Click "Deploy"**:
-   * Vercel will bundle the Next.js App Router project and deploy with global Edge CDN!
-
----
-
-### B. Build Android APK File with Expo EAS (Step-by-Step)
-
-1. **Install EAS CLI globally**:
-   ```bash
-   npm install -g eas-cli
-   ```
-2. **Log in to your Expo account**:
-   ```bash
-   eas login
-   ```
-3. **Configure EAS Project (Inside `apps/mobile`)**:
+### B. Build Standalone Android APK (Expo EAS)
+1. Install EAS CLI: `npm install -g eas-cli`
+2. Log in: `eas login`
+3. Trigger Cloud APK Build:
    ```bash
    cd apps/mobile
-   eas build:configure
-   ```
-4. **Create `eas.json` for Direct APK Generation**:
-   Ensure `apps/mobile/eas.json` contains:
-   ```json
-   {
-     "cli": {
-       "version": ">= 15.0.0"
-     },
-     "build": {
-       "preview": {
-         "distribution": "internal",
-         "android": {
-           "buildType": "apk"
-         }
-       },
-       "production": {
-         "android": {
-           "buildType": "app-bundle"
-         }
-       }
-     }
-   }
-   ```
-5. **Run the Cloud Build for Android APK**:
-   ```bash
    eas build -p android --profile preview
    ```
-6. **Download your APK**:
-   * Once EAS cloud compilation completes (usually ~5–8 mins), a direct download link and QR code for the standalone `.apk` file will be provided in your terminal and Expo dashboard!
+4. Download the `.apk` file directly from the link provided upon completion (~5 mins).
 
 ---
 
-## 🎯 Tech Stack Summary for Technical Interviews
+## 🗺️ Future Institutional Roadmap
 
-| Technology Layer | Tools / Libraries Used | Architecture Rationale |
-| :--- | :--- | :--- |
-| **Frontend Framework** | **Next.js 16.3 (Turbopack) & React 19** | Fast SSR/SSG hybrid rendering, App Router layout nesting, React Server Components. |
-| **Mobile Platform** | **React Native (0.81) & Expo SDK 54** | Single TypeScript codebase for iOS and Android with native performance and Expo Router. |
-| **Styling & Design System** | **Tailwind CSS v4 & Lucide Icons** | Utility-first, responsive modern palette (Sky/Blue/Slate) with high contrast accessibility. |
-| **Database & ORM** | **Prisma ORM & SQLite / PostgreSQL** | Type-safe migrations, parameterized queries, and seamless zero-config local prototyping. |
-| **Security & Auth** | **Bcrypt.js & Zero-Trust RBAC** | Cryptographic salted password hashing, audit logs, and session role-gated endpoints. |
-| **Quality & CI/CD** | **TypeScript 5.9 & Automated Endpoint Test Harness** | 100% strict type safety and 62 automated integration test cases with sub-50ms execution. |
+- [ ] **College ERP Integration**: Direct synchronization with on-campus legacy databases.
+- [ ] **Biometric Turnstile Hardware Bridge**: Direct MQTT/REST IoT connector for physical turnstiles.
+- [ ] **WhatsApp Enterprise Gateway**: Automated attendance updates and emergency parent alerts.
 
 ---
 
-## 🗺️ Future Roadmap: College Integration & Enterprise Scale
-
-1. **ERP & SIS Integration**: Direct bi-directional API connector for college legacy ERP databases (attendance biometrics, fee gateway).
-2. **WhatsApp / SMS Gateway**: Automated emergency parent broadcast and hostel outpass verification.
-3. **On-Premises Smart Turnstiles**: Direct IoT integration with campus RFID barriers for frictionless contactless student gate entry.
-
----
-
-*Built with ❤️ for High-Performance Modern Higher Education.*  
-*CampusHub AI © 2026. All rights reserved.*
+<div align="center">
+  <b>CampusHub AI © 2026. All rights reserved.</b><br/>
+  <i>Crafted with ❤️ for Higher Education Digitization & Student Care.</i>
+</div>
