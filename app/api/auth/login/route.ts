@@ -16,6 +16,7 @@ export async function POST(request: Request) {
         studentProfile: true,
         facultyProfile: true,
         parentProfile: true,
+        adminProfile: true,
       },
     });
 
@@ -35,8 +36,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
     }
 
-    if (user.status !== 'ACTIVE') {
-      return NextResponse.json({ error: 'Account is deactivated. Contact campus admin.' }, { status: 403 });
+    if (user.status === 'PENDING' || user.verificationStatus === 'PENDING_APPROVAL') {
+      return NextResponse.json({
+        error: 'Your account is pending verification and approval. Once approved by your Coordinator / Administrator, you will receive an update and can log in easily with your registered credentials.',
+      }, { status: 403 });
+    }
+
+    if (user.status !== 'ACTIVE' || user.verificationStatus === 'REJECTED') {
+      return NextResponse.json({
+        error: 'Your account registration was rejected or deactivated. Please contact the institution administrator.',
+      }, { status: 403 });
     }
 
     // Log login action
@@ -59,6 +68,7 @@ export async function POST(request: Request) {
         studentProfile: user.studentProfile,
         facultyProfile: user.facultyProfile,
         parentProfile: user.parentProfile,
+        adminProfile: user.adminProfile,
       },
     });
   } catch (error: any) {

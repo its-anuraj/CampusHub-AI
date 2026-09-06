@@ -9,6 +9,7 @@
     "lint": "eslint",
     "test:endpoints": "tsx scripts/verify-endpoints.ts",
     "mobile": "npm --prefix apps/mobile start",
+    "expo": "npm --prefix apps/mobile start",
     "mobile:web": "npm --prefix apps/mobile run web",
     "mobile:android": "npm --prefix apps/mobile run android"
   },

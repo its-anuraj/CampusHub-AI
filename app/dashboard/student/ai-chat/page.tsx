@@ -143,15 +143,35 @@ void dijkstra(int start, vector<vector<pii>>& adj, int V) {
 
   return (
     <div className="flex flex-col h-[calc(100vh-10rem)] max-w-4xl mx-auto space-y-4">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-slate-200/60 pb-3">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center shadow-xs">
-            <Sparkles className="w-5 h-5" />
+      {/* Coming Soon Notice Banner */}
+      <div className="bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 border-2 border-amber-400 rounded-2xl p-3.5 flex items-center justify-between shadow-xs">
+        <div className="flex items-center gap-2.5">
+          <div className="p-2 rounded-xl bg-amber-500 text-white shadow-xs">
+            <Sparkles className="w-4 h-4" />
           </div>
           <div>
-            <h1 className="text-base font-bold text-slate-900">AI Campus Academic Assistant</h1>
-            <p className="text-[11px] text-slate-500">Fine-tuned on University Syllabus, DSA, GATE & Lab Material</p>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-slate-900">AI Campus Academic Assistant</span>
+              <span className="px-2.5 py-0.5 rounded-full bg-amber-500 text-white font-black text-[10px] tracking-wide uppercase shadow-2xs">
+                ✨ Coming Soon (Beta)
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-700 font-medium">
+              KCCITM syllabus AI model is currently under beta deployment. Interactive preview mode is active.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-slate-200/60 pb-2">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center shadow-xs">
+            <Bot className="w-5 h-5" />
+          </div>
+          <div>
+            <h1 className="text-sm font-bold text-slate-900">Interactive Syllabus Copilot</h1>
+            <p className="text-[11px] text-slate-500">Fine-tuned on AKTU Syllabus, DSA, GATE & Lab Material</p>
           </div>
         </div>
 

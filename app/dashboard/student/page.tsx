@@ -5,7 +5,7 @@ import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
 import {
-  BookOpen, ClipboardList, Bell, CheckCircle2, Calendar, Star, Sparkles, ArrowUpRight, Clock, Loader2, Trophy, Award, Flame, Zap, Check, Crown
+  BookOpen, ClipboardList, Bell, CheckCircle2, Calendar, Star, Sparkles, ArrowUpRight, Clock, Loader2, Trophy, Award, Flame, Zap, Check, Crown, Brain, ArrowRight, Bot
 } from 'lucide-react';
 import Link from 'next/link';
 import { formatTime, cn } from '@/lib/utils';
@@ -109,6 +109,34 @@ export default function StudentDashboardPage() {
         </div>
       </div>
 
+      {/* AI Student Psychologist & Mind Companion Banner (Coming Soon) */}
+      <div className="rounded-2xl border-2 border-amber-300 bg-gradient-to-r from-amber-500/10 via-sky-500/10 to-indigo-500/10 p-5 shadow-lg shadow-amber-500/5">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-1.5">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 shadow-md shadow-amber-500/30 ring-2 ring-amber-400/50 animate-pulse">
+                <Sparkles className="w-3.5 h-3.5 fill-slate-950" /> ✨ COMING SOON
+              </span>
+              <span className="text-xs font-bold text-indigo-700 bg-indigo-100 px-2.5 py-0.5 rounded-md">
+                1:1 Talking Session • Bi-Weekly (5-10 Min)
+              </span>
+            </div>
+            <h2 className="text-base md:text-lg font-bold text-slate-900 flex items-center gap-2">
+              <Brain className="w-5 h-5 text-indigo-600" /> AI Student Psychologist & Mind Companion
+            </h2>
+            <p className="text-xs text-slate-600 leading-relaxed max-w-2xl">
+              Confidential check-in session for loneliness, depression, or stress over low marks. Generates private guidance for your mentor so they can reach out personally without putting you under pressure.
+            </p>
+          </div>
+          <Link
+            href="/dashboard/student/psychologist"
+            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm transition-all hover:scale-[1.02] shrink-0"
+          >
+            Explore AI Psychologist <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </div>
+
       <div className="bg-white border border-blue-100 rounded-xl p-4 shadow-card flex items-start gap-3.5">
         <div className="w-8 h-8 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
           <Sparkles className="w-4 h-4" />
@@ -116,7 +144,9 @@ export default function StudentDashboardPage() {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <h2 className="text-xs font-semibold text-slate-900 uppercase tracking-wider">AI Campus Insights</h2>
-            <span className="bg-blue-50 text-blue-700 text-[10px] font-medium px-2 py-0.5 rounded-full border border-blue-200">Active</span>
+            <span className="bg-amber-100 text-amber-900 border-2 border-amber-500 text-[10px] font-black px-2.5 py-0.5 rounded-full shadow-xs">
+              ✨ Coming Soon (Beta)
+            </span>
           </div>
           <p className="text-xs text-slate-600 mt-1 leading-relaxed">
             {data && data.attendancePercentage > 0

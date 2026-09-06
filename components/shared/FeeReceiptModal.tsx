@@ -70,10 +70,10 @@ export default function FeeReceiptModal({
           {/* Header */}
           <div className="text-center pb-4 border-b border-slate-200">
             <div className="w-10 h-10 rounded-xl bg-blue-600 text-white font-black text-sm flex items-center justify-center mx-auto mb-2 shadow-xs">
-              CH
+              KCC
             </div>
-            <h2 className="text-sm font-black uppercase tracking-wider text-slate-900">CampusHub University</h2>
-            <p className="text-[10px] text-slate-500">Accounts & Finance Directorate • New Delhi, India</p>
+            <h2 className="text-sm font-black uppercase tracking-wider text-slate-900">KCC Institute of Technology and Management</h2>
+            <p className="text-[10px] text-slate-500">Accounts & Finance Directorate • Greater Noida, UP • KCC.campushub.edu.in</p>
           </div>
 
           {/* Student & Txn Info */}

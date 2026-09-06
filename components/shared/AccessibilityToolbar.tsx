@@ -88,20 +88,20 @@ export default function AccessibilityToolbar() {
 
       {/* Floating Settings Panel */}
       {isOpen && (
-        <div className="bg-card border border-border rounded-3xl p-5 shadow-2xl w-80 space-y-4 animate-in slide-in-from-bottom-5 duration-200">
-          <div className="flex items-center justify-between pb-2 border-b border-border">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 shadow-2xl w-80 space-y-4 animate-in slide-in-from-bottom-5 duration-200">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
             <div className="flex items-center gap-2">
-              <span className="p-1.5 rounded-xl bg-indigo-500/10 text-indigo-600">
+              <span className="p-1.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800">
                 <Sliders className="w-4 h-4" />
               </span>
               <div>
-                <h4 className="text-xs font-bold text-foreground">Accessibility Suite</h4>
-                <p className="text-[10px] text-muted-foreground">Universal Design Tools</p>
+                <h4 className="text-xs font-bold text-slate-900 dark:text-white">Accessibility Suite</h4>
+                <p className="text-[10px] text-slate-500 dark:text-slate-400">Universal Design Tools</p>
               </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="p-1 rounded-lg text-muted-foreground hover:bg-muted"
+              className="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               <X className="w-4 h-4" />
             </button>
@@ -110,27 +110,27 @@ export default function AccessibilityToolbar() {
           {/* Font Size Adjuster */}
           <div className="space-y-2">
             <div className="flex items-center justify-between text-xs">
-              <span className="font-semibold text-muted-foreground flex items-center gap-1.5">
+              <span className="font-semibold text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
                 <Type className="w-3.5 h-3.5" /> Text Size Scaler
               </span>
-              <span className="font-mono font-bold text-foreground">{fontSizeScale}%</span>
+              <span className="font-mono font-bold text-slate-900 dark:text-white">{fontSizeScale}%</span>
             </div>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setFontSizeScale((prev) => Math.max(85, prev - 5))}
-                className="flex-1 py-1.5 rounded-xl bg-muted hover:bg-muted/80 text-xs font-bold transition"
+                className="flex-1 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 text-xs font-bold transition cursor-pointer"
               >
                 A-
               </button>
               <button
                 onClick={() => setFontSizeScale(100)}
-                className="px-3 py-1.5 rounded-xl border border-border text-[11px] font-semibold hover:bg-muted transition"
+                className="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 text-[11px] font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
               >
                 Default
               </button>
               <button
                 onClick={() => setFontSizeScale((prev) => Math.min(130, prev + 5))}
-                className="flex-1 py-1.5 rounded-xl bg-muted hover:bg-muted/80 text-xs font-bold transition"
+                className="flex-1 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 text-xs font-bold transition cursor-pointer"
               >
                 A+
               </button>
@@ -138,14 +138,14 @@ export default function AccessibilityToolbar() {
           </div>
 
           {/* Toggles List */}
-          <div className="space-y-2 pt-2 border-t border-border text-xs">
+          <div className="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
             <button
               onClick={() => setHighContrast(!highContrast)}
               className={cn(
                 "w-full p-2.5 rounded-xl border flex items-center justify-between transition cursor-pointer",
                 highContrast
-                  ? "bg-indigo-500/10 border-indigo-500/40 text-indigo-600 dark:text-indigo-400 font-bold"
-                  : "border-border text-muted-foreground hover:bg-muted"
+                  ? "bg-indigo-50 dark:bg-indigo-950/50 border-indigo-300 dark:border-indigo-700 text-indigo-600 dark:text-indigo-400 font-bold"
+                  : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
               )}
             >
               <span className="flex items-center gap-2">
@@ -159,8 +159,8 @@ export default function AccessibilityToolbar() {
               className={cn(
                 "w-full p-2.5 rounded-xl border flex items-center justify-between transition cursor-pointer",
                 dyslexicFont
-                  ? "bg-indigo-500/10 border-indigo-500/40 text-indigo-600 dark:text-indigo-400 font-bold"
-                  : "border-border text-muted-foreground hover:bg-muted"
+                  ? "bg-indigo-50 dark:bg-indigo-950/50 border-indigo-300 dark:border-indigo-700 text-indigo-600 dark:text-indigo-400 font-bold"
+                  : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
               )}
             >
               <span className="flex items-center gap-2">
@@ -174,8 +174,8 @@ export default function AccessibilityToolbar() {
               className={cn(
                 "w-full p-2.5 rounded-xl border flex items-center justify-between transition cursor-pointer",
                 reducedMotion
-                  ? "bg-indigo-500/10 border-indigo-500/40 text-indigo-600 dark:text-indigo-400 font-bold"
-                  : "border-border text-muted-foreground hover:bg-muted"
+                  ? "bg-indigo-50 dark:bg-indigo-950/50 border-indigo-300 dark:border-indigo-700 text-indigo-600 dark:text-indigo-400 font-bold"
+                  : "border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800"
               )}
             >
               <span className="flex items-center gap-2">
@@ -186,16 +186,16 @@ export default function AccessibilityToolbar() {
           </div>
 
           {/* Reset All Footer */}
-          <div className="pt-2 border-t border-border flex justify-between items-center text-[11px]">
+          <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center text-[11px]">
             <button
               onClick={resetAll}
-              className="text-muted-foreground hover:text-foreground flex items-center gap-1 font-semibold transition"
+              className="text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center gap-1 font-semibold transition cursor-pointer"
             >
               <RotateCcw className="w-3 h-3" /> Reset Preferences
             </button>
             <button
               onClick={() => setIsOpen(false)}
-              className="px-3 py-1 rounded-lg bg-indigo-600 text-white font-bold"
+              className="px-3 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold cursor-pointer transition shadow-xs"
             >
               Done
             </button>

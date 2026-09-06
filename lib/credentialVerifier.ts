@@ -41,8 +41,8 @@ export function generateVerifiableCredential(badge: Partial<DigitalBadge>): Digi
     id: badge.id || `urn:uuid:${Math.random().toString(36).substring(2, 15)}`,
     name: badge.name || 'CampusHub Certified Micro-Credential',
     issuer: {
-      name: 'CampusHub University Academic Registry',
-      url: 'https://campushub.edu.in/verify',
+      name: 'KCC Institute of Technology and Management Academic Registry',
+      url: 'https://KCC.campushub.edu.in/verify',
       publicKey: '0x04e12e88a91cbf8925bbd034298101a88'
     },
     recipient: {

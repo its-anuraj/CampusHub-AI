@@ -40,8 +40,8 @@ export function generateTranscriptHtml(data: TranscriptData): string {
       </head>
       <body>
         <div class="header">
-          <h1 class="title">CampusHub University Institute of Technology</h1>
-          <p class="subtitle">Official Grade Transcript & Academic Record</p>
+          <h1 class="title">KCC Institute of Technology and Management</h1>
+          <p class="subtitle">Official Grade Transcript & Academic Record • Greater Noida, UP</p>
         </div>
 
         <div class="meta-grid">

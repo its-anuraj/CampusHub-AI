@@ -15,6 +15,10 @@ model User {
   role      String   // ADMIN, FACULTY, STUDENT, PARENT
   avatar    String?
   phone     String?
+  city      String?
+  state     String?
+  pincode   String?
+  address   String?
   status    String   @default("ACTIVE") // ACTIVE, INACTIVE, PENDING
   verificationStatus String @default("VERIFIED") // VERIFIED, PENDING_APPROVAL, REJECTED
   createdAt DateTime @default(now())
@@ -23,8 +27,18 @@ model User {
   studentProfile Student?
   facultyProfile Faculty?
   parentProfile  Parent?
+  adminProfile   AdminProfile?
   notices        Notice[]
   logs           AuditLog[]
+}
+
+model AdminProfile {
+  id             String   @id @default(uuid())
+  userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  employeeId     String   @unique
+  departmentRole String   // PLACEMENT_CELL, FEES_ACCOUNTS, LIBRARY, EVENT_MANAGER, CLUB_MANAGER, ACADEMIC_ADMIN, HOSTEL_ADMIN, DIRECTOR
+  designation    String   @default("Department Administrator")
 }
 
 model Student {
@@ -42,6 +56,13 @@ model Student {
   academicStatus     String   @default("REGULAR") // REGULAR, YEAR_BACK, DETAINED, PROMOTED
   verificationStatus String   @default("VERIFIED") // VERIFIED, PENDING_APPROVAL, REJECTED
   classAdvisor       String?  @default("Dr. Priya Sharma")
+  guardianName       String?
+  guardianRelation   String?
+  guardianPhone      String?
+  city               String?
+  state              String?
+  pincode            String?
+  address            String?
   parentId           String?
   parent             Parent?  @relation(fields: [parentId], references: [id])
 
@@ -65,11 +86,17 @@ model Faculty {
 }
 
 model Parent {
-  id          String    @id @default(uuid())
-  userId      String    @unique
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  relation    String    @default("Parent")
-  students    Student[]
+  id                String    @id @default(uuid())
+  userId            String    @unique
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  relation          String    @default("Father")
+  studentRollNumber String?
+  studentName       String?
+  targetDepartment  String?
+  targetYear        Int?
+  targetSemester    Int?
+  targetSection     String?
+  students          Student[]
 }
 
 model Notice {

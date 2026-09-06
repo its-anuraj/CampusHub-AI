@@ -7,6 +7,7 @@ export interface AuthUser {
   studentProfile?: any;
   facultyProfile?: any;
   parentProfile?: any;
+  adminProfile?: any;
 }
 
 export async function authenticateUser(email: string, password: string): Promise<AuthUser | null> {

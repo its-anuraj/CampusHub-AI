@@ -43,6 +43,6 @@ next-env.d.ts
 # sqlite & local database
 *.db
 *.db-journal
-prisma/*.db
-prisma/*.db-journal
+# scratch
+scratch/
 

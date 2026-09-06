@@ -93,7 +93,12 @@ export default function StudentResumeBuilderPage() {
             <span className="p-2 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 shadow-xs">
               <FileText className="w-5 h-5" />
             </span>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">AI Resume Builder & ATS Match Engine</h1>
+            <div className="flex flex-wrap items-center gap-2">
+              <h1 className="text-2xl font-bold tracking-tight text-slate-900">AI Resume Builder & ATS Match Engine</h1>
+              <span className="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border-2 border-amber-500 text-[10px] font-black uppercase shadow-xs">
+                ✨ AI Feature • Coming Soon (Beta)
+              </span>
+            </div>
           </div>
           <p className="text-xs text-slate-500 mt-1">Craft industry-tailored placement resumes with live ATS keyword auditing and instant PDF rendering</p>
         </div>

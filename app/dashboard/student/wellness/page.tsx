@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Heart, ShieldCheck, Phone, Calendar, Sparkles, CheckCircle2, AlertTriangle, Smile, Frown, Meh, Zap, X, Wind, MessageCircle, Send, ThumbsUp, Play, Pause, Flame } from 'lucide-react';
+import Link from 'next/link';
+import { Heart, ShieldCheck, Phone, Calendar, Sparkles, CheckCircle2, AlertTriangle, Smile, Frown, Meh, Zap, X, Wind, MessageCircle, Send, ThumbsUp, Play, Pause, Flame, Bot, ArrowRight, UserCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/lib/toastContext';
 
@@ -175,6 +176,34 @@ export default function StudentWellnessPage() {
           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
             <ShieldCheck className="w-3.5 h-3.5" /> 100% Confidential & Anonymous
           </span>
+        </div>
+      </div>
+
+      {/* 1:1 Student AI Well-Being Feature Banner (Coming Soon) */}
+      <div className="relative overflow-hidden rounded-2xl border-2 border-amber-300 bg-gradient-to-r from-amber-500/10 via-sky-500/10 to-indigo-500/10 p-6 shadow-lg shadow-amber-500/5">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 shadow-md shadow-amber-500/30 ring-2 ring-amber-400/50 animate-pulse">
+                <Sparkles className="w-3.5 h-3.5 fill-slate-950" /> ✨ COMING SOON
+              </span>
+              <span className="text-xs font-semibold text-sky-700 bg-sky-100 px-2.5 py-0.5 rounded-md">
+                Bi-Weekly 5-10 Min Check-in
+              </span>
+            </div>
+            <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <Bot className="w-5 h-5 text-indigo-600" /> 1:1 Confidential Student & AI Well-Being Agent Session
+            </h2>
+            <p className="text-xs text-slate-600 leading-relaxed max-w-2xl">
+              An empathetic 5–10 min conversation twice a month to check if you feel lonely, stressed by low marks, or overwhelmed. Generates a confidential mentor report so your faculty coordinator can reach out gently and resolve issues you may hesitate to voice directly.
+            </p>
+          </div>
+          <Link
+            href="/dashboard/student/wellness/ai-session"
+            className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-sky-600 text-white text-xs font-bold shadow-md hover:shadow-lg transition-all hover:scale-[1.02] shrink-0"
+          >
+            Launch Interactive Session <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </div>
 

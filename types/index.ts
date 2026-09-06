@@ -9,17 +9,29 @@ export interface User {
   role: UserRole;
   avatar?: string;
   phone?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
   createdAt: Date;
 }
 
 export interface Student extends User {
   rollNumber: string;
+  admissionNumber?: string;
   department: string;
   year: number;
   semester: number;
   section: string;
   cgpa: number;
   backlogs: number;
+  guardianName?: string;
+  guardianRelation?: string;
+  guardianPhone?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
   parentId?: string;
 }
 

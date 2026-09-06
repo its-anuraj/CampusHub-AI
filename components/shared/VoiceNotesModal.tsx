@@ -111,40 +111,40 @@ export default function VoiceNotesModal({ isOpen, onClose, onSaveNote }: VoiceNo
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
-      <div className="bg-card border border-border rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-6 animate-in zoom-in-95 duration-200">
-        <div className="flex justify-between items-start pb-2 border-b border-border">
+    <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl space-y-6 animate-in zoom-in-95 duration-200">
+        <div className="flex justify-between items-start pb-2 border-b border-slate-100 dark:border-slate-800">
           <div>
-            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 inline-flex items-center gap-1">
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800 inline-flex items-center gap-1">
               <Mic className="w-3.5 h-3.5" /> AI VOICE MEMO & TRANSCRIPTION
             </span>
-            <h3 className="text-lg font-bold text-foreground mt-1">Quick Voice Note Recorder</h3>
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white mt-1">Quick Voice Note Recorder</h3>
           </div>
-          <button onClick={onClose} className="p-1 rounded-xl text-muted-foreground hover:bg-muted">
+          <button onClick={onClose} className="p-1 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Note Title Input */}
         <div>
-          <label className="text-xs font-semibold text-muted-foreground block mb-1">Note Title</label>
+          <label className="text-xs font-semibold text-slate-600 dark:text-slate-400 block mb-1">Note Title</label>
           <input
             type="text"
             value={noteTitle}
             onChange={(e) => setNoteTitle(e.target.value)}
-            className="w-full px-3 py-2 text-xs bg-background border border-border rounded-xl font-medium focus:ring-2 focus:ring-indigo-500"
+            className="w-full px-3.5 py-2 text-xs bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl font-medium focus:ring-2 focus:ring-indigo-500 outline-none"
           />
         </div>
 
         {/* Waveform & Recording Canvas Simulator */}
-        <div className="bg-muted/40 border border-border rounded-2xl p-6 flex flex-col items-center justify-center space-y-4 text-center">
+        <div className="bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700/80 rounded-2xl p-6 flex flex-col items-center justify-center space-y-4 text-center">
           <div className="flex items-center justify-center gap-1.5 h-12">
             {[12, 28, 45, 18, 55, 34, 48, 22, 60, 38, 16, 42, 50, 20].map((h, i) => (
               <span
                 key={i}
                 className={cn(
                   "w-1.5 rounded-full transition-all duration-300",
-                  isRecording && !isPaused ? "bg-indigo-600 animate-pulse" : "bg-muted-foreground/30"
+                  isRecording && !isPaused ? "bg-indigo-600 animate-pulse" : "bg-slate-300 dark:bg-slate-600"
                 )}
                 style={{ height: isRecording && !isPaused ? `${(h * (1 + (i % 3) * 0.2)) % 48 + 10}px` : '8px' }}
               />
@@ -152,10 +152,10 @@ export default function VoiceNotesModal({ isOpen, onClose, onSaveNote }: VoiceNo
           </div>
 
           <div className="space-y-1">
-            <span className="text-3xl font-black font-mono tracking-tight text-foreground">
+            <span className="text-3xl font-black font-mono tracking-tight text-slate-900 dark:text-white">
               {formatDuration(seconds)}
             </span>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               {isRecording ? (isPaused ? 'Recording Paused' : 'Listening...') : 'Ready to record audio note'}
             </p>
           </div>
@@ -165,7 +165,7 @@ export default function VoiceNotesModal({ isOpen, onClose, onSaveNote }: VoiceNo
             {!isRecording ? (
               <button
                 onClick={startRecording}
-                className="px-5 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-md shadow-indigo-500/20 flex items-center gap-2 transition"
+                className="px-5 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-md shadow-indigo-500/20 flex items-center gap-2 transition cursor-pointer"
               >
                 <Mic className="w-4 h-4" /> Start Recording
               </button>
@@ -173,14 +173,14 @@ export default function VoiceNotesModal({ isOpen, onClose, onSaveNote }: VoiceNo
               <>
                 <button
                   onClick={pauseRecording}
-                  className="p-3 rounded-2xl bg-muted hover:bg-muted/80 text-foreground transition"
+                  className="p-3 rounded-2xl bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 text-slate-800 dark:text-slate-100 transition cursor-pointer"
                   title={isPaused ? "Resume" : "Pause"}
                 >
                   {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
                 </button>
                 <button
                   onClick={stopRecording}
-                  className="px-5 py-2.5 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold shadow-md flex items-center gap-2 transition"
+                  className="px-5 py-2.5 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold shadow-md flex items-center gap-2 transition cursor-pointer"
                 >
                   <Square className="w-4 h-4 fill-white" /> Stop & Transcribe
                 </button>
@@ -191,39 +191,39 @@ export default function VoiceNotesModal({ isOpen, onClose, onSaveNote }: VoiceNo
 
         {/* Transcription Output */}
         {isTranscribing && (
-          <div className="p-4 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-center text-xs text-indigo-600 dark:text-indigo-400 font-semibold flex items-center justify-center gap-2">
+          <div className="p-4 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 text-center text-xs text-indigo-600 dark:text-indigo-400 font-semibold flex items-center justify-center gap-2">
             <Sparkles className="w-4 h-4 animate-spin" /> Transcribing audio with AI Speech Engine...
           </div>
         )}
 
         {transcript && (
           <div className="space-y-3 animate-in fade-in duration-200">
-            <div className="p-3.5 rounded-xl bg-muted/40 border border-border space-y-1">
-              <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider block">Raw Audio Transcript</span>
-              <p className="text-xs text-foreground leading-relaxed italic">&ldquo;{transcript}&rdquo;</p>
+            <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-1">
+              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Raw Audio Transcript</span>
+              <p className="text-xs text-slate-800 dark:text-slate-200 leading-relaxed italic">&ldquo;{transcript}&rdquo;</p>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-purple-500/10 border border-purple-500/20 space-y-1">
+            <div className="p-3.5 rounded-xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-800 space-y-1">
               <span className="text-[10px] font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider block flex items-center gap-1">
                 <Sparkles className="w-3 h-3" /> AI Summary & Key Takeaways
               </span>
-              <p className="text-xs text-foreground leading-relaxed whitespace-pre-line">{aiSummary}</p>
+              <p className="text-xs text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre-line">{aiSummary}</p>
             </div>
           </div>
         )}
 
         {/* Footer Actions */}
-        <div className="flex justify-end gap-2 pt-2 border-t border-border">
+        <div className="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-xl border border-border hover:bg-muted text-xs font-semibold"
+            className="px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
             disabled={!transcript}
-            className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 text-white text-xs font-bold shadow-md flex items-center gap-1.5 transition"
+            className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 text-white text-xs font-bold shadow-md flex items-center gap-1.5 transition cursor-pointer"
           >
             <CheckCircle2 className="w-3.5 h-3.5" /> Save to Course Notes
           </button>

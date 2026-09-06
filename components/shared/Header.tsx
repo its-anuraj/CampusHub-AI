@@ -1,14 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Menu, Bell, Search, PanelLeftClose, PanelLeft, ChevronDown, Sparkles, Palette, Sun, Keyboard } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { useState } from 'react';
+import { Menu, Bell, Search, PanelLeftClose, PanelLeft, Sparkles, KeyRound } from 'lucide-react';
 
 import CommandPalette from '@/components/shared/CommandPalette';
-import ThemeCustomizerModal from '@/components/shared/ThemeCustomizerModal';
 import NotificationCenter from '@/components/shared/NotificationCenter';
-import CampusWeatherWidget from '@/components/shared/CampusWeatherWidget';
-import KeyboardShortcutsModal from '@/components/shared/KeyboardShortcutsModal';
+import ChangePasswordModal from '@/components/shared/ChangePasswordModal';
 
 interface HeaderProps {
   user: any;
@@ -20,20 +17,7 @@ interface HeaderProps {
 export default function Header({ user, sidebarOpen, onToggleSidebar, onMobileMenuOpen }: HeaderProps) {
   const [notifOpen, setNotifOpen] = useState(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
-  const [themeModalOpen, setThemeModalOpen] = useState(false);
-  const [weatherOpen, setWeatherOpen] = useState(false);
-  const [shortcutsOpen, setShortcutsOpen] = useState(false);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.shiftKey && e.key === '?') {
-        e.preventDefault();
-        setShortcutsOpen((prev) => !prev);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  const [passwordModalOpen, setPasswordModalOpen] = useState(false);
 
   return (
     <>
@@ -42,28 +26,23 @@ export default function Header({ user, sidebarOpen, onToggleSidebar, onMobileMen
         onClose={() => setCommandPaletteOpen(false)}
         userRole={user?.role}
       />
-      <ThemeCustomizerModal
-        isOpen={themeModalOpen}
-        onClose={() => setThemeModalOpen(false)}
-      />
       <NotificationCenter
         isOpen={notifOpen}
         onClose={() => setNotifOpen(false)}
+        user={user}
       />
-      <CampusWeatherWidget
-        isOpen={weatherOpen}
-        onClose={() => setWeatherOpen(false)}
+      <ChangePasswordModal
+        isOpen={passwordModalOpen}
+        onClose={() => setPasswordModalOpen(false)}
+        user={user}
       />
-      <KeyboardShortcutsModal
-        isOpen={shortcutsOpen}
-        onClose={() => setShortcutsOpen(false)}
-      />
+
       <header className="sticky top-0 z-20 bg-white/90 dark:bg-card/90 backdrop-blur-md border-b border-slate-200/80 dark:border-border px-4 lg:px-8 py-3">
         <div className="flex items-center gap-3">
           {/* Mobile menu toggle */}
           <button
             onClick={onMobileMenuOpen}
-            className="lg:hidden p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors"
+            className="lg:hidden p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors cursor-pointer"
           >
             <Menu className="w-5 h-5" />
           </button>
@@ -71,7 +50,7 @@ export default function Header({ user, sidebarOpen, onToggleSidebar, onMobileMen
           {/* Desktop sidebar toggle */}
           <button
             onClick={onToggleSidebar}
-            className="hidden lg:flex p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
+            className="hidden lg:flex p-1.5 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors cursor-pointer"
           >
             {sidebarOpen ? <PanelLeftClose className="w-4 h-4" /> : <PanelLeft className="w-4 h-4" />}
           </button>
@@ -95,39 +74,24 @@ export default function Header({ user, sidebarOpen, onToggleSidebar, onMobileMen
 
           {/* Right Action Bar */}
           <div className="flex items-center gap-2.5">
-            {/* Campus Live Weather Trigger */}
-            <button
-              onClick={() => setWeatherOpen(true)}
-              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs font-semibold transition"
-              title="View Campus Microclimate"
+            {/* AI Status Tag */}
+            <div
+              className="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-lg bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 text-blue-700 dark:text-blue-400 text-xs font-semibold shadow-xs select-none"
             >
-              <Sun className="w-3.5 h-3.5 text-amber-500" />
-              <span>27°C • AQI 38</span>
-            </button>
-
-            {/* Keyboard Shortcuts Trigger Button */}
-            <button
-              onClick={() => setShortcutsOpen(true)}
-              className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-foreground transition-colors cursor-pointer"
-              title="Keyboard Shortcuts (Shift + ?)"
-            >
-              <Keyboard className="w-4 h-4" />
-            </button>
-
-            {/* Theme Palette Customizer Button */}
-            <button
-              onClick={() => setThemeModalOpen(true)}
-              className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-blue-600 transition-colors cursor-pointer"
-              title="Customize Campus Theme"
-            >
-              <Palette className="w-4 h-4" />
-            </button>
-
-            {/* AI Helper Quick Tag */}
-            <div className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-blue-50 dark:bg-blue-500/10 border border-blue-100 dark:border-blue-500/20 text-blue-700 dark:text-blue-400 text-xs font-medium">
               <Sparkles className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
               <span>AI OS Online</span>
             </div>
+
+            {/* Change Password Quick Button */}
+            <button
+              type="button"
+              onClick={() => setPasswordModalOpen(true)}
+              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold transition cursor-pointer shadow-xs"
+              title="Change Account Password"
+            >
+              <KeyRound className="w-3.5 h-3.5 text-blue-600" />
+              <span className="hidden md:inline">Change Password</span>
+            </button>
 
             {/* Notifications Button */}
             <button
@@ -139,8 +103,13 @@ export default function Header({ user, sidebarOpen, onToggleSidebar, onMobileMen
               <span className="absolute top-1 right-1 w-2 h-2 bg-blue-600 rounded-full animate-pulse" />
             </button>
 
-            {/* Profile Badge */}
-            <div className="flex items-center gap-2 pl-3 border-l border-slate-200 dark:border-border">
+            {/* Profile Badge (Click to Change Password) */}
+            <button
+              type="button"
+              onClick={() => setPasswordModalOpen(true)}
+              className="flex items-center gap-2 pl-3 border-l border-slate-200 dark:border-border cursor-pointer hover:opacity-80 transition-opacity"
+              title="Click to Change Account Password"
+            >
               <div className="w-7 h-7 rounded-full bg-blue-600 text-white font-semibold text-xs flex items-center justify-center shadow-xs">
                 {user?.name?.charAt(0)}
               </div>
@@ -148,7 +117,7 @@ export default function Header({ user, sidebarOpen, onToggleSidebar, onMobileMen
                 <p className="text-xs font-semibold text-slate-900 dark:text-foreground leading-none">{user?.name}</p>
                 <p className="text-[10px] text-slate-500 dark:text-muted-foreground capitalize leading-tight mt-0.5">{user?.role?.toLowerCase()}</p>
               </div>
-            </div>
+            </button>
           </div>
         </div>
       </header>

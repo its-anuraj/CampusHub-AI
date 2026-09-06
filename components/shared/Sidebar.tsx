@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -9,8 +10,9 @@ import {
   Library, MessageSquare, Briefcase, FileText, UserCheck, AlertTriangle,
   Bus, BookMarked, Award, UserCog, PieChart, Megaphone, Database, Timer,
   Home, Utensils, Heart, Compass, Cpu, HardDrive, Package, ShieldAlert,
-  ShieldCheck, Radio, Sparkles, BedDouble, Activity
+  ShieldCheck, Radio, Sparkles, BedDouble, Activity, Brain, KeyRound
 } from 'lucide-react';
+import ChangePasswordModal from '@/components/shared/ChangePasswordModal';
 
 interface NavItem {
   label: string;
@@ -61,6 +63,7 @@ const studentNav: NavGroup[] = [
   {
     label: 'Student Life & Services',
     items: [
+      { label: 'AI Student Psychologist', href: '/dashboard/student/psychologist', icon: Brain, badge: 'Coming Soon' },
       { label: 'Hostel & Housing', href: '/dashboard/student/hostel', icon: BedDouble },
       { label: 'Digital Gate Outpass', href: '/dashboard/student/gatepass', icon: ShieldCheck },
       { label: 'Campus Bus & Transit', href: '/dashboard/student/transport', icon: Bus },
@@ -124,7 +127,7 @@ const adminNav: NavGroup[] = [
     label: 'Administration',
     items: [
       { label: 'Semester Progression', href: '/dashboard/admin/promotion', icon: Sparkles, badge: 'New' },
-      { label: 'Admission Verification', href: '/dashboard/admin/verification', icon: ShieldCheck },
+      { label: 'Admin Staff Approvals', href: '/dashboard/admin/verification', icon: ShieldCheck },
       { label: 'User Directory', href: '/dashboard/admin/users', icon: UserCog },
       { label: 'Departments', href: '/dashboard/admin/departments', icon: Building2 },
       { label: 'Master Courses', href: '/dashboard/admin/courses', icon: BookOpen },
@@ -144,6 +147,181 @@ const adminNav: NavGroup[] = [
       { label: 'Helpdesk Tickets', href: '/dashboard/admin/complaints', icon: AlertTriangle, badge: 12 },
       { label: 'System Health & Uptime', href: '/dashboard/admin/system-health', icon: Activity },
       { label: 'System Logs', href: '/dashboard/admin/logs', icon: Database },
+    ],
+  },
+];
+
+const placementAdminNav: NavGroup[] = [
+  {
+    label: 'Overview',
+    items: [
+      { label: 'TPO Dashboard', href: '/dashboard/admin', icon: LayoutDashboard },
+      { label: 'Placement Analytics', href: '/dashboard/admin/analytics', icon: PieChart },
+    ],
+  },
+  {
+    label: 'Placement Cell Operations',
+    items: [
+      { label: 'Campus Placement Drives', href: '/dashboard/admin/placements', icon: Briefcase },
+      { label: 'AI Resume Builder Desk', href: '/dashboard/student/resume-builder', icon: FileText, badge: 'AI' },
+      { label: 'Master Courses & Eligibility', href: '/dashboard/admin/courses', icon: BookOpen },
+      { label: 'Student Directory', href: '/dashboard/admin/users', icon: Users },
+      { label: 'Placement Notices', href: '/dashboard/admin/notices', icon: Megaphone },
+    ],
+  },
+  {
+    label: 'Support & Assistance',
+    items: [
+      { label: 'Helpdesk Inquiries', href: '/dashboard/admin/complaints', icon: AlertTriangle },
+    ],
+  },
+];
+
+const feesAdminNav: NavGroup[] = [
+  {
+    label: 'Overview',
+    items: [
+      { label: 'Finance Dashboard', href: '/dashboard/admin', icon: LayoutDashboard },
+      { label: 'Financial Analytics', href: '/dashboard/admin/analytics', icon: PieChart },
+    ],
+  },
+  {
+    label: 'Accounts & Dues Management',
+    items: [
+      { label: 'Fee Operations & Ledger', href: '/dashboard/admin/fees', icon: CreditCard },
+      { label: 'Department Budgets', href: '/dashboard/admin/budget', icon: CreditCard },
+      { label: 'Scholarships Desk', href: '/dashboard/admin/scholarships', icon: Award },
+      { label: 'Student Directory', href: '/dashboard/admin/users', icon: Users },
+      { label: 'Financial Notices', href: '/dashboard/admin/notices', icon: Megaphone },
+    ],
+  },
+  {
+    label: 'Audit & Safety',
+    items: [
+      { label: 'Audit & System Logs', href: '/dashboard/admin/logs', icon: Database },
+      { label: 'Fee Grievances', href: '/dashboard/admin/complaints', icon: AlertTriangle },
+    ],
+  },
+];
+
+const libraryAdminNav: NavGroup[] = [
+  {
+    label: 'Overview',
+    items: [
+      { label: 'Library Dashboard', href: '/dashboard/admin', icon: LayoutDashboard },
+      { label: 'Circulation Analytics', href: '/dashboard/admin/analytics', icon: PieChart },
+    ],
+  },
+  {
+    label: 'Library & Digital Catalog',
+    items: [
+      { label: 'Book Catalog & Issues', href: '/dashboard/student/library', icon: BookMarked },
+      { label: 'Hardware & Asset Inventory', href: '/dashboard/admin/inventory', icon: HardDrive },
+      { label: 'Academic Courses', href: '/dashboard/admin/courses', icon: BookOpen },
+      { label: 'Library Notices', href: '/dashboard/admin/notices', icon: Megaphone },
+    ],
+  },
+  {
+    label: 'Support',
+    items: [
+      { label: 'Helpdesk Tickets', href: '/dashboard/admin/complaints', icon: AlertTriangle },
+    ],
+  },
+];
+
+const eventAdminNav: NavGroup[] = [
+  {
+    label: 'Overview',
+    items: [
+      { label: 'Events Dashboard', href: '/dashboard/admin', icon: LayoutDashboard },
+      { label: 'Participation Analytics', href: '/dashboard/admin/analytics', icon: PieChart },
+    ],
+  },
+  {
+    label: 'Campus Events & Affairs',
+    items: [
+      { label: 'Campus Events & Hackathons', href: '/dashboard/student/events', icon: Calendar },
+      { label: 'Faculty Symposium & Events', href: '/dashboard/faculty/events', icon: Calendar },
+      { label: 'Clubs & Societies', href: '/dashboard/student/clubs', icon: Users },
+      { label: 'Event Broadcasts', href: '/dashboard/admin/notices', icon: Megaphone },
+    ],
+  },
+  {
+    label: 'Support',
+    items: [
+      { label: 'Event Helpdesk', href: '/dashboard/admin/complaints', icon: AlertTriangle },
+    ],
+  },
+];
+
+const clubAdminNav: NavGroup[] = [
+  {
+    label: 'Overview',
+    items: [
+      { label: 'Clubs Dashboard', href: '/dashboard/admin', icon: LayoutDashboard },
+      { label: 'Engagement Analytics', href: '/dashboard/admin/analytics', icon: PieChart },
+    ],
+  },
+  {
+    label: 'Student Societies & Engagement',
+    items: [
+      { label: 'Clubs & Societies Hub', href: '/dashboard/student/clubs', icon: Users },
+      { label: 'Campus Discussion Forum', href: '/dashboard/student/discussion', icon: MessageSquare },
+      { label: 'Club Events & Meetups', href: '/dashboard/student/events', icon: Calendar },
+      { label: 'Club Announcements', href: '/dashboard/admin/notices', icon: Megaphone },
+    ],
+  },
+  {
+    label: 'Support',
+    items: [
+      { label: 'Grievance Desk', href: '/dashboard/admin/complaints', icon: AlertTriangle },
+    ],
+  },
+];
+
+const academicAdminNav: NavGroup[] = [
+  {
+    label: 'Overview',
+    items: [
+      { label: 'Academic Dashboard', href: '/dashboard/admin', icon: LayoutDashboard },
+      { label: 'Academic Analytics', href: '/dashboard/admin/analytics', icon: PieChart },
+    ],
+  },
+  {
+    label: 'Curriculum & Governance',
+    items: [
+      { label: 'Master Courses', href: '/dashboard/admin/courses', icon: BookOpen },
+      { label: 'Semester Progression', href: '/dashboard/admin/promotion', icon: Sparkles, badge: 'New' },
+      { label: 'Academic Departments', href: '/dashboard/admin/departments', icon: Building2 },
+      { label: 'Faculty Leave Approvals', href: '/dashboard/admin/leaves', icon: Calendar },
+      { label: 'User Directory', href: '/dashboard/admin/users', icon: UserCog },
+      { label: 'Academic Notices', href: '/dashboard/admin/notices', icon: Megaphone },
+    ],
+  },
+  {
+    label: 'Support',
+    items: [
+      { label: 'Helpdesk Tickets', href: '/dashboard/admin/complaints', icon: AlertTriangle },
+    ],
+  },
+];
+
+const hostelAdminNav: NavGroup[] = [
+  {
+    label: 'Overview',
+    items: [
+      { label: 'Hostel Dashboard', href: '/dashboard/admin', icon: LayoutDashboard },
+      { label: 'Occupancy Analytics', href: '/dashboard/admin/analytics', icon: PieChart },
+    ],
+  },
+  {
+    label: 'Housing & Facilities',
+    items: [
+      { label: 'Hostel Housing & Rooms', href: '/dashboard/admin/hostel', icon: BedDouble },
+      { label: 'Digital Gate Outpass', href: '/dashboard/student/gatepass', icon: ShieldCheck },
+      { label: 'Hardware Inventory', href: '/dashboard/admin/inventory', icon: HardDrive },
+      { label: 'Housing Maintenance & Tickets', href: '/dashboard/admin/complaints', icon: AlertTriangle },
+      { label: 'Hostel Notices', href: '/dashboard/admin/notices', icon: Megaphone },
     ],
   },
 ];
@@ -168,14 +346,24 @@ const parentNav: NavGroup[] = [
   },
 ];
 
-function getNavForRole(role: string): NavGroup[] {
-  switch (role) {
-    case 'STUDENT': return studentNav;
-    case 'FACULTY': return facultyNav;
-    case 'ADMIN': return adminNav;
-    case 'PARENT': return parentNav;
-    default: return studentNav;
+function getNavForUser(user: any): NavGroup[] {
+  if (!user) return studentNav;
+  if (user.role === 'STUDENT') return studentNav;
+  if (user.role === 'FACULTY') return facultyNav;
+  if (user.role === 'PARENT') return parentNav;
+  if (user.role === 'ADMIN') {
+    const deptRole = user.adminProfile?.departmentRole;
+    if (deptRole === 'PLACEMENT_CELL') return placementAdminNav;
+    if (deptRole === 'FEES_ACCOUNTS') return feesAdminNav;
+    if (deptRole === 'LIBRARY') return libraryAdminNav;
+    if (deptRole === 'EVENT_MANAGER') return eventAdminNav;
+    if (deptRole === 'CLUB_MANAGER') return clubAdminNav;
+    if (deptRole === 'ACADEMIC_ADMIN') return academicAdminNav;
+    if (deptRole === 'HOSTEL_ADMIN') return hostelAdminNav;
+    // Default Director / Super Admin
+    return adminNav;
   }
+  return studentNav;
 }
 
 interface SidebarProps {
@@ -188,11 +376,21 @@ interface SidebarProps {
 export default function Sidebar({ user, isOpen, mobileOpen, onMobileClose }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const navGroups = getNavForRole(user?.role);
+  const [passwordModalOpen, setPasswordModalOpen] = useState(false);
+  const navGroups = getNavForUser(user);
 
   const handleLogout = () => {
     localStorage.removeItem('campushub_user');
     router.push('/login');
+  };
+
+  const formatRoleTitle = () => {
+    if (user?.role === 'ADMIN') {
+      const deptRole = user?.adminProfile?.departmentRole;
+      if (deptRole === 'DIRECTOR' || !deptRole) return 'College Director Desk';
+      return `${deptRole.replace('_', ' ').toLowerCase()} desk`;
+    }
+    return `${user?.role?.toLowerCase()} workspace`;
   };
 
   const sidebarContent = (
@@ -205,7 +403,7 @@ export default function Sidebar({ user, isOpen, mobileOpen, onMobileClose }: Sid
         {isOpen && (
           <div className="overflow-hidden">
             <p className="text-slate-900 font-semibold text-xs leading-none tracking-tight">CampusHub OS</p>
-            <p className="text-slate-500 text-[11px] leading-tight mt-0.5 capitalize">{user?.role?.toLowerCase()} workspace</p>
+            <p className="text-slate-500 text-[11px] leading-tight mt-0.5 capitalize">{formatRoleTitle()}</p>
           </div>
         )}
       </div>
@@ -271,8 +469,16 @@ export default function Sidebar({ user, isOpen, mobileOpen, onMobileClose }: Sid
         ))}
       </nav>
 
-      {/* Footer / Logout */}
-      <div className="p-3 border-t border-slate-100">
+      {/* Footer / Account Settings & Logout */}
+      <div className="p-3 border-t border-slate-100 space-y-1">
+        <button
+          onClick={() => setPasswordModalOpen(true)}
+          className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors w-full cursor-pointer"
+          title="Change Account Password"
+        >
+          <KeyRound className="w-4 h-4 flex-shrink-0 text-blue-600" />
+          {isOpen && <span>Change Password</span>}
+        </button>
         <button
           onClick={handleLogout}
           className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 hover:bg-red-50 hover:text-red-600 transition-colors w-full cursor-pointer"
@@ -286,6 +492,12 @@ export default function Sidebar({ user, isOpen, mobileOpen, onMobileClose }: Sid
 
   return (
     <>
+      <ChangePasswordModal
+        isOpen={passwordModalOpen}
+        onClose={() => setPasswordModalOpen(false)}
+        user={user}
+      />
+
       {/* Desktop Sidebar */}
       <aside className={cn(
         'hidden lg:flex flex-col fixed top-0 left-0 h-screen z-30 transition-all duration-200',

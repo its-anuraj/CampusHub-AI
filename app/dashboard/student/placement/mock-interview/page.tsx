@@ -85,6 +85,9 @@ export default function MockInterviewPage() {
             </Link>
             <span className="text-slate-500">•</span>
             <span className="text-xs font-semibold uppercase tracking-wider">AI Bar-Raiser</span>
+            <span className="px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 border-2 border-amber-300 text-[10px] font-black uppercase shadow-xs">
+              ✨ AI Module • Coming Soon (Beta Preview)
+            </span>
           </div>
           <h1 className="text-2xl font-bold text-white flex items-center gap-2">
             <BrainCircuit className="w-6 h-6 text-cyan-400" />

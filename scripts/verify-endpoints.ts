@@ -64,6 +64,7 @@ import { GET as getAdminRankings } from '../app/api/admin/rankings/route';
 import { GET as getParentHealth, POST as postParentHealth } from '../app/api/parent/health/route';
 import { GET as getParentFeeInstallments, POST as postParentFeeInstallments } from '../app/api/parent/fee-installments/route';
 import { GET as getParentLivestreams, POST as postParentLivestreams } from '../app/api/parent/livestreams/route';
+import { POST as postChangePassword } from '../app/api/auth/change-password/route';
 
 interface TestResult {
   endpoint: string;
@@ -153,7 +154,10 @@ async function runEndpointTestSuite() {
     { name: '/api/parent/health (GET)', fn: async () => getParentHealth() },
     { name: '/api/parent/fee-installments (GET)', fn: async () => getParentFeeInstallments() },
     { name: '/api/parent/livestreams (GET)', fn: async () => getParentLivestreams() },
+    { name: '/api/auth/change-password (POST)', fn: async () => postChangePassword(new Request('http://localhost:3000/api/auth/change-password', { method: 'POST', body: JSON.stringify({ email: 'ajsinghindolia@gmail.com', oldPassword: '001234', newPassword: '001234new' }) })) },
+    { name: '/api/auth/change-password (Reset to 001234)', fn: async () => postChangePassword(new Request('http://localhost:3000/api/auth/change-password', { method: 'POST', body: JSON.stringify({ email: 'ajsinghindolia@gmail.com', oldPassword: '001234new', newPassword: '001234' }) })) },
   ];
+
 
   let passed = 0;
   let failed = 0;

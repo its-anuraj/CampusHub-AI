@@ -28,8 +28,8 @@ export default function DigitalIdCardPage() {
 
   const student = {
     name: 'Anuraj Singh',
-    rollNumber: 'CS2023-042',
-    enrollmentNo: 'EN2023-889412',
+    rollNumber: 'KCC2023CSE045',
+    enrollmentNo: 'EN-KCC-2023-889412',
     department: 'Computer Science & Engineering',
     course: 'B.Tech CSE',
     batch: '2023 - 2027',
@@ -37,10 +37,10 @@ export default function DigitalIdCardPage() {
     dob: '14 Nov 2003',
     bloodGroup: 'O+ Positive',
     validThru: '31 July 2027',
-    contactNumber: '+91 98765 43210',
+    contactNumber: '+91 63971 93704',
     emergencyContact: '+91 98765 00000 (Father)',
-    address: 'Campus Hostel Block-B, Room 304, CampusHub University',
-    libraryCardId: 'LIB-CS-2023-042',
+    address: 'Campus Hostel Block-A, Room 204, KCCITM Campus, Greater Noida, UP',
+    libraryCardId: 'LIB-KCC-2023-045',
   };
 
   const handlePrint = () => {
@@ -141,11 +141,11 @@ export default function DigitalIdCardPage() {
                 <div className="flex items-center justify-between border-b border-white/15 pb-4 mb-5 relative z-10">
                   <div className="flex items-center gap-2.5">
                     <div className="w-9 h-9 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center font-black text-sm tracking-wider text-blue-300">
-                      CH
+                      KCC
                     </div>
                     <div>
-                      <h2 className="text-xs font-black uppercase tracking-wider text-white">CampusHub University</h2>
-                      <p className="text-[9px] text-blue-200/80">Autonomous Institute of Technology</p>
+                      <h2 className="text-xs font-black uppercase tracking-wider text-white">KCC Institute of Technology & Management</h2>
+                      <p className="text-[9px] text-blue-200/80">Greater Noida, UP • KCC.campushub.edu.in</p>
                     </div>
                   </div>
                   <div className="px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-[9px] font-bold text-emerald-300">
@@ -218,7 +218,7 @@ export default function DigitalIdCardPage() {
                 </div>
 
                 <div className="w-full h-8 bg-slate-800 rounded-lg mb-4 border border-slate-700 flex items-center justify-end px-3">
-                  <span className="text-[8px] font-mono text-slate-400">CH-SECURE-MAGSTRIPE-900</span>
+                  <span className="text-[8px] font-mono text-slate-400">KCCITM-SECURE-MAGSTRIPE</span>
                 </div>
 
                 <div className="space-y-3 text-xs">
@@ -232,12 +232,12 @@ export default function DigitalIdCardPage() {
                   </div>
                   <div>
                     <span className="text-[10px] text-slate-400 block">Campus Security Helpline</span>
-                    <strong className="text-xs text-amber-300 font-mono">1800-CAMPUS-911 (Toll Free)</strong>
+                    <strong className="text-xs text-amber-300 font-mono">0120-400-KCC (Toll Free)</strong>
                   </div>
                 </div>
 
                 <div className="mt-6 pt-4 border-t border-slate-800 text-[10px] text-slate-400 leading-relaxed">
-                  This card is property of CampusHub University. If found, return to Campus Security Desk Gate 1.
+                  This card is property of KCC Institute of Technology & Management, Greater Noida, UP. If found, return to Campus Security Desk Gate 1.
                 </div>
               </div>
             )}
