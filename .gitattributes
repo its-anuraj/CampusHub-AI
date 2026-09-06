@@ -1,0 +1,7 @@
+# GitHub Linguist Overrides
+prisma/schema.prisma linguist-language=Prisma
+*.prisma linguist-language=Prisma
+*.css linguist-language=CSS
+*.svg linguist-detectable=false
+package-lock.json linguist-generated=true
+apps/mobile/package-lock.json linguist-generated=true
