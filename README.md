@@ -7,12 +7,15 @@
   *A unified, cloud-native platform connecting Students, Faculty, University Directorate, and Parents across Web and Mobile.*
 
   <p align="center">
-    <a href="#-targeted-audience--who-is-this-for"><img src="https://img.shields.io/badge/Platform-Web%20%2B%20Mobile%20(iOS%20%26%20Android)-0284C7?style=for-the-badge&logo=react" alt="Platform" /></a>
-    <a href="#-tech-stack-architecture"><img src="https://img.shields.io/badge/Next.js-16.3%20Turbopack-000000?style=for-the-badge&logo=next.js" alt="Next.js" /></a>
-    <a href="#-tech-stack-architecture"><img src="https://img.shields.io/badge/Expo-SDK%2054-000020?style=for-the-badge&logo=expo" alt="Expo" /></a>
-    <a href="#-tech-stack-architecture"><img src="https://img.shields.io/badge/React%20Native-0.81-61DAFB?style=for-the-badge&logo=react" alt="React Native" /></a>
-    <a href="#-enterprise-security--access-control"><img src="https://img.shields.io/badge/Security-Zero%20Trust%20RBAC-10B981?style=for-the-badge&logo=auth0" alt="Security" /></a>
-    <a href="#-automated-testing-quality-metrics"><img src="https://img.shields.io/badge/Tests-62%2F62%20Passed%20(100%25)-brightgreen?style=for-the-badge" alt="Tests" /></a>
+    <img src="https://img.shields.io/badge/Next.js-16.3%20Turbopack-000000?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js" />
+    <img src="https://img.shields.io/badge/React-19.2-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React 19" />
+    <img src="https://img.shields.io/badge/React_Native-0.81-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React Native" />
+    <img src="https://img.shields.io/badge/Expo-SDK%2054-000020?style=for-the-badge&logo=expo&logoColor=white" alt="Expo" />
+    <img src="https://img.shields.io/badge/Prisma-5.22%20ORM-2D3748?style=for-the-badge&logo=prisma&logoColor=white" alt="Prisma" />
+    <img src="https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+    <img src="https://img.shields.io/badge/Tailwind_CSS-v4.0-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+    <img src="https://img.shields.io/badge/Database-SQLite%20%2F%20Postgres-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="Database" />
+    <img src="https://img.shields.io/badge/Security-Bcrypt%20%2B%20Zero%20Trust-10B981?style=for-the-badge&logo=auth0&logoColor=white" alt="Security" />
   </p>
 
   <p align="center">
