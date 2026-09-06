@@ -2,7 +2,9 @@
 
 > **AI-Powered Smart Campus Operating System**  
 > One platform for Students, Faculty, Admin, and Parents  
-> Web App + Android/iOS Mobile App
+> Web App + Android/iOS Mobile App  
+> 🌐 **Live Web App:** [https://campushub-kcc.vercel.app](https://campushub-kcc.vercel.app/login)  
+> 📱 **Mobile APK Builds:** [EAS Mobile Project](https://expo.dev/accounts/anuraj_indolia/projects/mobile/builds)
 
 ---
 

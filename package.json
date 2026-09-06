@@ -1,6 +1,8 @@
 {
   "name": "campushub",
   "version": "0.1.0",
+  "description": "CampusHub AI – Autonomous Higher Education Operating System & Digitization Suite",
+  "homepage": "https://campushub-kcc.vercel.app",
   "private": true,
   "scripts": {
     "dev": "next dev",

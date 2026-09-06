@@ -4,7 +4,21 @@
 
   # 🎓 CampusHub AI
   ### **Autonomous Higher Education Operating System & Digitization Suite**
-  *A unified, cloud-native platform connecting Students, Faculty, University Directorate, and Parents across Web and Mobile.*
+  *A unified, cloud-native enterprise platform connecting Students, Faculty, University Directorate, and Parents across Web and Mobile.*
+
+  <br/>
+
+  <p align="center">
+    <a href="https://campushub-kcc.vercel.app/login">
+      <img src="https://img.shields.io/badge/🚀%20Live%20Web%20Portal-campushub--kcc.vercel.app-0070F3?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Web App" />
+    </a>
+    <a href="https://expo.dev/accounts/anuraj_indolia/projects/mobile/builds">
+      <img src="https://img.shields.io/badge/📱%20Android%20APK-Download%20Build-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Download APK" />
+    </a>
+    <a href="https://github.com/its-anuraj/CampusHub-AI">
+      <img src="https://img.shields.io/badge/GitHub-its--anuraj%2FCampusHub--AI-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Repo" />
+    </a>
+  </p>
 
   <p align="center">
     <img src="https://img.shields.io/badge/Next.js-16.3%20Turbopack-000000?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js" />
@@ -14,7 +28,6 @@
     <img src="https://img.shields.io/badge/Prisma-5.22%20ORM-2D3748?style=for-the-badge&logo=prisma&logoColor=white" alt="Prisma" />
     <img src="https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
     <img src="https://img.shields.io/badge/Tailwind_CSS-v4.0-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
-    <img src="https://img.shields.io/badge/Database-SQLite%20%2F%20Postgres-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="Database" />
     <img src="https://img.shields.io/badge/Security-Bcrypt%20%2B%20Zero%20Trust-10B981?style=for-the-badge&logo=auth0&logoColor=white" alt="Security" />
   </p>
 
@@ -23,26 +36,48 @@
   </p>
 
   <p align="center">
-    <a href="#-quick-demo-access-accounts">🔑 Demo Accounts</a> •
-    <a href="#-core-modules--workflows">⚡ Key Features</a> •
-    <a href="#-targeted-audience--who-is-this-for">👥 Target Audience</a> •
-    <a href="#-local-setup--quickstart">🚀 Run Locally</a> •
-    <a href="#-cloud-deployment--apk-build">🌐 Vercel & APK Guide</a>
+    <a href="#-instant-demo-access--test-accounts">🔑 Demo Accounts</a> •
+    <a href="#-what-is-campushub-ai">🧭 Overview</a> •
+    <a href="#-targeted-audience--who-is-this-for">👥 Target Roles</a> •
+    <a href="#-web--mobile-seamless-parity">📱 Web & Mobile Parity</a> •
+    <a href="#-core-modules--innovative-workflows">⚡ Key Features</a> •
+    <a href="#-tech-stack--architecture">🛠️ Tech Stack</a>
   </p>
 
 </div>
 
 ---
 
-## 🧭 What is CampusHub AI? (At a Glance)
+## 🔑 Instant Demo Access & Test Accounts
 
-Traditional higher education institutions suffer from **fragmented communication, paper-based passes, un-tracked student stress, and isolated department data**.
+Experience the complete live platform on any browser or phone without manual registration:
 
-**CampusHub AI** replaces legacy siloed tools with **One Unified Digital Operating System**:
-* 🌐 **Full-Stack Web Portal:** High-performance Next.js 16 Web Dashboard for deep administrative and academic workflows.
-* 📱 **Native Mobile Application:** Cross-platform React Native (Expo SDK 54) App for instant campus access on iOS and Android.
+<div align="center">
+
+| Role | Name & Title | Email Address | Password | Live Portal Access |
+| :--- | :--- | :--- | :--- | :--- |
+| 👑 **College Director** | Anuraj Singh *(Chief Executive Admin)* | `ajsinghindolia@gmail.com` | `001234` | [**Launch Director Portal** ↗](https://campushub-kcc.vercel.app/login) |
+| 🛡️ **TPO Admin** | Suresh Sharma *(Placement Lead)* | `suresh.tpo@kcc.campushub.edu.in` | `Admin@123` | [**Launch Admin Portal** ↗](https://campushub-kcc.vercel.app/login) |
+| 🛡️ **Registrar Admin** | Rakesh Kumar *(Academic Registrar)* | `rakesh.acad@kcc.campushub.edu.in` | `Admin@123` | [**Launch Admin Portal** ↗](https://campushub-kcc.vercel.app/login) |
+| 👩‍🏫 **Faculty / HOD** | Dr. Priya Sharma *(HOD CSE)* | `faculty@campushub.ai` | `Faculty@123` | [**Launch Faculty Portal** ↗](https://campushub-kcc.vercel.app/login) |
+| 🎓 **Student** | Arjun Singh *(B.Tech CSE Year 3)* | `student@campushub.ai` | `Student@123` | [**Launch Student Portal** ↗](https://campushub-kcc.vercel.app/login) |
+| 👨‍👩‍👦 **Parent** | Sunita Singh *(Guardian)* | `parent@campushub.ai` | `Parent@123` | [**Launch Parent Portal** ↗](https://campushub-kcc.vercel.app/login) |
+
+</div>
+
+> **💡 Quick Tip:** On the [Live Login Page](https://campushub-kcc.vercel.app/login), you can click any role avatar for **1-Click Autofill** and instant sign-in!
+
+---
+
+## 🧭 What is CampusHub AI?
+
+Higher education institutions frequently suffer from **fragmented communication channels, paper-based passes, un-tracked student stress, and isolated department spreadsheets**.
+
+**CampusHub AI** replaces disconnected legacy tools with **One Unified Digital Operating System**:
+* 🌐 **Full-Stack Web Portal:** High-performance Next.js 16 Web Dashboard with Turbopack for deep administrative, grading, and governance workflows.
+* 📱 **Native Mobile Application:** Cross-platform React Native (Expo SDK 54) App for instant on-the-go campus access across Android & iOS.
 * 🛡️ **Zero-Trust Role Hierarchy:** Strictly partitioned data access across 4 distinct stakeholders (Director, Faculty, Students, Parents).
-* 🧠 **AI-Powered Campus Care:** 1:1 confidential emotional well-being check-ins, automated Bloom's rubric generation, and smart attendance telemetry.
+* 🧠 **AI-Powered Campus Care:** 1:1 confidential emotional well-being check-ins, automated Bloom's rubric grading, and smart attendance telemetry.
 
 ---
 
@@ -64,7 +99,7 @@ Traditional higher education institutions suffer from **fragmented communication
 
 ## 🌐 Web & Mobile Seamless Parity
 
-Both the **Web Application** and **Mobile App (`apps/mobile`)** share 100% feature and workflow parity:
+Both the **Web Application** and **Native Mobile App (`apps/mobile`)** share 100% feature and workflow parity:
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────┐
@@ -76,10 +111,11 @@ Both the **Web Application** and **Mobile App (`apps/mobile`)** share 100% featu
   │   🖥️ Next.js 16 Web Portal    │               │    📱 Expo Native Mobile App   │
   ├───────────────────────────────┤               ├────────────────────────────────┤
   │ • Turbopack SSR/SSG Engine    │               │ • React Native (Expo SDK 54)   │
-  │ • Tailwind CSS v4 System      │               │ • iOS & Android Single Codebase│
+  │ • Tailwind CSS v4 Design      │               │ • iOS & Android Single Codebase│
   │ • Interactive Data Tables     │               │ • Offline-First Native Views   │
   │ • Role-Specific Sidebars      │               │ • Smooth Bottom Tab Navigator  │
   │ • High-Contrast Accessibility │               │ • QR Gatepass Scanner          │
+  │ • Live on Vercel Edge         │               │ • EAS Cloud APK Build Pipeline │
   └───────────────────────────────┘               └────────────────────────────────┘
 ```
 
@@ -88,8 +124,8 @@ Both the **Web Application** and **Mobile App (`apps/mobile`)** share 100% featu
 ## ⚡ Core Modules & Innovative Workflows
 
 ### 1. 🧠 1:1 Confidential AI Student Psychologist & Mind Companion
-* **✨ Coming Soon Highlight**: Designed as an empathetic, confidential AI talking companion for students.
-* **Proactive Well-Being**: Bi-weekly (twice a month) 5–10 minute voice/text check-in to detect exam depression, low marks anxiety, or hesitation in college.
+* **✨ Coming Soon Highlight**: An empathetic, confidential AI talking companion dedicated to student emotional wellness.
+* **Proactive Well-Being**: Bi-weekly (twice a month) 5–10 minute voice/text check-in to detect exam burnout, low marks anxiety, or adjustment hesitation.
 * **Faculty Advisor Bridge**: Generates non-stigmatizing, confidential briefings for the assigned mentor so faculty can provide support without putting students under pressure.
 
 ### 2. 👑 Director Attendance & Governance Telemetry Desk
@@ -112,35 +148,19 @@ Both the **Web Application** and **Mobile App (`apps/mobile`)** share 100% featu
 
 ---
 
-## 🔑 Quick Demo Access Accounts
-
-<div align="center">
-
-| Role | Name & Title | Email Address | Password | Focus Area |
-| :--- | :--- | :--- | :--- | :--- |
-| **Director** | Anuraj Singh (Chief Executive Admin) | `ajsinghindolia@gmail.com` | `001234` | College governance & attendance telemetry |
-| **Admin** | Suresh Sharma (TPO Lead) | `suresh.tpo@kcc.campushub.edu.in` | `Admin@123` | Placement drives & CTC statistics |
-| **Admin** | Rakesh Kumar (Registrar) | `rakesh.acad@kcc.campushub.edu.in` | `Admin@123` | Admission approvals & student verifications |
-| **Faculty** | Dr. Priya Sharma (HOD CSE) | `faculty@campushub.ai` | `Faculty@123` | Class attendance, CIE grading & parent reachout |
-| **Student** | Arjun Singh (B.Tech CSE Year 3) | `student@campushub.ai` | `Student@123` | Timetable, ID pass, AI psychologist, library |
-| **Parent** | Sunita Singh (Guardian) | `parent@campushub.ai` | `Parent@123` | Ward marksheet, fee ledger, gatepass alerts |
-
-</div>
-
----
-
 ## 🛠️ Tech Stack & Architecture
 
 ```
 ┌─────────────────┬─────────────────────────────────────────────────────────────────┐
 │ Layer           │ Technology Stack                                                │
 ├─────────────────┼─────────────────────────────────────────────────────────────────┤
-│ Web Frontend    │ Next.js 16.3 (Turbopack), React 19, Tailwind CSS v4, Lucide     │
+│ Web Application │ Next.js 16.3 (Turbopack), React 19.2, Tailwind CSS v4, Lucide   │
 │ Mobile App      │ React Native 0.81, Expo SDK 54, React Native SVG, Reanimated    │
 │ Backend API     │ Next.js Route Handlers (RESTful, Zero-Trust Role Middleware)    │
 │ Database & ORM  │ Prisma ORM 5.22, SQLite (Local/Dev) / PostgreSQL (Production)   │
 │ Security & Auth │ Bcrypt Password Hashing, Session Cookies, Immutable Audit Logs │
 │ Type Safety     │ TypeScript 5.9 (Strict mode across Web & Mobile)                │
+│ Cloud & Build   │ Vercel Edge Network & Expo Application Services (EAS Build)     │
 └─────────────────┴─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -224,71 +244,10 @@ Both the **Web Application** and **Mobile App (`apps/mobile`)** share 100% featu
 
 ---
 
-## 🚀 Local Setup & Quickstart
+## 🗺️ Institutional Roadmap & Future Milestones
 
-### 1. Clone & Install
-```bash
-git clone https://github.com/its-anuraj/CampusHub-AI.git
-cd CampusHub-AI
-
-# Install Web Dependencies
-npm install
-
-# Install Mobile App Dependencies
-cd apps/mobile
-npm install
-cd ../..
-```
-
-### 2. Environment Setup & Database Seed
-```bash
-# Push database schema & seed demo users
-npx prisma db push
-npx prisma db seed
-```
-
-### 3. Run Web & Mobile Apps
-* **Start Web Server:**
-  ```bash
-  npm run dev
-  ```
-  Open: `http://localhost:3000`
-
-* **Start Mobile App (with Tunnel for all phones):**
-  ```bash
-  npm run expo -- --tunnel -c
-  ```
-
----
-
-## 🌐 Cloud Deployment & APK Build
-
-### A. Deploy Web App to Vercel (1-Click Setup)
-1. Push your repository to GitHub.
-2. Go to [Vercel](https://vercel.com) and click **"Import Project"** for `CampusHub-AI`.
-3. Add Environment Variables:
-   * `DATABASE_URL`: Your Supabase / Neon PostgreSQL connection string.
-   * `NEXTAUTH_SECRET`: Random 32-character secret.
-   * `NEXTAUTH_URL`: Your production Vercel domain.
-4. Set Build Command: `prisma generate && prisma db push && next build`.
-5. Click **"Deploy"**!
-
-### B. Build Standalone Android APK (Expo EAS)
-1. Install EAS CLI: `npm install -g eas-cli`
-2. Log in: `eas login`
-3. Trigger Cloud APK Build:
-   ```bash
-   cd apps/mobile
-   eas build -p android --profile preview
-   ```
-4. Download the `.apk` file directly from the link provided upon completion (~5 mins).
-
----
-
-## 🗺️ Future Institutional Roadmap
-
-- [ ] **College ERP Integration**: Direct synchronization with on-campus legacy databases.
-- [ ] **Biometric Turnstile Hardware Bridge**: Direct MQTT/REST IoT connector for physical turnstiles.
+- [ ] **College ERP Synchronizer**: Automated bi-directional sync with on-campus legacy databases.
+- [ ] **Biometric Turnstile Hardware Bridge**: Direct MQTT/REST IoT connector for turnstiles & hostel gates.
 - [ ] **WhatsApp Enterprise Gateway**: Automated attendance updates and emergency parent alerts.
 
 ---
